@@ -15,16 +15,10 @@ import {
 } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
 import { Reveal } from "./Reveal";
-import { projects } from "./data";
+import { AddPlaceholder } from "./AddPlaceholder";
+import { siteContent } from "@/content/site";
 
 /* ---------------- Stats ---------------- */
-
-const stats = [
-  { value: 120, suffix: "+", label: "Projects delivered" },
-  { value: 48, suffix: "", label: "Happy clients" },
-  { value: 10, suffix: "y", label: "Years crafting" },
-  { value: 24, suffix: "", label: "Countries reached" },
-];
 
 function useCountUp(target: number, run: boolean, duration = 1600) {
   const [n, setN] = useState(0);
@@ -57,6 +51,10 @@ export function StatsSection() {
     return () => io.disconnect();
   }, []);
 
+  const stats = siteContent.stats;
+  const showPlaceholders = stats.length === 0;
+  const placeholderCount = 4;
+
   return (
     <Section className="!py-16 sm:!py-20">
       <div
@@ -72,9 +70,19 @@ export function StatsSection() {
           }}
         />
         <div className="relative grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((s) => (
-            <StatItem key={s.label} run={inView} {...s} />
-          ))}
+          {showPlaceholders
+            ? Array.from({ length: placeholderCount }).map((_, i) => (
+                <AddPlaceholder key={i} label="Add Statistic" minHeight="140px" />
+              ))
+            : stats.map((s) => (
+                <StatItem
+                  key={s.label}
+                  run={inView}
+                  value={s.value}
+                  suffix={s.suffix ?? ""}
+                  label={s.label}
+                />
+              ))}
         </div>
       </div>
     </Section>
@@ -176,6 +184,11 @@ export function ServicesSection() {
 /* ---------------- Featured Portfolio ---------------- */
 
 export function FeaturedPortfolio() {
+  const projects = siteContent.portfolio.slice(0, 4);
+  const showPlaceholders = projects.length === 0;
+  const spanFor = (i: number) =>
+    i === 0 ? "md:col-span-4" : i === 1 ? "md:col-span-2" : i === 2 ? "md:col-span-2" : "md:col-span-4";
+
   return (
     <Section className="!max-w-none bg-surface/70">
       <div className="container-x !px-0">
@@ -195,66 +208,51 @@ export function FeaturedPortfolio() {
         </div>
 
         <div className="mt-14 grid gap-6 md:grid-cols-6">
-          {projects.slice(0, 4).map((p, i) => {
-            const span = i === 0 ? "md:col-span-4" : i === 1 ? "md:col-span-2" : i === 2 ? "md:col-span-2" : "md:col-span-4";
-            return (
-              <Reveal key={p.title} delay={i * 100} className={span}>
-                <a
-                  href="#"
-                  className="group relative block overflow-hidden rounded-[28px] border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_35%,transparent)]"
-                >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden">
-                    <div
-                      className="absolute inset-0 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
-                      style={{ background: p.gradient }}
-                    />
-                    {/* Faux browser chrome */}
-                    <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 backdrop-blur-sm">
-                      <span className="h-2 w-2 rounded-full bg-white/70" />
-                      <span className="h-2 w-2 rounded-full bg-white/50" />
-                      <span className="h-2 w-2 rounded-full bg-white/40" />
-                      <span className="ml-3 h-1.5 w-24 rounded-full bg-white/30" />
+          {showPlaceholders
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <Reveal key={i} delay={i * 100} className={spanFor(i)}>
+                  <AddPlaceholder label="Add Portfolio Project" minHeight="320px" />
+                </Reveal>
+              ))
+            : projects.map((p, i) => (
+                <Reveal key={p.title} delay={i * 100} className={spanFor(i)}>
+                  <a
+                    href={p.href ?? "#"}
+                    className="group relative block overflow-hidden rounded-[28px] border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_35%,transparent)]"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      {p.image ? (
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
+                        />
+                      ) : (
+                        <div
+                          className="absolute inset-0 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
+                          style={{ background: p.gradient ?? "var(--gradient-brand)" }}
+                        />
+                      )}
                     </div>
-                    {/* Placeholder UI blocks */}
-                    <div className="absolute inset-x-6 bottom-6 top-14 rounded-xl bg-white/15 p-4 backdrop-blur-[2px]">
-                      <div className="h-2.5 w-24 rounded-full bg-white/40" />
-                      <div className="mt-2 h-2 w-40 rounded-full bg-white/25" />
-                      <div className="mt-6 grid grid-cols-3 gap-2">
-                        <div className="h-10 rounded-lg bg-white/25" />
-                        <div className="h-10 rounded-lg bg-white/20" />
-                        <div className="h-10 rounded-lg bg-white/15" />
+                    <div className="flex items-center justify-between gap-4 bg-white p-6">
+                      <div className="min-w-0">
+                        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                          {p.tag} · {p.year}
+                        </p>
+                        <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
                       </div>
+                      <span className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-border bg-background transition-all duration-500 group-hover:border-transparent group-hover:text-white">
+                        <span
+                          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                          style={{ background: "var(--gradient-brand)" }}
+                        />
+                        <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </span>
                     </div>
-                    {/* Highlight sweep */}
-                    <div
-                      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                      style={{
-                        background:
-                          "radial-gradient(600px 200px at 20% 0%, rgba(255,255,255,0.35), transparent 60%)",
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between gap-4 bg-white p-6">
-                    <div className="min-w-0">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                        {p.tag} · {p.year}
-                      </p>
-                      <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
-                    </div>
-                    <span
-                      className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-border bg-background transition-all duration-500 group-hover:border-transparent group-hover:text-white"
-                    >
-                      <span
-                        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                        style={{ background: "var(--gradient-brand)" }}
-                      />
-                      <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </span>
-                  </div>
-                </a>
-              </Reveal>
-            );
-          })}
+                  </a>
+                </Reveal>
+              ))}
         </div>
       </div>
     </Section>
@@ -315,31 +313,10 @@ export function ProcessSection() {
 
 /* ---------------- Testimonials ---------------- */
 
-const testimonials = [
-  {
-    quote:
-      "NurpurVasi elevated our brand to another dimension. The craft, the motion, the details — everything felt like it belonged in a design museum.",
-    name: "Aria Chen",
-    role: "CMO, Aurora Studio",
-    initials: "AC",
-  },
-  {
-    quote:
-      "Working with Gaurav is like hiring a small design studio that ships like a big engineering team. Our conversions doubled in eight weeks.",
-    name: "Marcus Vale",
-    role: "Founder, Northwind",
-    initials: "MV",
-  },
-  {
-    quote:
-      "The rare studio that treats brand, engineering and SEO as one craft. Beautiful, fast, and quietly powerful — exactly what they promise.",
-    name: "Sofia Rey",
-    role: "Head of Product, Lumen",
-    initials: "SR",
-  },
-];
-
 export function TestimonialsSection() {
+  const testimonials = siteContent.testimonials;
+  const showPlaceholders = testimonials.length === 0;
+
   return (
     <Section>
       <div className="mx-auto max-w-3xl text-center">
@@ -353,57 +330,80 @@ export function TestimonialsSection() {
       </div>
 
       <div className="mt-14 grid gap-6 md:grid-cols-3">
-        {testimonials.map((t, i) => (
-          <Reveal key={t.name} delay={i * 120}>
-            <figure
-              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
-              style={{
-                boxShadow:
-                  "0 1px 0 rgba(255,255,255,0.7) inset, 0 20px 40px -30px color-mix(in oklab, var(--navy) 25%, transparent)",
-              }}
-            >
-              <div
-                className="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-20 blur-2xl transition-opacity duration-700 group-hover:opacity-50"
-                style={{ background: "var(--gradient-brand)" }}
-              />
-              {/* Big quote mark */}
-              <span
-                aria-hidden
-                className="absolute right-6 top-4 select-none text-[80px] leading-none opacity-10"
-                style={{ fontFamily: "var(--font-display)", color: "var(--royal)" }}
-              >
-                &ldquo;
-              </span>
-              <div className="flex gap-1 text-[color:var(--royal)]">
-                {Array.from({ length: 5 }).map((_, k) => (
-                  <Star key={k} className="h-4 w-4 fill-current" />
-                ))}
-              </div>
-              <blockquote className="relative mt-5 text-[15px] leading-relaxed text-foreground/90">
-                "{t.quote}"
-              </blockquote>
-              <figcaption className="relative mt-7 flex items-center gap-4 border-t border-border pt-5">
-                <span className="relative">
-                  <span
-                    aria-hidden
-                    className="absolute -inset-[3px] rounded-full opacity-70 blur-[2px]"
-                    style={{ background: "var(--gradient-brand)" }}
-                  />
-                  <span
-                    className="relative grid h-12 w-12 place-items-center rounded-full text-sm font-semibold text-white ring-2 ring-white"
-                    style={{ background: "var(--gradient-brand)" }}
+        {showPlaceholders
+          ? Array.from({ length: 3 }).map((_, i) => (
+              <Reveal key={i} delay={i * 120}>
+                <AddPlaceholder label="Add Testimonial" minHeight="280px" />
+              </Reveal>
+            ))
+          : testimonials.map((t, i) => {
+              const initials = t.name
+                .split(" ")
+                .map((w) => w[0])
+                .filter(Boolean)
+                .slice(0, 2)
+                .join("")
+                .toUpperCase();
+              return (
+                <Reveal key={t.name + i} delay={i * 120}>
+                  <figure
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
+                    style={{
+                      boxShadow:
+                        "0 1px 0 rgba(255,255,255,0.7) inset, 0 20px 40px -30px color-mix(in oklab, var(--navy) 25%, transparent)",
+                    }}
                   >
-                    {t.initials}
-                  </span>
-                </span>
-                <div>
-                  <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
+                    <div
+                      className="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-20 blur-2xl transition-opacity duration-700 group-hover:opacity-50"
+                      style={{ background: "var(--gradient-brand)" }}
+                    />
+                    <span
+                      aria-hidden
+                      className="absolute right-6 top-4 select-none text-[80px] leading-none opacity-10"
+                      style={{ fontFamily: "var(--font-display)", color: "var(--royal)" }}
+                    >
+                      &ldquo;
+                    </span>
+                    <div className="flex gap-1 text-[color:var(--royal)]">
+                      {Array.from({ length: 5 }).map((_, k) => (
+                        <Star key={k} className="h-4 w-4 fill-current" />
+                      ))}
+                    </div>
+                    <blockquote className="relative mt-5 text-[15px] leading-relaxed text-foreground/90">
+                      "{t.quote}"
+                    </blockquote>
+                    <figcaption className="relative mt-7 flex items-center gap-4 border-t border-border pt-5">
+                      <span className="relative">
+                        <span
+                          aria-hidden
+                          className="absolute -inset-[3px] rounded-full opacity-70 blur-[2px]"
+                          style={{ background: "var(--gradient-brand)" }}
+                        />
+                        {t.avatar ? (
+                          <img
+                            src={t.avatar}
+                            alt={t.name}
+                            loading="lazy"
+                            className="relative h-12 w-12 rounded-full object-cover ring-2 ring-white"
+                          />
+                        ) : (
+                          <span
+                            className="relative grid h-12 w-12 place-items-center rounded-full text-sm font-semibold text-white ring-2 ring-white"
+                            style={{ background: "var(--gradient-brand)" }}
+                          >
+                            {initials || "·"}
+                          </span>
+                        )}
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold">{t.name}</p>
+                        <p className="text-xs text-muted-foreground">{t.role}</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              );
+            })}
       </div>
     </Section>
   );
@@ -411,31 +411,10 @@ export function TestimonialsSection() {
 
 /* ---------------- FAQ ---------------- */
 
-const faqs = [
-  {
-    q: "What does a typical project cost?",
-    a: "Every engagement is scoped to your goals. Most website projects range from $8k for focused brand sites to $60k+ for large marketing platforms and product experiences.",
-  },
-  {
-    q: "How long until we launch?",
-    a: "Focused brand sites ship in 3–5 weeks. Complex marketing platforms and product work typically run 8–14 weeks depending on scope.",
-  },
-  {
-    q: "Do you handle SEO and ongoing growth?",
-    a: "Yes. Every site ships tuned for Core Web Vitals and technical SEO. We also partner on content strategy, CRO experiments and analytics as an ongoing retainer.",
-  },
-  {
-    q: "Which technologies do you build with?",
-    a: "React, TypeScript, TanStack Start, Tailwind, Framer Motion and Vite. We select tools that produce the fastest, most maintainable result for your project.",
-  },
-  {
-    q: "Can you work with our existing brand?",
-    a: "Absolutely. We can extend and elevate an existing identity, or build a new one from scratch — whichever gets you to a world-class result.",
-  },
-];
-
 export function FAQSection() {
+  const faqs = siteContent.faqs;
   const [open, setOpen] = useState<number | null>(0);
+
   return (
     <Section id="faq">
       <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
@@ -448,44 +427,52 @@ export function FAQSection() {
             Answers to <span className="text-gradient italic">common questions</span>.
           </h2>
           <p className="mt-5 max-w-md text-muted-foreground">
-            Still curious? Reach out — we reply to every inquiry personally within 24 hours.
+            Still curious? Reach out — we reply to every inquiry personally.
           </p>
           <Link to="/contact" className="btn-ghost mt-8">
             Ask a question <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
-        <div className="divide-y divide-border rounded-3xl border border-border bg-white/70 backdrop-blur-xl">
-          {faqs.map((f, i) => {
-            const isOpen = open === i;
-            return (
-              <div key={f.q} className="px-6 sm:px-8">
-                <button
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
-                >
-                  <span className="text-base font-semibold sm:text-lg">{f.q}</span>
-                  <span
-                    className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border bg-background transition-colors"
-                    style={isOpen ? { background: "var(--gradient-brand)", color: "white", borderColor: "transparent" } : undefined}
+        {faqs.length === 0 ? (
+          <div className="grid gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <AddPlaceholder key={i} label="Add FAQ" minHeight="96px" />
+            ))}
+          </div>
+        ) : (
+          <div className="divide-y divide-border rounded-3xl border border-border bg-white/70 backdrop-blur-xl">
+            {faqs.map((f, i) => {
+              const isOpen = open === i;
+              return (
+                <div key={f.q} className="px-6 sm:px-8">
+                  <button
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-6 py-6 text-left"
                   >
-                    {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                  </span>
-                </button>
-                <div
-                  className="grid overflow-hidden transition-all duration-500 ease-out"
-                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
-                >
-                  <div className="min-h-0">
-                    <p className="pb-6 pr-14 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-                      {f.a}
-                    </p>
+                    <span className="text-base font-semibold sm:text-lg">{f.q}</span>
+                    <span
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border bg-background transition-colors"
+                      style={isOpen ? { background: "var(--gradient-brand)", color: "white", borderColor: "transparent" } : undefined}
+                    >
+                      {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                    </span>
+                  </button>
+                  <div
+                    className="grid overflow-hidden transition-all duration-500 ease-out"
+                    style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                  >
+                    <div className="min-h-0">
+                      <p className="pb-6 pr-14 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
+                        {f.a}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Section>
   );
@@ -511,7 +498,7 @@ export function PremiumCTA() {
               Have a project <span className="italic">in mind?</span>
             </h2>
             <p className="mt-5 max-w-lg text-white/80">
-              Tell us about your brand, timeline and ambition. We'll come back with a plan within 24 hours.
+              Tell us about your brand, timeline and ambition. We'll come back with a plan.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 md:justify-end">

@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { ContactCTA } from "@/components/site/Sections";
 import { Reveal } from "@/components/site/Reveal";
-import { Award, Sparkles, Users, Zap } from "lucide-react";
+import { AddPlaceholder } from "@/components/site/AddPlaceholder";
+import { siteContent } from "@/content/site";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -24,13 +25,6 @@ export const Route = createFileRoute("/about")({
   }),
   component: AboutPage,
 });
-
-const stats = [
-  { Icon: Award, k: "10+", l: "Years crafting" },
-  { Icon: Users, k: "80+", l: "Global partners" },
-  { Icon: Sparkles, k: "120+", l: "Projects shipped" },
-  { Icon: Zap, k: "24h", l: "Response time" },
-];
 
 function AboutPage() {
   return (

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { ArrowRight, Sparkles, Play, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { siteContent } from "@/content/site";
 
 export function Hero() {
   const [y, setY] = useState(0);
@@ -87,18 +88,38 @@ export function Hero() {
         {/* Trust bar */}
         <div className="mt-16 w-full animate-fade-up" style={{ animationDelay: "0.4s" }}>
           <p className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-            Trusted by teams at
+            Trusted by teams
           </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-70">
-            {["AURORA", "NORTHWIND", "LUMEN", "ATELIER", "MERIDIAN", "HALCYON"].map((n) => (
-              <span
-                key={n}
-                className="text-sm font-semibold tracking-[0.2em] text-foreground/70"
-                style={{ fontFamily: "var(--font-sans)" }}
-              >
-                {n}
-              </span>
-            ))}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+            {siteContent.clients.length === 0
+              ? Array.from({ length: 6 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-2 rounded-full border border-dashed border-border/80 bg-white/60 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-xl"
+                  >
+                    <Plus className="h-3 w-3" style={{ color: "var(--royal)" }} />
+                    Add Client Logo
+                  </span>
+                ))
+              : siteContent.clients.map((c) =>
+                  c.logo ? (
+                    <img
+                      key={c.name}
+                      src={c.logo}
+                      alt={c.name}
+                      loading="lazy"
+                      className="h-6 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 sm:h-7"
+                    />
+                  ) : (
+                    <span
+                      key={c.name}
+                      className="text-sm font-semibold tracking-[0.2em] text-foreground/70"
+                      style={{ fontFamily: "var(--font-sans)" }}
+                    >
+                      {c.name.toUpperCase()}
+                    </span>
+                  ),
+                )}
           </div>
         </div>
 
