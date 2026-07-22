@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { ContactCTA } from "@/components/site/Sections";
+import { Reveal } from "@/components/site/Reveal";
+import { Award, Sparkles, Users, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -23,18 +25,25 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
+const stats = [
+  { Icon: Award, k: "10+", l: "Years crafting" },
+  { Icon: Users, k: "80+", l: "Global partners" },
+  { Icon: Sparkles, k: "120+", l: "Projects shipped" },
+  { Icon: Zap, k: "24h", l: "Response time" },
+];
+
 function AboutPage() {
   return (
     <SiteLayout>
       <Section className="pt-8 sm:pt-12">
-        <div className="grid gap-14 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-          <div>
-            <Eyebrow>About</Eyebrow>
+        <div className="grid gap-14 lg:grid-cols-[1.15fr_1fr] lg:items-start">
+          <Reveal variant="up">
+            <Eyebrow>About the studio</Eyebrow>
             <h1
-              className="mt-5 text-5xl font-semibold tracking-tight sm:text-7xl"
+              className="mt-5 text-5xl font-normal tracking-tight sm:text-7xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              A studio led by <span className="text-gradient">Gaurav Bharti</span>.
+              A studio led by <span className="text-gradient italic">Gaurav Bharti</span>.
             </h1>
             <div className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
               <p>
@@ -50,23 +59,84 @@ function AboutPage() {
                 depth and pace it deserves.
               </p>
             </div>
-          </div>
 
-          <aside className="glass rounded-3xl p-8">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Principles</p>
-            <ul className="mt-6 space-y-5">
-              {[
-                { t: "Detail is the design", d: "Micro-interactions, spacing, typography — the details are the product." },
-                { t: "Speed as a feature", d: "Beautiful and fast. Premium never means sluggish." },
-                { t: "Long-term partnership", d: "We stay involved after launch to keep the work sharp." },
-              ].map((p) => (
-                <li key={p.t}>
-                  <p className="text-sm font-semibold">{p.t}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{p.d}</p>
-                </li>
+            <div className="mt-10 grid gap-3 sm:grid-cols-2">
+              {stats.map(({ Icon, k, l }, i) => (
+                <Reveal key={l} delay={i * 80} variant="up">
+                  <div className="group flex items-center gap-4 rounded-2xl border border-border bg-white/70 p-4 backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-25px_color-mix(in_oklab,var(--royal)_35%,transparent)]">
+                    <span
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white transition-transform duration-500 group-hover:scale-110"
+                      style={{ background: "var(--gradient-brand)" }}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <p
+                        className="text-2xl font-normal tracking-tight"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        {k}
+                      </p>
+                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{l}</p>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
-            </ul>
-          </aside>
+            </div>
+          </Reveal>
+
+          <Reveal variant="scale" delay={120}>
+            <div
+              className="relative overflow-hidden rounded-[32px] border border-border bg-white/70 p-3 backdrop-blur-xl"
+              style={{ boxShadow: "var(--shadow-elegant)" }}
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[24px]">
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "var(--gradient-brand)" }}
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(600px 400px at 30% 20%, rgba(255,255,255,0.35), transparent 60%), radial-gradient(400px 300px at 80% 90%, rgba(255,255,255,0.15), transparent 60%)",
+                  }}
+                />
+                <div className="absolute inset-x-5 bottom-5">
+                  <div className="glass flex items-center gap-4 rounded-2xl p-4">
+                    <span
+                      className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-white text-sm font-semibold"
+                      style={{ background: "var(--gradient-brand)" }}
+                    >
+                      GB
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold">Gaurav Bharti</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                        Founder · Design & Engineering
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <aside className="mt-6 glass rounded-3xl p-8">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Principles</p>
+              <ul className="mt-6 space-y-5">
+                {[
+                  { t: "Detail is the design", d: "Micro-interactions, spacing, typography — the details are the product." },
+                  { t: "Speed as a feature", d: "Beautiful and fast. Premium never means sluggish." },
+                  { t: "Long-term partnership", d: "We stay involved after launch to keep the work sharp." },
+                ].map((p) => (
+                  <li key={p.t}>
+                    <p className="text-sm font-semibold">{p.t}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{p.d}</p>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </Reveal>
         </div>
       </Section>
       <ContactCTA />
