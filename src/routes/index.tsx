@@ -11,6 +11,7 @@ import {
   PremiumCTA,
 } from "@/components/site/HomeSections";
 import { PremiumContactSection } from "@/components/site/PremiumContact";
+import { InlineEditable } from "@/components/site/inline-editor/InlineEditable";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,14 +38,28 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <SiteLayout>
-      <Hero />
-      <StatsSection />
-      <ServicesSection />
-      <FeaturedPortfolio />
+      <InlineEditable section="hero" label="Hero">
+        <Hero />
+      </InlineEditable>
+      <InlineEditable section="stats" label="Statistics">
+        <StatsSection />
+      </InlineEditable>
+      <InlineEditable section="services" label="Services">
+        <ServicesSection />
+      </InlineEditable>
+      <InlineEditable section="portfolio" label="Portfolio">
+        <FeaturedPortfolio />
+      </InlineEditable>
       <ProcessSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <PremiumContactSection />
+      <InlineEditable section="testimonials" label="Testimonials">
+        <TestimonialsSection />
+      </InlineEditable>
+      <InlineEditable section="faqs" label="FAQ">
+        <FAQSection />
+      </InlineEditable>
+      <InlineEditable section="contact" label="Contact">
+        <PremiumContactSection />
+      </InlineEditable>
       <PremiumCTA />
     </SiteLayout>
   );

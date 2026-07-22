@@ -102,6 +102,42 @@ export const discardDraft = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/**
+ * Update one top-level section of the site content. Writes to BOTH draft
+ * and published so inline edits go live instantly. Admin only.
+ */
+export const saveInlineEdit = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { section: string; value: Json }) =>
+    z.object({
+      section: z.string().min(1).max(50),
+      value: z.any(),
+    }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { data: role } = await context.supabase
+      .from("user_roles").select("role")
+      .eq("user_id", context.userId).eq("role", "admin").maybeSingle();
+    if (!role) throw new Error("Forbidden");
+
+    const { data: row, error: readErr } = await context.supabase
+      .from("site_content")
+      .select("draft, published")
+      .eq("id", 1)
+      .maybeSingle();
+    if (readErr) throw readErr;
+
+    const draft = { ...((row?.draft ?? {}) as Record<string, unknown>), [data.section]: data.value };
+    const published = { ...((row?.published ?? {}) as Record<string, unknown>), [data.section]: data.value };
+
+    const { error } = await context.supabase
+      .from("site_content")
+      .update({ draft: draft as Json, published: published as Json, updated_by: context.userId })
+      .eq("id", 1);
+    if (error) throw error;
+    return { ok: true };
+  });
+
 /** Generate a signed upload URL for a media file. Admin only. */
 export const createMediaUploadUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
