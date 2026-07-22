@@ -1,5 +1,6 @@
 import { Code2, Search, Palette, Rocket, Smartphone, LineChart } from "lucide-react";
 
+// Service offerings — real studio capabilities, editable here.
 export const services = [
   {
     icon: Palette,
@@ -33,41 +34,6 @@ export const services = [
   },
 ];
 
-export const projects = [
-  {
-    title: "Aurora Studio",
-    tag: "Brand Website",
-    year: "2025",
-    gradient: "linear-gradient(135deg, oklch(0.48 0.19 265), oklch(0.58 0.19 300))",
-  },
-  {
-    title: "Northwind Bank",
-    tag: "Fintech Platform",
-    year: "2025",
-    gradient: "linear-gradient(135deg, oklch(0.24 0.07 265), oklch(0.48 0.19 265))",
-  },
-  {
-    title: "Lumen Health",
-    tag: "SaaS Product",
-    year: "2024",
-    gradient: "linear-gradient(135deg, oklch(0.82 0.09 220), oklch(0.48 0.19 265))",
-  },
-  {
-    title: "Atelier Rive",
-    tag: "Luxury Ecommerce",
-    year: "2024",
-    gradient: "linear-gradient(135deg, oklch(0.58 0.19 300), oklch(0.24 0.07 265))",
-  },
-  {
-    title: "Halcyon",
-    tag: "Editorial",
-    year: "2024",
-    gradient: "linear-gradient(135deg, oklch(0.48 0.19 265), oklch(0.82 0.09 220))",
-  },
-  {
-    title: "Meridian",
-    tag: "Corporate",
-    year: "2023",
-    gradient: "linear-gradient(135deg, oklch(0.24 0.07 265), oklch(0.58 0.19 300))",
-  },
-];
+// Portfolio projects are managed centrally via siteContent.portfolio
+// in `src/content/site.ts` so they can be swapped without touching code.
+export { siteContent as _siteContent } from "@/content/site";

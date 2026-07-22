@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
-import { projects, services } from "./data";
+import { services } from "./data";
+import { siteContent } from "@/content/site";
+import { AddPlaceholder } from "./AddPlaceholder";
 
 export function ServicesGrid({ limit }: { limit?: number }) {
   const items = limit ? services.slice(0, limit) : services;
@@ -30,47 +32,47 @@ export function ServicesGrid({ limit }: { limit?: number }) {
   );
 }
 
-export function ServicesPreview() {
-  return (
-    <Section>
-      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div className="max-w-2xl">
-          <Eyebrow>What we do</Eyebrow>
-          <h2
-            className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Services engineered for <span className="text-gradient">premium brands</span>.
-          </h2>
-        </div>
-        <Link to="/services" className="btn-ghost">
-          All services <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-      <div className="mt-12">
-        <ServicesGrid limit={6} />
-      </div>
-    </Section>
-  );
-}
-
 export function ProjectsGrid({ limit }: { limit?: number }) {
-  const items = limit ? projects.slice(0, limit) : projects;
+  const all = siteContent.portfolio;
+  const items = limit ? all.slice(0, limit) : all;
+
+  if (items.length === 0) {
+    const count = limit ?? 6;
+    return (
+      <div className="grid gap-6 md:grid-cols-2">
+        {Array.from({ length: count }).map((_, i) => (
+          <div key={i} className={i % 3 === 0 ? "md:col-span-2" : ""}>
+            <AddPlaceholder label="Add Portfolio Project" minHeight="280px" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {items.map((p, i) => (
         <a
-          key={p.title}
-          href="#"
+          key={p.title + i}
+          href={p.href ?? "#"}
           className={`group relative overflow-hidden rounded-[28px] border border-border bg-card ${
             i % 3 === 0 ? "md:col-span-2" : ""
           }`}
         >
-          <div
-            className="aspect-[16/10] w-full transition-transform duration-700 group-hover:scale-[1.03]"
-            style={{ background: p.gradient }}
-          >
-            <div className="h-full w-full bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_50%)]" />
+          <div className="aspect-[16/10] w-full overflow-hidden">
+            {p.image ? (
+              <img
+                src={p.image}
+                alt={p.title}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+            ) : (
+              <div
+                className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
+                style={{ background: p.gradient ?? "var(--gradient-brand)" }}
+              />
+            )}
           </div>
           <div className="flex items-center justify-between gap-4 p-6">
             <div className="min-w-0">
@@ -86,89 +88,6 @@ export function ProjectsGrid({ limit }: { limit?: number }) {
         </a>
       ))}
     </div>
-  );
-}
-
-export function PortfolioPreview() {
-  return (
-    <Section className="bg-surface/60 !max-w-none">
-      <div className="container-x !px-0">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-          <div className="max-w-2xl">
-            <Eyebrow>Selected work</Eyebrow>
-            <h2
-              className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Crafted with <span className="text-gradient">obsessive care</span>.
-            </h2>
-          </div>
-          <Link to="/portfolio" className="btn-ghost">
-            All work <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-        <div className="mt-12">
-          <ProjectsGrid limit={3} />
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-export function AboutPreview() {
-  return (
-    <Section>
-      <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div>
-          <Eyebrow>About</Eyebrow>
-          <h2
-            className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Led by <span className="text-gradient">Gaurav Bharti</span>.
-          </h2>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-            A decade of designing and shipping premium digital experiences for brands that
-            care about detail. NurpurVasi Digitals is a small studio with a big standard:
-            beautiful, fast, and quietly powerful work.
-          </p>
-          <div className="mt-8 grid grid-cols-3 gap-6">
-            {[
-              { k: "10+", v: "Years crafting" },
-              { k: "80+", v: "Projects shipped" },
-              { k: "24", v: "Countries reached" },
-            ].map((s) => (
-              <div key={s.v}>
-                <p
-                  className="text-3xl font-semibold text-gradient"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {s.k}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">{s.v}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8">
-            <Link to="/about" className="btn-ghost">
-              Read the story <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div
-            className="aspect-square w-full rounded-[32px]"
-            style={{ background: "var(--gradient-brand)" }}
-          />
-          <div className="glass absolute -bottom-6 left-6 right-6 rounded-2xl p-5">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Founder</p>
-            <p className="mt-1 text-base font-semibold">Gaurav Bharti</p>
-            <p className="text-sm text-muted-foreground">Designer · Developer · Strategist</p>
-          </div>
-        </div>
-      </div>
-    </Section>
   );
 }
 

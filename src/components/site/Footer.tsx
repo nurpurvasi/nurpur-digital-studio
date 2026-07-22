@@ -1,10 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, Youtube } from "lucide-react";
+import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, Youtube, Plus } from "lucide-react";
+import { siteContent } from "@/content/site";
 
 export function Footer() {
+  const { email, location } = siteContent.contact;
+  const { instagram, facebook, youtube, email: emailLink } = siteContent.socials;
+
+  const socials = [
+    { Icon: Instagram, label: "Instagram", href: instagram },
+    { Icon: Facebook, label: "Facebook", href: facebook },
+    { Icon: Youtube, label: "YouTube", href: youtube },
+    { Icon: Mail, label: "Email", href: emailLink || (email ? `mailto:${email}` : "") },
+  ];
+
   return (
     <footer className="relative overflow-hidden border-t border-border/60 bg-surface/60">
-      {/* Ambient glows */}
       <div
         className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full opacity-50 blur-[120px]"
         style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--royal) 25%, transparent), transparent 60%)" }}
@@ -15,7 +25,6 @@ export function Footer() {
       />
 
       <div className="container-x relative py-20">
-        {/* Newsletter / CTA strip */}
         <div className="grid gap-8 rounded-[28px] border border-border bg-white/70 p-8 backdrop-blur-xl sm:p-10 md:grid-cols-[1.3fr_1fr] md:items-center">
           <div>
             <p className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">Studio letters</p>
@@ -47,7 +56,6 @@ export function Footer() {
           </form>
         </div>
 
-        {/* Main grid */}
         <div className="mt-16 grid gap-12 md:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link to="/" className="flex items-center gap-2.5">
@@ -55,9 +63,9 @@ export function Footer() {
                 className="grid h-10 w-10 place-items-center rounded-2xl text-sm font-bold text-white"
                 style={{ background: "var(--gradient-brand)" }}
               >
-                N
+                {siteContent.brand.initial}
               </span>
-              <span className="text-base font-semibold tracking-tight">NurpurVasi Digitals</span>
+              <span className="text-base font-semibold tracking-tight">{siteContent.brand.name}</span>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
               A premium digital studio crafting websites, brands and products for ambitious teams
@@ -66,11 +74,11 @@ export function Footer() {
             <div className="mt-6 space-y-2 text-sm text-muted-foreground">
               <p className="flex items-center gap-2">
                 <Mail className="h-3.5 w-3.5" style={{ color: "var(--royal)" }} />
-                hello@nurpurvasidigitals.com
+                {email || <span className="inline-flex items-center gap-1"><Plus className="h-3 w-3" />Add Email</span>}
               </p>
               <p className="flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5" style={{ color: "var(--royal)" }} />
-                India · Working worldwide
+                {location || <span className="inline-flex items-center gap-1"><Plus className="h-3 w-3" />Add Address</span>}
               </p>
             </div>
           </div>
@@ -97,17 +105,12 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold">Follow</p>
             <div className="mt-5 flex flex-wrap gap-2.5">
-              {[
-                { Icon: Instagram, label: "Instagram" },
-                { Icon: Facebook, label: "Facebook" },
-                { Icon: Youtube, label: "YouTube" },
-                { Icon: Mail, label: "Email" },
-              ].map(({ Icon, label }) => (
+              {socials.map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
-                  aria-label={label}
-                  className="group relative grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-border bg-white transition-all duration-500 hover:-translate-y-0.5 hover:border-transparent hover:text-white"
+                  href={href || "#"}
+                  aria-label={href ? label : `Add ${label} link`}
+                  className={`group relative grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border ${href ? "border-border bg-white" : "border-dashed border-border/70 bg-white/60"} transition-all duration-500 hover:-translate-y-0.5 hover:border-transparent hover:text-white`}
                 >
                   <span
                     className="absolute inset-0 -z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -118,12 +121,11 @@ export function Footer() {
               ))}
             </div>
             <p className="mt-6 text-xs text-muted-foreground">
-              @nurpurvasi across every platform.
+              {socials.every((s) => !s.href) ? "Add social handles in site.ts" : "Follow the studio across platforms."}
             </p>
           </div>
         </div>
 
-        {/* Wordmark */}
         <div className="mt-16 select-none overflow-hidden">
           <p
             className="text-[16vw] leading-none tracking-tight text-transparent sm:text-[13vw]"
@@ -132,15 +134,15 @@ export function Footer() {
               WebkitTextStroke: "1px color-mix(in oklab, var(--navy) 20%, transparent)",
             }}
           >
-            NurpurVasi.
+            {siteContent.brand.name.split(" ")[0]}.
           </p>
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} NurpurVasi Digitals. Crafted by Gaurav Bharti.</p>
+          <p>© {new Date().getFullYear()} {siteContent.brand.name}. All rights reserved.</p>
           <p className="flex items-center gap-2">
             <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
-            Made with care · Premium digital studio
+            Premium digital studio
           </p>
         </div>
       </div>

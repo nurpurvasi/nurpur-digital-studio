@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Plus, Send } from "lucide-react";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
+import { siteContent } from "@/content/site";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -43,15 +44,22 @@ function ContactPage() {
 
             <ul className="mt-10 space-y-5">
               {[
-                { Icon: Mail, label: "hello@nurpurvasidigitals.com" },
-                { Icon: Phone, label: "+91 00000 00000" },
-                { Icon: MapPin, label: "India · Working worldwide" },
-              ].map(({ Icon, label }) => (
-                <li key={label} className="flex items-center gap-4">
+                { Icon: Mail, label: siteContent.contact.email, placeholder: "Add Email" },
+                { Icon: Phone, label: siteContent.contact.phoneDisplay || siteContent.contact.phone, placeholder: "Add Phone Number" },
+                { Icon: MapPin, label: siteContent.contact.location, placeholder: "Add Address" },
+              ].map(({ Icon, label, placeholder }) => (
+                <li key={placeholder} className="flex items-center gap-4">
                   <span className="grid h-11 w-11 place-items-center rounded-2xl border border-border bg-background">
                     <Icon className="h-4 w-4" />
                   </span>
-                  <span className="text-sm">{label}</span>
+                  {label ? (
+                    <span className="text-sm">{label}</span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Plus className="h-3.5 w-3.5" style={{ color: "var(--royal)" }} />
+                      {placeholder}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
