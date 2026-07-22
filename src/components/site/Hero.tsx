@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles, Play } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden">
+    <section className="relative -mt-24 min-h-[100svh] w-full overflow-hidden">
       {/* Layered premium gradient backdrop */}
       <div
         className="absolute inset-0 -z-20"
