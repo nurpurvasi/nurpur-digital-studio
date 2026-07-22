@@ -14,6 +14,7 @@ import {
   Minus,
 } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
+import { Reveal } from "./Reveal";
 import { projects } from "./data";
 
 /* ---------------- Stats ---------------- */
@@ -124,40 +125,48 @@ export function ServicesSection() {
       </div>
 
       <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map((s) => (
-          <article
-            key={s.title}
-            className="group relative overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-transparent"
-            style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.6) inset" }}
-          >
-            <div
-              className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{
-                background: "radial-gradient(400px 200px at 50% 0%, color-mix(in oklab, var(--royal) 10%, transparent), transparent 70%)",
-              }}
-            />
-            <div
-              className="absolute inset-x-0 top-0 h-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "var(--gradient-brand)" }}
-            />
-            <div className="relative flex items-start justify-between">
+        {services.map((s, i) => (
+          <Reveal key={s.title} delay={i * 80}>
+            <article
+              className="group relative h-full overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
+              style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.6) inset" }}
+            >
               <div
-                className="grid h-14 w-14 place-items-center rounded-2xl text-white transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
-                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-elegant)" }}
-              >
-                <s.icon className="h-6 w-6" />
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                  background:
+                    "radial-gradient(400px 200px at 50% 0%, color-mix(in oklab, var(--royal) 10%, transparent), transparent 70%)",
+                }}
+              />
+              <div
+                className="absolute inset-x-0 top-0 h-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{ background: "var(--gradient-brand)" }}
+              />
+              <div className="relative flex items-start justify-between">
+                <div
+                  className="grid h-14 w-14 place-items-center rounded-2xl text-white transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-elegant)" }}
+                >
+                  <s.icon className="h-6 w-6" />
+                </div>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  {s.tag}
+                </span>
               </div>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                {s.tag}
-              </span>
-            </div>
-            <h3 className="relative mt-7 text-xl font-semibold">{s.title}</h3>
-            <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-            <div className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-              Learn more
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </div>
-          </article>
+              <h3 className="relative mt-7 text-xl font-semibold">{s.title}</h3>
+              <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+              <div className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
+                <span className="relative">
+                  Learn more
+                  <span
+                    className="absolute -bottom-0.5 left-0 h-px w-0 transition-all duration-500 group-hover:w-full"
+                    style={{ background: "var(--gradient-brand)" }}
+                  />
+                </span>
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
+            </article>
+          </Reveal>
         ))}
       </div>
     </Section>
@@ -189,29 +198,61 @@ export function FeaturedPortfolio() {
           {projects.slice(0, 4).map((p, i) => {
             const span = i === 0 ? "md:col-span-4" : i === 1 ? "md:col-span-2" : i === 2 ? "md:col-span-2" : "md:col-span-4";
             return (
-              <a
-                key={p.title}
-                href="#"
-                className={`group relative overflow-hidden rounded-[28px] border border-border bg-card ${span}`}
-              >
-                <div
-                  className="aspect-[16/10] w-full transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
-                  style={{ background: p.gradient }}
+              <Reveal key={p.title} delay={i * 100} className={span}>
+                <a
+                  href="#"
+                  className="group relative block overflow-hidden rounded-[28px] border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_35%,transparent)]"
                 >
-                  <div className="h-full w-full bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.3),transparent_55%)]" />
-                </div>
-                <div className="flex items-center justify-between gap-4 bg-white p-6">
-                  <div className="min-w-0">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                      {p.tag} · {p.year}
-                    </p>
-                    <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    <div
+                      className="absolute inset-0 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
+                      style={{ background: p.gradient }}
+                    />
+                    {/* Faux browser chrome */}
+                    <div className="absolute inset-x-4 top-4 flex items-center gap-1.5 rounded-lg bg-white/20 px-3 py-1.5 backdrop-blur-sm">
+                      <span className="h-2 w-2 rounded-full bg-white/70" />
+                      <span className="h-2 w-2 rounded-full bg-white/50" />
+                      <span className="h-2 w-2 rounded-full bg-white/40" />
+                      <span className="ml-3 h-1.5 w-24 rounded-full bg-white/30" />
+                    </div>
+                    {/* Placeholder UI blocks */}
+                    <div className="absolute inset-x-6 bottom-6 top-14 rounded-xl bg-white/15 p-4 backdrop-blur-[2px]">
+                      <div className="h-2.5 w-24 rounded-full bg-white/40" />
+                      <div className="mt-2 h-2 w-40 rounded-full bg-white/25" />
+                      <div className="mt-6 grid grid-cols-3 gap-2">
+                        <div className="h-10 rounded-lg bg-white/25" />
+                        <div className="h-10 rounded-lg bg-white/20" />
+                        <div className="h-10 rounded-lg bg-white/15" />
+                      </div>
+                    </div>
+                    {/* Highlight sweep */}
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                      style={{
+                        background:
+                          "radial-gradient(600px 200px at 20% 0%, rgba(255,255,255,0.35), transparent 60%)",
+                      }}
+                    />
                   </div>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-background transition-all group-hover:bg-foreground group-hover:text-background">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </a>
+                  <div className="flex items-center justify-between gap-4 bg-white p-6">
+                    <div className="min-w-0">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                        {p.tag} · {p.year}
+                      </p>
+                      <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
+                    </div>
+                    <span
+                      className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-border bg-background transition-all duration-500 group-hover:border-transparent group-hover:text-white"
+                    >
+                      <span
+                        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        style={{ background: "var(--gradient-brand)" }}
+                      />
+                      <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </div>
+                </a>
+              </Reveal>
             );
           })}
         </div>
@@ -313,39 +354,55 @@ export function TestimonialsSection() {
 
       <div className="mt-14 grid gap-6 md:grid-cols-3">
         {testimonials.map((t, i) => (
-          <figure
-            key={t.name}
-            className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1"
-            style={{
-              boxShadow: "0 1px 0 rgba(255,255,255,0.7) inset, 0 20px 40px -30px color-mix(in oklab, var(--navy) 25%, transparent)",
-              animationDelay: `${i * 0.1}s`,
-            }}
-          >
-            <div
-              className="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-20 blur-2xl transition-opacity group-hover:opacity-40"
-              style={{ background: "var(--gradient-brand)" }}
-            />
-            <div className="flex gap-1 text-[color:var(--royal)]">
-              {Array.from({ length: 5 }).map((_, k) => (
-                <Star key={k} className="h-4 w-4 fill-current" />
-              ))}
-            </div>
-            <blockquote className="relative mt-5 text-[15px] leading-relaxed text-foreground/90">
-              "{t.quote}"
-            </blockquote>
-            <figcaption className="relative mt-7 flex items-center gap-3 border-t border-border pt-5">
-              <span
-                className="grid h-11 w-11 place-items-center rounded-full text-sm font-semibold text-white"
+          <Reveal key={t.name} delay={i * 120}>
+            <figure
+              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
+              style={{
+                boxShadow:
+                  "0 1px 0 rgba(255,255,255,0.7) inset, 0 20px 40px -30px color-mix(in oklab, var(--navy) 25%, transparent)",
+              }}
+            >
+              <div
+                className="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-20 blur-2xl transition-opacity duration-700 group-hover:opacity-50"
                 style={{ background: "var(--gradient-brand)" }}
+              />
+              {/* Big quote mark */}
+              <span
+                aria-hidden
+                className="absolute right-6 top-4 select-none text-[80px] leading-none opacity-10"
+                style={{ fontFamily: "var(--font-display)", color: "var(--royal)" }}
               >
-                {t.initials}
+                &ldquo;
               </span>
-              <div>
-                <p className="text-sm font-semibold">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
+              <div className="flex gap-1 text-[color:var(--royal)]">
+                {Array.from({ length: 5 }).map((_, k) => (
+                  <Star key={k} className="h-4 w-4 fill-current" />
+                ))}
               </div>
-            </figcaption>
-          </figure>
+              <blockquote className="relative mt-5 text-[15px] leading-relaxed text-foreground/90">
+                "{t.quote}"
+              </blockquote>
+              <figcaption className="relative mt-7 flex items-center gap-4 border-t border-border pt-5">
+                <span className="relative">
+                  <span
+                    aria-hidden
+                    className="absolute -inset-[3px] rounded-full opacity-70 blur-[2px]"
+                    style={{ background: "var(--gradient-brand)" }}
+                  />
+                  <span
+                    className="relative grid h-12 w-12 place-items-center rounded-full text-sm font-semibold text-white ring-2 ring-white"
+                    style={{ background: "var(--gradient-brand)" }}
+                  >
+                    {t.initials}
+                  </span>
+                </span>
+                <div>
+                  <p className="text-sm font-semibold">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.role}</p>
+                </div>
+              </figcaption>
+            </figure>
+          </Reveal>
         ))}
       </div>
     </Section>
