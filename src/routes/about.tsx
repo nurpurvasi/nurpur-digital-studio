@@ -55,27 +55,34 @@ function AboutPage() {
             </div>
 
             <div className="mt-10 grid gap-3 sm:grid-cols-2">
-              {stats.map(({ Icon, k, l }, i) => (
-                <Reveal key={l} delay={i * 80} variant="up">
-                  <div className="group flex items-center gap-4 rounded-2xl border border-border bg-white/70 p-4 backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-25px_color-mix(in_oklab,var(--royal)_35%,transparent)]">
-                    <span
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white transition-transform duration-500 group-hover:scale-110"
-                      style={{ background: "var(--gradient-brand)" }}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0">
-                      <p
-                        className="text-2xl font-normal tracking-tight"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        {k}
-                      </p>
-                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{l}</p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+              {siteContent.stats.length === 0
+                ? Array.from({ length: 4 }).map((_, i) => (
+                    <Reveal key={i} delay={i * 80} variant="up">
+                      <AddPlaceholder label="Add Statistic" minHeight="88px" />
+                    </Reveal>
+                  ))
+                : siteContent.stats.map((s, i) => (
+                    <Reveal key={s.label} delay={i * 80} variant="up">
+                      <div className="group flex items-center gap-4 rounded-2xl border border-border bg-white/70 p-4 backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-25px_color-mix(in_oklab,var(--royal)_35%,transparent)]">
+                        <span
+                          className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white text-sm font-semibold"
+                          style={{ background: "var(--gradient-brand)", fontFamily: "var(--font-display)" }}
+                        >
+                          {(s.suffix ?? "").slice(0, 1) || "·"}
+                        </span>
+                        <div className="min-w-0">
+                          <p
+                            className="text-2xl font-normal tracking-tight"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            {s.value}
+                            {s.suffix ?? ""}
+                          </p>
+                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{s.label}</p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  ))}
             </div>
           </Reveal>
 
