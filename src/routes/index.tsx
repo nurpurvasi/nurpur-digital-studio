@@ -10,6 +10,7 @@ import {
   FAQSection,
   PremiumCTA,
 } from "@/components/site/HomeSections";
+import { PremiumContactSection } from "@/components/site/PremiumContact";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,6 +44,7 @@ function Index() {
       <ProcessSection />
       <TestimonialsSection />
       <FAQSection />
+      <PremiumContactSection />
       <PremiumCTA />
     </SiteLayout>
   );
