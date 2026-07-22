@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, MapPin, Phone, Plus, Send } from "lucide-react";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -25,6 +25,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const siteContent = useSiteContent();
   const [sent, setSent] = useState(false);
   return (
     <SiteLayout>

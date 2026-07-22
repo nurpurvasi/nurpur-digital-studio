@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export function LoadingScreen() {
+  const siteContent = useSiteContent();
   const [hidden, setHidden] = useState(false);
   const [gone, setGone] = useState(false);
 

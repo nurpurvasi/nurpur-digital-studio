@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
 import { services } from "./data";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 import { AddPlaceholder } from "./AddPlaceholder";
 
 export function ServicesGrid({ limit }: { limit?: number }) {
@@ -33,6 +33,7 @@ export function ServicesGrid({ limit }: { limit?: number }) {
 }
 
 export function ProjectsGrid({ limit }: { limit?: number }) {
+  const siteContent = useSiteContent();
   const all = siteContent.portfolio;
   const items = limit ? all.slice(0, limit) : all;
 
