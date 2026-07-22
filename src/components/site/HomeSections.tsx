@@ -242,11 +242,10 @@ export function FeaturedPortfolio() {
                       <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
                     </div>
                     <span
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-background transition-all duration-500 group-hover:border-transparent group-hover:text-white"
-                      style={{ backgroundImage: "linear-gradient(var(--background), var(--background))" }}
+                      className="relative grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-border bg-background transition-all duration-500 group-hover:border-transparent group-hover:text-white"
                     >
                       <span
-                        className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         style={{ background: "var(--gradient-brand)" }}
                       />
                       <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
