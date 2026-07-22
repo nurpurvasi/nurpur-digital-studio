@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LoadingScreen } from "@/components/site/LoadingScreen";
+import { FloatingActions } from "@/components/site/FloatingActions";
+import { PageTransition } from "@/components/site/PageTransition";
 
 function NotFoundComponent() {
   return (
