@@ -28,7 +28,6 @@ function ServicesPage() {
   return (
     <SiteLayout>
       <Section className="pt-8 sm:pt-12">
-        <div className="max-w-3xl">
         <Reveal variant="up">
           <div className="max-w-3xl">
             <Eyebrow>Services</Eyebrow>
