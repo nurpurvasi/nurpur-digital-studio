@@ -29,21 +29,24 @@ function ServicesPage() {
     <SiteLayout>
       <Section className="pt-8 sm:pt-12">
         <div className="max-w-3xl">
-          <Eyebrow>Services</Eyebrow>
-          <h1
-            className="mt-5 text-5xl font-semibold tracking-tight sm:text-7xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Everything your brand needs, <span className="text-gradient">nothing it doesn't</span>.
-          </h1>
-          <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
-            A tight, senior team covering the full spectrum from strategy and design to
-            engineering, SEO and long-term partnership.
-          </p>
-        </div>
-        <div className="mt-16">
+        <Reveal variant="up">
+          <div className="max-w-3xl">
+            <Eyebrow>Services</Eyebrow>
+            <h1
+              className="mt-5 text-5xl font-normal tracking-tight sm:text-7xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Everything your brand needs, <span className="text-gradient italic">nothing it doesn't</span>.
+            </h1>
+            <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
+              A tight, senior team covering the full spectrum from strategy and design to
+              engineering, SEO and long-term partnership.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal variant="up" delay={120} className="mt-16 block">
           <ServicesGrid />
-        </div>
+        </Reveal>
       </Section>
       <ContactCTA />
     </SiteLayout>
