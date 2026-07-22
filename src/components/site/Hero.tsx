@@ -1,7 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function Hero() {
+  const [y, setY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
     <section className="relative -mt-24 min-h-[100svh] w-full overflow-hidden">
       {/* Layered premium gradient backdrop */}
@@ -16,12 +24,18 @@ export function Hero() {
       <div className="absolute inset-0 -z-10 opacity-[0.5] [background-image:radial-gradient(circle_at_1px_1px,rgba(30,40,90,0.07)_1px,transparent_0)] [background-size:26px_26px]" />
       {/* blurred orbs */}
       <div
-        className="pointer-events-none absolute -left-40 top-20 h-[520px] w-[520px] rounded-full blur-[120px] opacity-60 -z-10"
-        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--royal) 45%, transparent), transparent 60%)" }}
+        className="pointer-events-none absolute -left-40 top-20 h-[520px] w-[520px] rounded-full blur-[120px] opacity-60 -z-10 will-change-transform"
+        style={{
+          background: "radial-gradient(circle, color-mix(in oklab, var(--royal) 45%, transparent), transparent 60%)",
+          transform: `translate3d(0, ${y * 0.15}px, 0)`,
+        }}
       />
       <div
-        className="pointer-events-none absolute -right-40 top-40 h-[520px] w-[520px] rounded-full blur-[120px] opacity-60 -z-10"
-        style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--purple) 45%, transparent), transparent 60%)" }}
+        className="pointer-events-none absolute -right-40 top-40 h-[520px] w-[520px] rounded-full blur-[120px] opacity-60 -z-10 will-change-transform"
+        style={{
+          background: "radial-gradient(circle, color-mix(in oklab, var(--purple) 45%, transparent), transparent 60%)",
+          transform: `translate3d(0, ${y * -0.12}px, 0)`,
+        }}
       />
 
       {/* Floating glass cards */}
@@ -31,7 +45,7 @@ export function Hero() {
       <FloatingCard className="left-[9%] bottom-[20%] hidden lg:flex" delay="4.2s" title="Analytics" sub="Data-driven" hue="royal" />
 
       <div className="container-x relative flex min-h-[100svh] flex-col items-center justify-center pt-28 pb-16 text-center">
-        <div className="animate-fade-up">
+        <div className="animate-fade-up" style={{ transform: `translate3d(0, ${y * -0.08}px, 0)` }}>
           <span className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-white/70 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-xl">
             <Sparkles className="h-3.5 w-3.5" style={{ color: "var(--royal)" }} />
             Premium Digital Studio · Est. 2015
