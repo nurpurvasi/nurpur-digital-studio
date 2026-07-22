@@ -16,7 +16,7 @@ import {
 import { Eyebrow, Section } from "./Layout";
 import { Reveal } from "./Reveal";
 import { AddPlaceholder } from "./AddPlaceholder";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 /* ---------------- Stats ---------------- */
 
@@ -51,6 +51,7 @@ export function StatsSection() {
     return () => io.disconnect();
   }, []);
 
+  const siteContent = useSiteContent();
   const stats = siteContent.stats;
   const showPlaceholders = stats.length === 0;
   const placeholderCount = 4;
@@ -184,6 +185,7 @@ export function ServicesSection() {
 /* ---------------- Featured Portfolio ---------------- */
 
 export function FeaturedPortfolio() {
+  const siteContent = useSiteContent();
   const projects = siteContent.portfolio.slice(0, 4);
   const showPlaceholders = projects.length === 0;
   const spanFor = (i: number) =>
@@ -314,6 +316,7 @@ export function ProcessSection() {
 /* ---------------- Testimonials ---------------- */
 
 export function TestimonialsSection() {
+  const siteContent = useSiteContent();
   const testimonials = siteContent.testimonials;
   const showPlaceholders = testimonials.length === 0;
 
@@ -412,6 +415,7 @@ export function TestimonialsSection() {
 /* ---------------- FAQ ---------------- */
 
 export function FAQSection() {
+  const siteContent = useSiteContent();
   const faqs = siteContent.faqs;
   const [open, setOpen] = useState<number | null>(0);
 

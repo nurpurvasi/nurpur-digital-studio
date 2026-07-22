@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Phone, MessageCircle, ArrowUp } from "lucide-react";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export function FloatingActions() {
+  const siteContent = useSiteContent();
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {

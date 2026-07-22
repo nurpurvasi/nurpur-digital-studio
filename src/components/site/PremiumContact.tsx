@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Mail, MapPin, Phone, Instagram, Facebook, Youtube, Plus } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
 import { Reveal } from "./Reveal";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export function PremiumContactSection() {
+  const siteContent = useSiteContent();
   const { email, phoneDisplay, phone, location, responseTime } = siteContent.contact;
   const { instagram, facebook, youtube, email: emailLink } = siteContent.socials;
 

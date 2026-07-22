@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Play, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export function Hero() {
+  const siteContent = useSiteContent();
   const [y, setY] = useState(0);
   useEffect(() => {
     const onScroll = () => setY(window.scrollY);

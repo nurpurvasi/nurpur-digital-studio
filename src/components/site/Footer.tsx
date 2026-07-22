@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, Youtube, Plus } from "lucide-react";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export function Footer() {
+  const siteContent = useSiteContent();
   const { email, location } = siteContent.contact;
   const { instagram, facebook, youtube, email: emailLink } = siteContent.socials;
 

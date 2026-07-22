@@ -3,7 +3,7 @@ import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { ContactCTA } from "@/components/site/Sections";
 import { Reveal } from "@/components/site/Reveal";
 import { AddPlaceholder } from "@/components/site/AddPlaceholder";
-import { siteContent } from "@/content/site";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/about")({
 });
 
 function AboutPage() {
+  const siteContent = useSiteContent();
   return (
     <SiteLayout>
       <Section className="pt-8 sm:pt-12">
