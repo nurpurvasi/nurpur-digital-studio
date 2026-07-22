@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { ContactCTA, ServicesGrid } from "@/components/site/Sections";
+import { Reveal } from "@/components/site/Reveal";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
