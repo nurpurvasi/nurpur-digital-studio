@@ -15,6 +15,8 @@ import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { PageTransition } from "@/components/site/PageTransition";
 import { SiteContentProvider } from "@/content/SiteContentContext";
+import { AdminModeProvider } from "@/content/AdminModeContext";
+import { AdminModeToggle } from "@/components/site/inline-editor/AdminModeToggle";
 import { supabase } from "@/integrations/supabase/client";
 
 function NotFoundComponent() {
@@ -145,11 +147,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SiteContentProvider>
-        <LoadingScreen />
-        <PageTransition>
-          <Outlet />
-        </PageTransition>
-        <FloatingActions />
+        <AdminModeProvider>
+          <LoadingScreen />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
+          <FloatingActions />
+          <AdminModeToggle />
+        </AdminModeProvider>
       </SiteContentProvider>
     </QueryClientProvider>
   );
