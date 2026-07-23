@@ -694,6 +694,126 @@ function FooterEditor({ content, patch }: EditorProps) {
   );
 }
 
+/* ---------------- Website Settings (all-in-one) ---------------- */
+
+function SettingsEditor({ content, patch }: EditorProps) {
+  const c = content;
+  const setContact = (u: Partial<SiteContent["contact"]>) =>
+    patch((p) => ({ ...p, contact: { ...p.contact, ...u } }));
+  const setSocials = (u: Partial<SiteContent["socials"]>) =>
+    patch((p) => ({ ...p, socials: { ...p.socials, ...u } }));
+  const setBrand = (u: Partial<SiteContent["brand"]>) =>
+    patch((p) => ({ ...p, brand: { ...p.brand, ...u } }));
+  const setFooter = (u: Partial<SiteContent["footer"]>) =>
+    patch((p) => ({ ...p, footer: { ...p.footer, ...u } }));
+  const setSeo = (u: Partial<SiteContent["seo"]>) =>
+    patch((p) => ({ ...p, seo: { ...p.seo, ...u } }));
+
+  return (
+    <div className="space-y-10">
+      <SectionHeader
+        title="Website Settings"
+        desc="One place to manage business info, contact, socials, legal links and social preview. Autosaves as you type."
+      />
+
+      <section>
+        <h3 className="mb-4 text-sm font-semibold">Business</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Business name">
+            <TextInput value={c.brand.name} onChange={(e) => setBrand({ name: e.target.value })} />
+          </Field>
+          <Field label="Owner name">
+            <TextInput value={c.contact.ownerName} onChange={(e) => setContact({ ownerName: e.target.value })} placeholder="Gaurav Bharti" />
+          </Field>
+          <div className="md:col-span-2">
+            <Field label="Tagline">
+              <TextInput value={c.brand.tagline} onChange={(e) => setBrand({ tagline: e.target.value })} />
+            </Field>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="mb-4 text-sm font-semibold">Contact</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Phone number">
+            <TextInput value={c.contact.phoneDisplay} onChange={(e) => setContact({ phoneDisplay: e.target.value, phone: e.target.value.replace(/[^\d+]/g, "") })} placeholder="+91 99999 99999" />
+          </Field>
+          <Field label="WhatsApp number">
+            <TextInput value={c.contact.whatsapp} onChange={(e) => setContact({ whatsapp: e.target.value })} placeholder="+919999999999" />
+          </Field>
+          <Field label="Email">
+            <TextInput type="email" value={c.contact.email} onChange={(e) => setContact({ email: e.target.value })} placeholder="hello@nurpurvasi.com" />
+          </Field>
+          <Field label="Working hours">
+            <TextInput value={c.contact.workingHours} onChange={(e) => setContact({ workingHours: e.target.value })} placeholder="Mon – Fri · 10:00 – 19:00 IST" />
+          </Field>
+          <div className="md:col-span-2">
+            <Field label="Office address">
+              <TextArea rows={2} value={c.contact.location} onChange={(e) => setContact({ location: e.target.value })} />
+            </Field>
+          </div>
+          <div className="md:col-span-2">
+            <Field label="Google Maps URL" hint="Public map link — used for the 'Get directions' button">
+              <TextInput value={c.contact.mapsUrl} onChange={(e) => setContact({ mapsUrl: e.target.value })} placeholder="https://maps.google.com/?q=…" />
+            </Field>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="mb-4 text-sm font-semibold">Social profiles</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Instagram">
+            <TextInput value={c.socials.instagram} onChange={(e) => setSocials({ instagram: e.target.value })} placeholder="https://instagram.com/…" />
+          </Field>
+          <Field label="Facebook">
+            <TextInput value={c.socials.facebook} onChange={(e) => setSocials({ facebook: e.target.value })} placeholder="https://facebook.com/…" />
+          </Field>
+          <Field label="YouTube">
+            <TextInput value={c.socials.youtube} onChange={(e) => setSocials({ youtube: e.target.value })} placeholder="https://youtube.com/@…" />
+          </Field>
+          <Field label="LinkedIn">
+            <TextInput value={c.socials.linkedin} onChange={(e) => setSocials({ linkedin: e.target.value })} placeholder="https://linkedin.com/in/…" />
+          </Field>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="mb-4 text-sm font-semibold">Legal & footer</h3>
+        <div className="grid gap-5 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <Field label="Copyright text" hint="Use {year} for the current year">
+              <TextInput value={c.footer.copyright} onChange={(e) => setFooter({ copyright: e.target.value })} />
+            </Field>
+          </div>
+          <Field label="Privacy policy link">
+            <TextInput value={c.footer.privacyUrl} onChange={(e) => setFooter({ privacyUrl: e.target.value })} placeholder="/privacy" />
+          </Field>
+          <Field label="Terms link">
+            <TextInput value={c.footer.termsUrl} onChange={(e) => setFooter({ termsUrl: e.target.value })} placeholder="/terms" />
+          </Field>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="mb-4 text-sm font-semibold">Social preview (SEO)</h3>
+        <div className="grid gap-5">
+          <Field label="Meta title" hint="Under 60 characters">
+            <TextInput value={c.seo.title} onChange={(e) => setSeo({ title: e.target.value })} />
+          </Field>
+          <Field label="Meta description" hint="Under 160 characters">
+            <TextArea rows={3} value={c.seo.description} onChange={(e) => setSeo({ description: e.target.value })} />
+          </Field>
+          <Field label="Open Graph image" hint="1200×630 recommended">
+            <MediaUploader value={c.seo.ogImage} onChange={(url) => setSeo({ ogImage: url })} />
+          </Field>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 /* ---------------- Guards ---------------- */
 
 function FullScreenLoader({ label }: { label: string }) {
