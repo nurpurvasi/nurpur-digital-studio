@@ -37,8 +37,23 @@ export type ServiceItem = {
   tag?: string;
 };
 
+export type ThemeSettings = {
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  buttonStyle: "pill" | "rounded" | "square";
+  borderRadius: number; // in rem, applied to --radius
+  mode: "light" | "dark";
+  browserTitle: string;
+  heroBackgroundImage: string;
+  heroBackgroundVideo: string;
+  footerLogo: string;
+  loadingLogo: string;
+};
+
 export type SiteContent = {
   brand: { name: string; initial: string; logo: string; tagline: string };
+  theme: ThemeSettings;
   seo: {
     title: string;
     description: string;
@@ -83,6 +98,21 @@ export type SiteContent = {
   faqs: FAQ[];
   footer: { copyright: string; tagline: string };
 };
+
+export const defaultTheme: ThemeSettings = {
+  primaryColor: "#1a2547",
+  secondaryColor: "#2f4bd6",
+  accentColor: "#8b5cf6",
+  buttonStyle: "pill",
+  borderRadius: 1,
+  mode: "light",
+  browserTitle: "NurpurVasi Digitals — Premium Digital Studio",
+  heroBackgroundImage: "",
+  heroBackgroundVideo: "",
+  footerLogo: "",
+  loadingLogo: "",
+};
+
 
 export const defaultSiteContent: SiteContent = {
   brand: {
