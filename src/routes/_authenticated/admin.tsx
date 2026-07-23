@@ -721,3 +721,252 @@ function NotAdmin({ onSignOut }: { onSignOut: () => void }) {
 function formatTime(d: Date) {
   return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
+
+/* ---------------- Branding & Theme ---------------- */
+
+function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <Field label={label}>
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={/^#[0-9a-fA-F]{6}$/.test(value) ? value : "#000000"}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-10 w-14 shrink-0 cursor-pointer rounded-xl border border-border bg-background"
+          aria-label={label}
+        />
+        <TextInput value={value} onChange={(e) => onChange(e.target.value)} placeholder="#1a2547" />
+      </div>
+    </Field>
+  );
+}
+
+function ThemeEditor({ content, patch }: EditorProps) {
+  const theme = content.theme ?? defaultTheme;
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const updateTheme = (u: Partial<ThemeSettings>) =>
+    patch((c) => ({ ...c, theme: { ...(c.theme ?? defaultTheme), ...u } }));
+
+  // Live preview: apply theme vars to the preview container only.
+  useEffect(() => {
+    if (previewRef.current) applyThemeToElement(previewRef.current, theme);
+  }, [theme]);
+
+  const btnRadiusMap = { pill: "9999px", rounded: "0.75rem", square: "0.25rem" } as const;
+
+  return (
+    <div>
+      <SectionHeader
+        title="Branding & Theme"
+        desc="Colors, radius, button style, logos and hero background. Live-updates the site on publish."
+        action={
+          <button
+            type="button"
+            onClick={() => {
+              if (confirm("Reset all theme settings to defaults?")) updateTheme({ ...defaultTheme });
+            }}
+            className="inline-flex items-center gap-1 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md"
+          >
+            <RotateCcw className="h-3 w-3" /> Reset to default
+          </button>
+        }
+      />
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+        {/* Controls */}
+        <div className="space-y-6">
+          <div>
+            <h3 className="mb-3 text-sm font-semibold">Identity</h3>
+            <div className="grid gap-5 md:grid-cols-2">
+              <Field label="Website name">
+                <TextInput
+                  value={content.brand.name}
+                  onChange={(e) => patch((c) => ({ ...c, brand: { ...c.brand, name: e.target.value } }))}
+                />
+              </Field>
+              <Field label="Browser title" hint="Shown in the browser tab">
+                <TextInput value={theme.browserTitle} onChange={(e) => updateTheme({ browserTitle: e.target.value })} />
+              </Field>
+              <Field label="Main logo">
+                <MediaUploader
+                  value={content.brand.logo}
+                  onChange={(url) => patch((c) => ({ ...c, brand: { ...c.brand, logo: url } }))}
+                />
+              </Field>
+              <Field label="Favicon" hint="Square, 32×32 or SVG">
+                <MediaUploader
+                  value={content.seo.favicon}
+                  onChange={(url) => patch((c) => ({ ...c, seo: { ...c.seo, favicon: url } }))}
+                />
+              </Field>
+              <Field label="Footer logo">
+                <MediaUploader value={theme.footerLogo} onChange={(url) => updateTheme({ footerLogo: url })} />
+              </Field>
+              <Field label="Loading screen logo">
+                <MediaUploader value={theme.loadingLogo} onChange={(url) => updateTheme({ loadingLogo: url })} />
+              </Field>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 text-sm font-semibold">Hero background</h3>
+            <div className="grid gap-5 md:grid-cols-2">
+              <Field label="Background image">
+                <MediaUploader
+                  value={theme.heroBackgroundImage}
+                  onChange={(url) => updateTheme({ heroBackgroundImage: url })}
+                  accept="image/*"
+                />
+              </Field>
+              <Field label="Background video" hint="MP4/WebM, muted autoplay">
+                <MediaUploader
+                  value={theme.heroBackgroundVideo}
+                  onChange={(url) => updateTheme({ heroBackgroundVideo: url })}
+                  accept="video/*"
+                />
+              </Field>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 text-sm font-semibold">Colors</h3>
+            <div className="grid gap-5 md:grid-cols-3">
+              <ColorField label="Primary" value={theme.primaryColor} onChange={(v) => updateTheme({ primaryColor: v })} />
+              <ColorField label="Secondary" value={theme.secondaryColor} onChange={(v) => updateTheme({ secondaryColor: v })} />
+              <ColorField label="Accent" value={theme.accentColor} onChange={(v) => updateTheme({ accentColor: v })} />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="mb-3 text-sm font-semibold">Shape & buttons</h3>
+            <div className="grid gap-5 md:grid-cols-3">
+              <Field label="Border radius" hint={`${theme.borderRadius.toFixed(2)} rem`}>
+                <input
+                  type="range"
+                  min={0}
+                  max={2}
+                  step={0.05}
+                  value={theme.borderRadius}
+                  onChange={(e) => updateTheme({ borderRadius: Number(e.target.value) })}
+                  className="w-full accent-[color:var(--royal)]"
+                />
+              </Field>
+              <Field label="Button style">
+                <select
+                  value={theme.buttonStyle}
+                  onChange={(e) => updateTheme({ buttonStyle: e.target.value as ThemeSettings["buttonStyle"] })}
+                  className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
+                >
+                  <option value="pill">Pill (rounded-full)</option>
+                  <option value="rounded">Rounded</option>
+                  <option value="square">Square</option>
+                </select>
+              </Field>
+              <Field label="Theme mode" hint="Dark mode is future-ready">
+                <select
+                  value={theme.mode}
+                  onChange={(e) => updateTheme({ mode: e.target.value as ThemeSettings["mode"] })}
+                  className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
+                >
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </Field>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Preview */}
+        <div className="lg:sticky lg:top-24 h-fit">
+          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <Eye className="h-3.5 w-3.5" /> Live preview
+          </div>
+          <div
+            ref={previewRef}
+            className="overflow-hidden rounded-3xl border border-border bg-white shadow-sm"
+          >
+            <div
+              className="relative p-6"
+              style={{
+                background: theme.heroBackgroundImage
+                  ? `linear-gradient(135deg, color-mix(in oklab, ${theme.primaryColor} 55%, transparent), transparent), url(${theme.heroBackgroundImage}) center/cover`
+                  : `linear-gradient(135deg, ${theme.primaryColor}, ${theme.secondaryColor} 55%, ${theme.accentColor})`,
+                color: "white",
+                minHeight: 200,
+              }}
+            >
+              <div className="flex items-center gap-2">
+                {theme.loadingLogo || content.brand.logo ? (
+                  <img src={theme.loadingLogo || content.brand.logo} alt="" className="h-8 w-8 rounded-lg object-cover" />
+                ) : (
+                  <span
+                    className="grid h-8 w-8 place-items-center rounded-lg text-xs font-semibold"
+                    style={{ background: "rgba(255,255,255,.2)" }}
+                  >
+                    {content.brand.initial}
+                  </span>
+                )}
+                <span className="text-sm font-semibold">{content.brand.name}</span>
+              </div>
+              <h4 className="mt-6 text-2xl font-semibold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
+                {content.hero.headline || "Your headline"}
+              </h4>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 text-xs font-medium"
+                  style={{
+                    background: `linear-gradient(135deg, ${theme.primaryColor}, ${theme.secondaryColor} 55%, ${theme.accentColor})`,
+                    color: "white",
+                    borderRadius: btnRadiusMap[theme.buttonStyle],
+                  }}
+                >
+                  Primary CTA
+                </button>
+                <button
+                  type="button"
+                  className="inline-flex items-center border px-4 py-2 text-xs font-medium"
+                  style={{
+                    borderColor: "rgba(255,255,255,.4)",
+                    color: "white",
+                    borderRadius: btnRadiusMap[theme.buttonStyle],
+                    background: "rgba(255,255,255,.1)",
+                  }}
+                >
+                  Secondary
+                </button>
+              </div>
+            </div>
+            <div className="p-5">
+              <div
+                className="rounded-2xl border p-4"
+                style={{ borderRadius: `${theme.borderRadius}rem`, borderColor: theme.secondaryColor + "33" }}
+              >
+                <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: theme.accentColor }}>
+                  Card sample
+                </div>
+                <div className="mt-1 text-sm font-medium" style={{ color: theme.primaryColor }}>
+                  Radius {theme.borderRadius.toFixed(2)}rem · {theme.buttonStyle}
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Preview updates instantly. Publish to apply to the live site.
+                </p>
+              </div>
+              {theme.footerLogo && (
+                <div className="mt-4 flex items-center gap-2 border-t border-border pt-3">
+                  <img src={theme.footerLogo} alt="Footer logo" className="h-6" />
+                  <span className="text-[10px] text-muted-foreground">Footer preview</span>
+                </div>
+              )}
+            </div>
+          </div>
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            Autosaved as draft. Click <strong>Publish</strong> to apply to visitors.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
