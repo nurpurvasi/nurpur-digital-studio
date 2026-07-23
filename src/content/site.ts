@@ -171,6 +171,8 @@ export const defaultSiteContent: SiteContent = {
   footer: {
     copyright: "© {year} NurpurVasi Digitals. All rights reserved.",
     tagline: "Premium digital studio",
+    privacyUrl: "",
+    termsUrl: "",
   },
 };
 
