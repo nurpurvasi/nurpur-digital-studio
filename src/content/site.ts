@@ -70,11 +70,15 @@ export type SiteContent = {
     location: string;
     responseTime: string;
     mapEmbed: string;
+    mapsUrl: string;
+    workingHours: string;
+    ownerName: string;
   };
   socials: {
     instagram: string;
     facebook: string;
     youtube: string;
+    linkedin: string;
     email: string;
   };
   hero: {
