@@ -143,8 +143,11 @@ export const defaultSiteContent: SiteContent = {
     location: "",
     responseTime: "Within 24 hours",
     mapEmbed: "",
+    mapsUrl: "",
+    workingHours: "",
+    ownerName: "",
   },
-  socials: { instagram: "", facebook: "", youtube: "", email: "" },
+  socials: { instagram: "", facebook: "", youtube: "", linkedin: "", email: "" },
   hero: {
     eyebrow: "Premium Digital Studio · Est. 2015",
     headline: "Crafting digital experiences that inspire.",
