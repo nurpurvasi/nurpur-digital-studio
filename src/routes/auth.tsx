@@ -24,13 +24,17 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let mounted = true;
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (mounted && data.session) navigate({ to: "/admin" });
     });
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
-      if (session) navigate({ to: "/admin" });
+      if (mounted && session) navigate({ to: "/admin" });
     });
-    return () => sub.subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
   }, [navigate]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -42,7 +46,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
+          options: { emailRedirectTo: `${window.location.origin}/auth` },
         });
         if (error) throw error;
       } else {
@@ -61,9 +65,10 @@ function AuthPage() {
     setLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + "/admin",
+        redirect_uri: `${window.location.origin}/auth`,
       });
       if (result.error) throw result.error;
+      if (!result.redirected) navigate({ to: "/admin" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Google sign-in failed");
       setLoading(false);
