@@ -245,6 +245,7 @@ function AdminPage() {
               Published successfully — live site updated.
             </div>
           )}
+          {section === "settings" && <SettingsEditor content={content} patch={patch} />}
           {section === "brand" && <BrandEditor content={content} patch={patch} />}
           {section === "theme" && <ThemeEditor content={content} patch={patch} />}
           {section === "hero" && <HeroEditor content={content} patch={patch} />}
