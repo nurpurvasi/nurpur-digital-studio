@@ -1,16 +1,18 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, Youtube, Plus } from "lucide-react";
+import { ArrowUpRight, Facebook, Instagram, Linkedin, Mail, MapPin, Youtube, Plus } from "lucide-react";
 import { useSiteContent } from "@/content/SiteContentContext";
 
 export function Footer() {
   const siteContent = useSiteContent();
   const { email, location } = siteContent.contact;
-  const { instagram, facebook, youtube, email: emailLink } = siteContent.socials;
+  const { instagram, facebook, youtube, linkedin, email: emailLink } = siteContent.socials;
+  const { privacyUrl, termsUrl } = siteContent.footer;
 
   const socials = [
     { Icon: Instagram, label: "Instagram", href: instagram },
     { Icon: Facebook, label: "Facebook", href: facebook },
     { Icon: Youtube, label: "YouTube", href: youtube },
+    { Icon: Linkedin, label: "LinkedIn", href: linkedin },
     { Icon: Mail, label: "Email", href: emailLink || (email ? `mailto:${email}` : "") },
   ];
 
