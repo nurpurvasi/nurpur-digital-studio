@@ -7,14 +7,25 @@ export function LoadingScreen() {
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    const done = () => setTimeout(() => setHidden(true), 350);
+    let hideTimer: ReturnType<typeof setTimeout> | null = null;
+    const done = () => {
+      if (hideTimer) return;
+      hideTimer = setTimeout(() => setHidden(true), 350);
+    };
     if (document.readyState === "complete") done();
     else {
       window.addEventListener("load", done, { once: true });
       // Safety net
       const t = setTimeout(done, 2200);
-      return () => clearTimeout(t);
+      return () => {
+        window.removeEventListener("load", done);
+        clearTimeout(t);
+        if (hideTimer) clearTimeout(hideTimer);
+      };
     }
+    return () => {
+      if (hideTimer) clearTimeout(hideTimer);
+    };
   }, []);
 
   useEffect(() => {
