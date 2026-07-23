@@ -244,6 +244,7 @@ function AdminPage() {
             </div>
           )}
           {section === "brand" && <BrandEditor content={content} patch={patch} />}
+          {section === "theme" && <ThemeEditor content={content} patch={patch} />}
           {section === "hero" && <HeroEditor content={content} patch={patch} />}
           {section === "services" && <ServicesEditor content={content} patch={patch} />}
           {section === "portfolio" && <PortfolioEditor content={content} patch={patch} />}
