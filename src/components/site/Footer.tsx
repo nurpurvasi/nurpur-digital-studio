@@ -1,16 +1,18 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, Youtube, Plus } from "lucide-react";
+import { ArrowUpRight, Facebook, Instagram, Linkedin, Mail, MapPin, Youtube, Plus } from "lucide-react";
 import { useSiteContent } from "@/content/SiteContentContext";
 
 export function Footer() {
   const siteContent = useSiteContent();
   const { email, location } = siteContent.contact;
-  const { instagram, facebook, youtube, email: emailLink } = siteContent.socials;
+  const { instagram, facebook, youtube, linkedin, email: emailLink } = siteContent.socials;
+  const { privacyUrl, termsUrl } = siteContent.footer;
 
   const socials = [
     { Icon: Instagram, label: "Instagram", href: instagram },
     { Icon: Facebook, label: "Facebook", href: facebook },
     { Icon: Youtube, label: "YouTube", href: youtube },
+    { Icon: Linkedin, label: "LinkedIn", href: linkedin },
     { Icon: Mail, label: "Email", href: emailLink || (email ? `mailto:${email}` : "") },
   ];
 
@@ -140,11 +142,15 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} {siteContent.brand.name}. All rights reserved.</p>
-          <p className="flex items-center gap-2">
-            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
-            Premium digital studio
-          </p>
+          <p>{(siteContent.footer.copyright || "").replace("{year}", String(new Date().getFullYear())) || `© ${new Date().getFullYear()} ${siteContent.brand.name}. All rights reserved.`}</p>
+          <div className="flex items-center gap-4">
+            {privacyUrl && <a href={privacyUrl} className="hover:text-foreground">Privacy</a>}
+            {termsUrl && <a href={termsUrl} className="hover:text-foreground">Terms</a>}
+            <p className="flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
+              {siteContent.footer.tagline || "Premium digital studio"}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

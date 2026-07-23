@@ -70,11 +70,15 @@ export type SiteContent = {
     location: string;
     responseTime: string;
     mapEmbed: string;
+    mapsUrl: string;
+    workingHours: string;
+    ownerName: string;
   };
   socials: {
     instagram: string;
     facebook: string;
     youtube: string;
+    linkedin: string;
     email: string;
   };
   hero: {
@@ -96,7 +100,7 @@ export type SiteContent = {
   testimonials: Testimonial[];
   stats: Stat[];
   faqs: FAQ[];
-  footer: { copyright: string; tagline: string };
+  footer: { copyright: string; tagline: string; privacyUrl: string; termsUrl: string };
 };
 
 export const defaultTheme: ThemeSettings = {
@@ -139,8 +143,11 @@ export const defaultSiteContent: SiteContent = {
     location: "",
     responseTime: "Within 24 hours",
     mapEmbed: "",
+    mapsUrl: "",
+    workingHours: "",
+    ownerName: "",
   },
-  socials: { instagram: "", facebook: "", youtube: "", email: "" },
+  socials: { instagram: "", facebook: "", youtube: "", linkedin: "", email: "" },
   hero: {
     eyebrow: "Premium Digital Studio · Est. 2015",
     headline: "Crafting digital experiences that inspire.",
@@ -164,6 +171,8 @@ export const defaultSiteContent: SiteContent = {
   footer: {
     copyright: "© {year} NurpurVasi Digitals. All rights reserved.",
     tagline: "Premium digital studio",
+    privacyUrl: "",
+    termsUrl: "",
   },
 };
 
