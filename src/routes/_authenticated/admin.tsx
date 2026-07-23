@@ -45,6 +45,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 type Section =
+  | "settings"
   | "brand"
   | "theme"
   | "seo"
@@ -58,6 +59,7 @@ type Section =
   | "footer";
 
 const SECTIONS: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { id: "settings", label: "Website Settings", icon: Sparkles },
   { id: "brand", label: "Brand", icon: Sparkles },
   { id: "theme", label: "Branding & Theme", icon: Palette },
   { id: "hero", label: "Hero", icon: Star },
