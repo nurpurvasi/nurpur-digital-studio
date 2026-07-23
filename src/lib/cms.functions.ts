@@ -3,18 +3,75 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import type { Json } from "@/integrations/supabase/types";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SupabaseLike = any;
+
+async function hasOwnAdminRole(ctx: { supabase: SupabaseLike; userId: string }) {
+  const { data, error } = await ctx.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", ctx.userId)
+    .eq("role", "admin")
+    .maybeSingle();
+
+  if (error) {
+    console.error("Admin role check failed", error);
+    return false;
+  }
+
+  return !!data;
+}
+
+async function ensureBootstrapAdmin(ctx: { supabase: SupabaseLike; userId: string }) {
+  if (await hasOwnAdminRole(ctx)) return true;
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data: adminRows, error: roleError } = await supabaseAdmin
+    .from("user_roles")
+    .select("user_id")
+    .eq("role", "admin");
+
+  if (roleError) {
+    console.error("Admin bootstrap role lookup failed", roleError);
+    return false;
+  }
+
+  const adminUserIds = new Set((adminRows ?? []).map((row) => row.user_id));
+  let validAdminExists = adminUserIds.size > 0;
+
+  if (adminUserIds.size > 0) {
+    const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
+
+    if (usersError) {
+      console.error("Admin bootstrap user lookup failed", usersError);
+      return false;
+    }
+
+    validAdminExists = users.users.some((user) => adminUserIds.has(user.id));
+  }
+
+  if (validAdminExists) return false;
+
+  const { error: insertError } = await supabaseAdmin
+    .from("user_roles")
+    .upsert({ user_id: ctx.userId, role: "admin" }, { onConflict: "user_id,role" });
+
+  if (insertError) {
+    console.error("Admin bootstrap repair failed", insertError);
+    return false;
+  }
+
+  return hasOwnAdminRole(ctx);
+}
+
 /** Whether the caller has the 'admin' role. Reads own row via RLS. */
 export const getIsAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (error) return { isAdmin: false };
-    return { isAdmin: !!data };
+    return { isAdmin: await ensureBootstrapAdmin(context) };
   });
 
 /** Load the draft content for the CMS editor. Admin only. */
@@ -139,14 +196,8 @@ export const saveInlineEdit = createServerFn({ method: "POST" })
   });
 
 async function assertAdmin(ctx: { supabase: SupabaseLike; userId: string }) {
-  const { data: role } = await ctx.supabase
-    .from("user_roles").select("role")
-    .eq("user_id", ctx.userId).eq("role", "admin").maybeSingle();
-  if (!role) throw new Error("Forbidden");
+  if (!(await ensureBootstrapAdmin(ctx))) throw new Error("Forbidden");
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type SupabaseLike = any;
 
 export const MEDIA_FOLDERS = ["logos", "hero", "portfolio", "gallery", "services", "team", "testimonials", "general"] as const;
 export type MediaFolder = (typeof MEDIA_FOLDERS)[number];
