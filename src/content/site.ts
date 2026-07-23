@@ -100,7 +100,7 @@ export type SiteContent = {
   testimonials: Testimonial[];
   stats: Stat[];
   faqs: FAQ[];
-  footer: { copyright: string; tagline: string };
+  footer: { copyright: string; tagline: string; privacyUrl: string; termsUrl: string };
 };
 
 export const defaultTheme: ThemeSettings = {
