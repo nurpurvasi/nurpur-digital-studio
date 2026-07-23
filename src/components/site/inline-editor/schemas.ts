@@ -31,13 +31,16 @@ export const SECTION_SCHEMAS: Partial<Record<SectionKey, SectionSchema>> = {
     kind: "object",
     title: "Contact details",
     fields: [
+      { key: "ownerName", label: "Owner name", type: "text" },
       { key: "email", label: "Email", type: "email" },
       { key: "phone", label: "Phone (tel: format)", type: "text" },
       { key: "phoneDisplay", label: "Phone (display)", type: "text" },
       { key: "whatsapp", label: "WhatsApp number", type: "text" },
-      { key: "location", label: "Location", type: "text" },
+      { key: "location", label: "Office address", type: "textarea" },
+      { key: "workingHours", label: "Working hours", type: "text" },
       { key: "responseTime", label: "Response time", type: "text" },
       { key: "mapEmbed", label: "Map embed URL", type: "url" },
+      { key: "mapsUrl", label: "Google Maps link", type: "url" },
     ],
   },
   socials: {
@@ -47,6 +50,7 @@ export const SECTION_SCHEMAS: Partial<Record<SectionKey, SectionSchema>> = {
       { key: "instagram", label: "Instagram URL", type: "url" },
       { key: "facebook", label: "Facebook URL", type: "url" },
       { key: "youtube", label: "YouTube URL", type: "url" },
+      { key: "linkedin", label: "LinkedIn URL", type: "url" },
       { key: "email", label: "Email URL (mailto:)", type: "url" },
     ],
   },
@@ -56,6 +60,8 @@ export const SECTION_SCHEMAS: Partial<Record<SectionKey, SectionSchema>> = {
     fields: [
       { key: "copyright", label: "Copyright line ({year} allowed)", type: "text" },
       { key: "tagline", label: "Tagline", type: "text" },
+      { key: "privacyUrl", label: "Privacy policy link", type: "url" },
+      { key: "termsUrl", label: "Terms link", type: "url" },
     ],
   },
   seo: {
