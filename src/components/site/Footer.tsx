@@ -142,11 +142,15 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} {siteContent.brand.name}. All rights reserved.</p>
-          <p className="flex items-center gap-2">
-            <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
-            Premium digital studio
-          </p>
+          <p>{(siteContent.footer.copyright || "").replace("{year}", String(new Date().getFullYear())) || `© ${new Date().getFullYear()} ${siteContent.brand.name}. All rights reserved.`}</p>
+          <div className="flex items-center gap-4">
+            {privacyUrl && <a href={privacyUrl} className="hover:text-foreground">Privacy</a>}
+            {termsUrl && <a href={termsUrl} className="hover:text-foreground">Terms</a>}
+            <p className="flex items-center gap-2">
+              <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
+              {siteContent.footer.tagline || "Premium digital studio"}
+            </p>
+          </div>
         </div>
       </div>
     </footer>
