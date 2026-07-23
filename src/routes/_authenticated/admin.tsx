@@ -91,7 +91,7 @@ function AdminPage() {
 
   // Local editable state — merged over defaults for a stable UI
   const [content, setContent] = useState<SiteContent>(defaultSiteContent);
-  const [section, setSection] = useState<Section>("brand");
+  const [section, setSection] = useState<Section>("settings");
   const [dirty, setDirty] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saving, setSaving] = useState(false);
