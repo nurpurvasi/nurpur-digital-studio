@@ -10,7 +10,8 @@ import {
   publishDraft,
   saveDraft,
 } from "@/lib/cms.functions";
-import { defaultSiteContent, mergeSiteContent, type SiteContent } from "@/content/site";
+import { defaultSiteContent, defaultTheme, mergeSiteContent, type SiteContent, type ThemeSettings } from "@/content/site";
+import { applyThemeToElement } from "@/components/site/ThemeApplier";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowUpFromLine,
@@ -45,6 +46,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 type Section =
   | "brand"
+  | "theme"
   | "seo"
   | "hero"
   | "contact"
@@ -57,6 +59,7 @@ type Section =
 
 const SECTIONS: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: "brand", label: "Brand", icon: Sparkles },
+  { id: "theme", label: "Branding & Theme", icon: Palette },
   { id: "hero", label: "Hero", icon: Star },
   { id: "services", label: "Services", icon: Palette },
   { id: "portfolio", label: "Portfolio", icon: ImageIcon },
