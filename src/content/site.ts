@@ -121,6 +121,7 @@ export const defaultSiteContent: SiteContent = {
     logo: "",
     tagline: "Premium Website Design • Development • SEO • Digital Solutions",
   },
+  theme: defaultTheme,
   seo: {
     title: "NurpurVasi Digitals — Premium Digital Studio",
     description:
