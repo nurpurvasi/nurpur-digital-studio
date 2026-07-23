@@ -15,6 +15,7 @@ import { LoadingScreen } from "@/components/site/LoadingScreen";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { PageTransition } from "@/components/site/PageTransition";
 import { SiteContentProvider } from "@/content/SiteContentContext";
+import { ThemeApplier } from "@/components/site/ThemeApplier";
 import { AdminModeProvider } from "@/content/AdminModeContext";
 import { AdminModeToggle } from "@/components/site/inline-editor/AdminModeToggle";
 import { supabase } from "@/integrations/supabase/client";
@@ -147,6 +148,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SiteContentProvider>
+        <ThemeApplier />
         <AdminModeProvider>
           <LoadingScreen />
           <PageTransition>
