@@ -6,12 +6,12 @@ import { Calendar, Clock, ArrowLeft, Facebook, Linkedin, Twitter, Link as LinkIc
 import { useState } from "react";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: async ({ params }) => {
+  loader: async ({ params }): Promise<{ post: BlogPost; related: BlogPost[] }> => {
     const { post } = await getPublicPost({ data: { slug: params.slug } });
     if (!post) throw notFound();
     const { posts } = await listPublicPosts();
     const related = posts
-      .filter((p) => p.id !== post.id && (p.category === post.category || p.tags.some((t) => post.tags.includes(t))))
+      .filter((p: BlogPost) => p.id !== post.id && (p.category === post.category || p.tags.some((t: string) => post.tags.includes(t))))
       .slice(0, 3);
     return { post, related };
   },
