@@ -22,11 +22,11 @@ export const Route = createFileRoute("/")({
         content:
           "NurpurVasi Digitals designs and builds world-class websites, brands and digital products for ambitious companies. Premium web design, development, SEO and digital solutions.",
       },
-      { property: "og:title", content: "NurpurVasi Digitals — Premium Digital Studio" },
+      { property: "og:title", content: "NurpurVasi Digitals — Premium Digital Studio by Gaurav Bharti" },
       {
         property: "og:description",
         content:
-          "World-class websites, brands and digital products crafted with obsessive care by Gaurav Bharti.",
+          "NurpurVasi Digitals designs and builds world-class websites, brands and digital products for ambitious companies. Premium web design, development, SEO and digital solutions.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
