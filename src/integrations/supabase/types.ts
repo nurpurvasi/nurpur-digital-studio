@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author: string
+          canonical_url: string
+          category: string
+          content: string
+          created_at: string
+          created_by: string | null
+          excerpt: string
+          featured_image: string
+          gallery: Json
+          id: string
+          og_image: string
+          publish_date: string | null
+          seo_description: string
+          seo_title: string
+          slug: string
+          status: string
+          tags: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          canonical_url?: string
+          category?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string
+          featured_image?: string
+          gallery?: Json
+          id?: string
+          og_image?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          slug: string
+          status?: string
+          tags?: Json
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          canonical_url?: string
+          category?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string
+          featured_image?: string
+          gallery?: Json
+          id?: string
+          og_image?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          status?: string
+          tags?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           draft: Json
