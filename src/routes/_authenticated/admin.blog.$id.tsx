@@ -276,7 +276,7 @@ function AdminBlogEditor() {
               <MediaField
                 value=""
                 accept="image"
-                folder="gallery"
+               
                 onChange={(url) => { if (url) patch("gallery", [...draft.gallery, url]); }}
               />
             </div>
@@ -314,7 +314,7 @@ function AdminBlogEditor() {
             <MediaField
               value={draft.featured_image}
               accept="image"
-              folder="general"
+             
               onChange={(url) => patch("featured_image", url)}
             />
           </div>
@@ -353,7 +353,7 @@ function AdminBlogEditor() {
               <MediaField
                 value={draft.og_image}
                 accept="image"
-                folder="general"
+               
                 onChange={(url) => patch("og_image", url)}
               />
             </div>
