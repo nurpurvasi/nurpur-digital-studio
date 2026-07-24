@@ -180,7 +180,7 @@ function BlogPostPage() {
 
           {post.gallery.length > 0 && (
             <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
-              {post.gallery.map((src, i) => (
+              {post.gallery.map((src: string, i: number) => (
                 <div key={i} className="overflow-hidden rounded-2xl border border-border">
                   <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
                 </div>
