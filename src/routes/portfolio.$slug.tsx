@@ -9,7 +9,7 @@ export const Route = createFileRoute("/portfolio/$slug")({
     const { project } = await getPublicProject({ data: { slug: params.slug } });
     if (!project) throw notFound();
     const { projects } = await listPublicProjects();
-    const related = projects
+    const related = (projects as PortfolioProject[])
       .filter((p) => p.id !== project.id && (p.category === project.category || project.category === ""))
       .slice(0, 3);
     return { project, related };

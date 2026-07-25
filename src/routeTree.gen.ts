@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
@@ -62,6 +63,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PortfolioRoute,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -95,10 +101,11 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -109,10 +116,11 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/services': typeof ServicesRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -125,10 +133,11 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
-  '/portfolio': typeof PortfolioRoute
+  '/portfolio': typeof PortfolioRouteWithChildren
   '/services': typeof ServicesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/admin'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/admin/blog'
     | '/admin/media'
     | '/admin/blog/$id'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/admin'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/admin/blog'
     | '/admin/media'
     | '/admin/blog/$id'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/_authenticated/admin'
     | '/blog/$slug'
+    | '/portfolio/$slug'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/media'
     | '/_authenticated/admin/blog/$id'
@@ -186,7 +198,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
-  PortfolioRoute: typeof PortfolioRoute
+  PortfolioRoute: typeof PortfolioRouteWithChildren
   ServicesRoute: typeof ServicesRoute
 }
 
@@ -247,6 +259,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/portfolio/$slug': {
+      id: '/portfolio/$slug'
+      path: '/$slug'
+      fullPath: '/portfolio/$slug'
+      preLoaderRoute: typeof PortfolioSlugRouteImport
+      parentRoute: typeof PortfolioRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -334,6 +353,18 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface PortfolioRouteChildren {
+  PortfolioSlugRoute: typeof PortfolioSlugRoute
+}
+
+const PortfolioRouteChildren: PortfolioRouteChildren = {
+  PortfolioSlugRoute: PortfolioSlugRoute,
+}
+
+const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
+  PortfolioRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -341,7 +372,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
-  PortfolioRoute: PortfolioRoute,
+  PortfolioRoute: PortfolioRouteWithChildren,
   ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
