@@ -80,6 +80,81 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_projects: {
+        Row: {
+          canonical_url: string
+          category: string
+          client: string
+          completion_date: string | null
+          cover_image: string
+          created_at: string
+          created_by: string | null
+          featured: boolean
+          full_description: string
+          gallery: Json
+          id: string
+          og_image: string
+          publish_date: string | null
+          seo_description: string
+          seo_title: string
+          short_description: string
+          slug: string
+          status: string
+          technologies: Json
+          title: string
+          updated_at: string
+          website_url: string
+        }
+        Insert: {
+          canonical_url?: string
+          category?: string
+          client?: string
+          completion_date?: string | null
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          featured?: boolean
+          full_description?: string
+          gallery?: Json
+          id?: string
+          og_image?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug: string
+          status?: string
+          technologies?: Json
+          title: string
+          updated_at?: string
+          website_url?: string
+        }
+        Update: {
+          canonical_url?: string
+          category?: string
+          client?: string
+          completion_date?: string | null
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          featured?: boolean
+          full_description?: string
+          gallery?: Json
+          id?: string
+          og_image?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug?: string
+          status?: string
+          technologies?: Json
+          title?: string
+          updated_at?: string
+          website_url?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           draft: Json
