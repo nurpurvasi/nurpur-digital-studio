@@ -23,6 +23,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
 import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
+import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
 const ServicesRoute = ServicesRouteImport.update({
@@ -95,6 +96,12 @@ const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminPortfolioIdRoute =
+  AuthenticatedAdminPortfolioIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
+  } as any)
 const AuthenticatedAdminBlogIdRoute =
   AuthenticatedAdminBlogIdRouteImport.update({
     id: '/$id',
@@ -115,8 +122,9 @@ export interface FileRoutesByFullPath {
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRoute
+  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -131,8 +139,9 @@ export interface FileRoutesByTo {
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRoute
+  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -149,8 +158,9 @@ export interface FileRoutesById {
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRoute
+  '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/portfolio'
     | '/admin/blog/$id'
+    | '/admin/portfolio/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/portfolio'
     | '/admin/blog/$id'
+    | '/admin/portfolio/$id'
   id:
     | '__root__'
     | '/'
@@ -202,6 +214,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/media'
     | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/blog/$id'
+    | '/_authenticated/admin/portfolio/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -315,6 +328,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/portfolio/$id': {
+      id: '/_authenticated/admin/portfolio/$id'
+      path: '/$id'
+      fullPath: '/admin/portfolio/$id'
+      preLoaderRoute: typeof AuthenticatedAdminPortfolioIdRouteImport
+      parentRoute: typeof AuthenticatedAdminPortfolioRoute
+    }
     '/_authenticated/admin/blog/$id': {
       id: '/_authenticated/admin/blog/$id'
       path: '/$id'
@@ -339,16 +359,31 @@ const AuthenticatedAdminBlogRouteWithChildren =
     AuthenticatedAdminBlogRouteChildren,
   )
 
+interface AuthenticatedAdminPortfolioRouteChildren {
+  AuthenticatedAdminPortfolioIdRoute: typeof AuthenticatedAdminPortfolioIdRoute
+}
+
+const AuthenticatedAdminPortfolioRouteChildren: AuthenticatedAdminPortfolioRouteChildren =
+  {
+    AuthenticatedAdminPortfolioIdRoute: AuthenticatedAdminPortfolioIdRoute,
+  }
+
+const AuthenticatedAdminPortfolioRouteWithChildren =
+  AuthenticatedAdminPortfolioRoute._addFileChildren(
+    AuthenticatedAdminPortfolioRouteChildren,
+  )
+
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
-  AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRoute
+  AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
   AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
-  AuthenticatedAdminPortfolioRoute: AuthenticatedAdminPortfolioRoute,
+  AuthenticatedAdminPortfolioRoute:
+    AuthenticatedAdminPortfolioRouteWithChildren,
 }
 
 const AuthenticatedAdminRouteWithChildren =
