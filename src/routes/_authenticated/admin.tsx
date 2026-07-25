@@ -201,6 +201,9 @@ function AdminPage() {
             <Link to="/_authenticated/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <FileText className="h-3 w-3" /> Blog
             </Link>
+            <Link to="/_authenticated/admin/portfolio" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
+              <ImageIcon className="h-3 w-3" /> Portfolio CMS
+            </Link>
             <button
               onClick={() => discardMut.mutate()}
               disabled={discardMut.isPending}
