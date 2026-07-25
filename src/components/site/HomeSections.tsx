@@ -188,8 +188,16 @@ export function ServicesSection() {
 /* ---------------- Featured Portfolio ---------------- */
 
 export function FeaturedPortfolio() {
-  const siteContent = useSiteContent();
-  const projects = siteContent.portfolio.slice(0, 4);
+  const load = useServerFn(listPublicProjects);
+  const { data } = useQuery<{ projects: PortfolioProject[] }>({
+    queryKey: ["public-portfolio"],
+    queryFn: () => load(),
+    initialData: { projects: [] },
+    staleTime: 60_000,
+  });
+  const all: PortfolioProject[] = data?.projects ?? [];
+  const featured = all.filter((p) => p.featured);
+  const projects = (featured.length > 0 ? featured : all).slice(0, 4);
   const showPlaceholders = projects.length === 0;
   const spanFor = (i: number) =>
     i === 0 ? "md:col-span-4" : i === 1 ? "md:col-span-2" : i === 2 ? "md:col-span-2" : "md:col-span-4";
@@ -220,15 +228,16 @@ export function FeaturedPortfolio() {
                 </Reveal>
               ))
             : projects.map((p, i) => (
-                <Reveal key={p.title} delay={i * 100} className={spanFor(i)}>
-                  <a
-                    href={p.href ?? "#"}
+                <Reveal key={p.id} delay={i * 100} className={spanFor(i)}>
+                  <Link
+                    to="/portfolio/$slug"
+                    params={{ slug: p.slug }}
                     className="group relative block overflow-hidden rounded-[28px] border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_35%,transparent)]"
                   >
                     <div className="relative aspect-[16/10] w-full overflow-hidden">
-                      {p.image ? (
+                      {p.cover_image ? (
                         <img
-                          src={p.image}
+                          src={p.cover_image}
                           alt={p.title}
                           loading="lazy"
                           className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
@@ -236,14 +245,14 @@ export function FeaturedPortfolio() {
                       ) : (
                         <div
                           className="absolute inset-0 transition-transform duration-[1200ms] ease-out group-hover:scale-[1.08]"
-                          style={{ background: p.gradient ?? "var(--gradient-brand)" }}
+                          style={{ background: "var(--gradient-brand)" }}
                         />
                       )}
                     </div>
                     <div className="flex items-center justify-between gap-4 bg-white p-6">
                       <div className="min-w-0">
                         <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                          {p.tag} · {p.year}
+                          {[p.category, p.client].filter(Boolean).join(" · ")}
                         </p>
                         <h3 className="mt-1.5 truncate text-lg font-semibold">{p.title}</h3>
                       </div>
@@ -255,7 +264,7 @@ export function FeaturedPortfolio() {
                         <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 </Reveal>
               ))}
         </div>
