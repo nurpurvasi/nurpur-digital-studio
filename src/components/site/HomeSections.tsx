@@ -17,6 +17,9 @@ import { Eyebrow, Section } from "./Layout";
 import { Reveal } from "./Reveal";
 import { AddPlaceholder } from "./AddPlaceholder";
 import { useSiteContent } from "@/content/SiteContentContext";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { listPublicProjects, type PortfolioProject } from "@/lib/portfolio.functions";
 
 /* ---------------- Stats ---------------- */
 
