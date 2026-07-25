@@ -31,14 +31,14 @@ export const Route = createFileRoute("/portfolio")({
 
 function PortfolioPage() {
   const load = useServerFn(listPublicProjects);
-  const { data } = useQuery({
+  const { data } = useQuery<{ projects: PortfolioProject[] }>({
     queryKey: ["public-portfolio"],
     queryFn: () => load(),
-    initialData: { projects: [] as PortfolioProject[] },
+    initialData: { projects: [] },
     staleTime: 60_000,
   });
 
-  const projects = data?.projects ?? [];
+  const projects: PortfolioProject[] = data?.projects ?? [];
   const categories = useMemo(() => {
     const set = new Set<string>();
     projects.forEach((p) => p.category && set.add(p.category));
