@@ -30,7 +30,7 @@ import {
 } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/media")({
+export const Route = createFileRoute("/admin/media")({
   head: () => ({
     meta: [
       { title: "Media Library — NurpurVasi Digitals" },
@@ -237,7 +237,7 @@ function MediaLibraryPage() {
     >
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:px-6">
-          <Link to="/_authenticated/admin" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
+          <Link to="/admin" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Back to Studio</span>
           </Link>
           <div className="ml-2 leading-tight">

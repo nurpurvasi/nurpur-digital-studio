@@ -7,7 +7,7 @@ import { getIsAdmin } from "@/lib/cms.functions";
 import { ArrowLeft, Loader2, Check, Sparkles, ExternalLink, Trash2 } from "lucide-react";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
 
-export const Route = createFileRoute("/_authenticated/admin/blog/$id")({
+export const Route = createFileRoute("/admin/blog/$id")({
   component: AdminBlogEditor,
 });
 
@@ -143,7 +143,7 @@ function AdminBlogEditor() {
       if (res?.post) {
         setDraft(fromPost(res.post));
         setSavedAt(new Date()); setDirty(false);
-        if (isNew) navigate({ to: "/_authenticated/admin/blog/$id", params: { id: res.post.id }, replace: true });
+        if (isNew) navigate({ to: "/admin/blog/$id", params: { id: res.post.id }, replace: true });
       }
     },
     onError: (e) => setError(e instanceof Error ? e.message : "Save failed"),
@@ -170,7 +170,7 @@ function AdminBlogEditor() {
     <div className="min-h-screen bg-[#f7f8fc]">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/_authenticated/admin/blog" className="flex items-center gap-2">
+          <Link to="/admin/blog" className="flex items-center gap-2">
             <span className="grid h-9 w-9 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
               <Sparkles className="h-4 w-4" />
             </span>
@@ -186,7 +186,7 @@ function AdminBlogEditor() {
              (<>All changes saved</>)}
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <Link to="/_authenticated/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium sm:inline-flex">
+            <Link to="/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium sm:inline-flex">
               <ArrowLeft className="h-3 w-3" /> Back
             </Link>
             {draft.slug && !isNew && draft.status === "published" && (

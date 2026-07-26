@@ -21,7 +21,7 @@ import {
   type PortfolioProject,
 } from "@/lib/portfolio.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/portfolio")({
+export const Route = createFileRoute("/admin/portfolio")({
   head: () => ({
     meta: [
       { title: "Portfolio — Admin" },
@@ -102,7 +102,7 @@ function AdminPortfolioList() {
     <div className="min-h-screen bg-[#f7f8fc]">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/_authenticated/admin" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/admin" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-4 w-4" /> Studio
           </Link>
           <div className="ml-2 flex items-center gap-2">
@@ -116,7 +116,7 @@ function AdminPortfolioList() {
           </div>
           <div className="ml-auto">
             <button
-              onClick={() => navigate({ to: "/_authenticated/admin/portfolio/$id", params: { id: "new" } })}
+              onClick={() => navigate({ to: "/admin/portfolio/$id", params: { id: "new" } })}
               className="btn-primary !px-4 !py-2 text-xs"
             >
               <Plus className="h-3 w-3" /> New project
@@ -201,7 +201,7 @@ function AdminPortfolioList() {
                     <Copy className="h-3.5 w-3.5" />
                   </button>
                   <Link
-                    to="/_authenticated/admin/portfolio/$id"
+                    to="/admin/portfolio/$id"
                     params={{ id: p.id }}
                     className="grid h-8 w-8 place-items-center rounded-full border border-border bg-white hover:-translate-y-0.5 hover:shadow"
                     title="Edit"
