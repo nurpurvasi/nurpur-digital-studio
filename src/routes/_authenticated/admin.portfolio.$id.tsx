@@ -155,7 +155,7 @@ function AdminPortfolioEditor() {
         setSavedAt(new Date()); setDirty(false);
         if (isNew)
           navigate({
-            to: "/_authenticated/admin/portfolio/$id",
+            to: "/admin/portfolio/$id",
             params: { id: res.project.id },
             replace: true,
           });
@@ -185,7 +185,7 @@ function AdminPortfolioEditor() {
     <div className="min-h-screen bg-[#f7f8fc]">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/_authenticated/admin/portfolio" className="flex items-center gap-2">
+          <Link to="/admin/portfolio" className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
             <span className="grid h-9 w-9 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
               <Sparkles className="h-4 w-4" />
