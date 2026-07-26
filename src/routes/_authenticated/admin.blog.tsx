@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Plus, Search, Copy, Trash2, Pencil, ExternalLink, LogOut, Sparkles, ArrowLeft } from "lucide-react";
 import { Loader2 } from "lucide-react";
 
-export const Route = createFileRoute("/admin/blog")({
+export const Route = createFileRoute("/_authenticated/admin/blog")({
   component: AdminBlogList,
 });
 

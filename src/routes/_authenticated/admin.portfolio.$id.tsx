@@ -7,7 +7,7 @@ import { getIsAdmin } from "@/lib/cms.functions";
 import { getAdminProject, upsertProject, type PortfolioProject } from "@/lib/portfolio.functions";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
 
-export const Route = createFileRoute("/admin/portfolio/$id")({
+export const Route = createFileRoute("/_authenticated/admin/portfolio/$id")({
   head: () => ({ meta: [{ title: "Portfolio editor" }, { name: "robots", content: "noindex,nofollow" }] }),
   component: AdminPortfolioEditor,
 });

@@ -21,7 +21,7 @@ import {
   type PortfolioProject,
 } from "@/lib/portfolio.functions";
 
-export const Route = createFileRoute("/admin/portfolio")({
+export const Route = createFileRoute("/_authenticated/admin/portfolio")({
   head: () => ({
     meta: [
       { title: "Portfolio — Admin" },

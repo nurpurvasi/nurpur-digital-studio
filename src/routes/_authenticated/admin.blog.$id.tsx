@@ -7,7 +7,7 @@ import { getIsAdmin } from "@/lib/cms.functions";
 import { ArrowLeft, Loader2, Check, Sparkles, ExternalLink, Trash2 } from "lucide-react";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
 
-export const Route = createFileRoute("/admin/blog/$id")({
+export const Route = createFileRoute("/_authenticated/admin/blog/$id")({
   component: AdminBlogEditor,
 });
 

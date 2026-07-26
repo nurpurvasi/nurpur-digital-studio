@@ -30,7 +30,7 @@ import {
 } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/admin/media")({
+export const Route = createFileRoute("/_authenticated/admin/media")({
   head: () => ({
     meta: [
       { title: "Media Library — NurpurVasi Digitals" },
