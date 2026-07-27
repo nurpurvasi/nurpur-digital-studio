@@ -137,7 +137,7 @@ export const updateLead = createServerFn({ method: "POST" })
     const { id, ...rest } = data;
     const patch: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(rest)) if (v !== undefined) patch[k] = v;
-    const { error } = await context.supabase.from("leads").update(patch).eq("id", id);
+    const { error } = await context.supabase.from("leads").update(patch as never).eq("id", id);
     if (error) throw error;
     return { ok: true };
   });
