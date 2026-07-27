@@ -80,6 +80,66 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          assigned_to: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          ip_address: string | null
+          message: string
+          name: string
+          notes: string | null
+          phone: string | null
+          priority: Database["public"]["Enums"]["lead_priority"]
+          source_page: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          subject: string | null
+          updated_at: string
+          user_agent: string | null
+          website_template: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          ip_address?: string | null
+          message: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          priority?: Database["public"]["Enums"]["lead_priority"]
+          source_page?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          subject?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          website_template?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          message?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          priority?: Database["public"]["Enums"]["lead_priority"]
+          source_page?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          subject?: string | null
+          updated_at?: string
+          user_agent?: string | null
+          website_template?: string | null
+        }
+        Relationships: []
+      }
       portfolio_projects: {
         Row: {
           canonical_url: string
@@ -215,6 +275,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "editor"
+      lead_priority: "low" | "medium" | "high"
+      lead_status: "new" | "contacted" | "in_progress" | "closed" | "spam"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -343,6 +405,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "editor"],
+      lead_priority: ["low", "medium", "high"],
+      lead_status: ["new", "contacted", "in_progress", "closed", "spam"],
     },
   },
 } as const

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Mail, MapPin, Phone, Plus, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Plus } from "lucide-react";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { useSiteContent } from "@/content/SiteContentContext";
+import { ContactForm } from "@/components/site/ContactForm";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -26,7 +26,6 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const siteContent = useSiteContent();
-  const [sent, setSent] = useState(false);
   return (
     <SiteLayout>
       <Section className="pt-8 sm:pt-12">
@@ -66,66 +65,9 @@ function ContactPage() {
             </ul>
           </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
-            className="glass rounded-[28px] p-6 sm:p-8"
-          >
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Name" name="name" placeholder="Your name" />
-              <Field label="Email" name="email" type="email" placeholder="you@brand.com" />
-            </div>
-            <div className="mt-4">
-              <Field label="Company" name="company" placeholder="Company (optional)" />
-            </div>
-            <div className="mt-4">
-              <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                About the project
-              </label>
-              <textarea
-                required
-                rows={5}
-                placeholder="Tell us about goals, timeline and budget…"
-                className="mt-2 w-full resize-none rounded-2xl border border-border bg-background/70 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
-              />
-            </div>
-            <button type="submit" className="btn-primary mt-6 w-full sm:w-auto">
-              {sent ? "Thanks — we'll be in touch" : "Send message"}
-              <Send className="h-4 w-4" />
-            </button>
-          </form>
+          <ContactForm template="business" />
         </div>
       </Section>
     </SiteLayout>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label htmlFor={name} className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-        {label}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        required
-        className="mt-2 w-full rounded-2xl border border-border bg-background/70 px-4 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
-      />
-    </div>
   );
 }
