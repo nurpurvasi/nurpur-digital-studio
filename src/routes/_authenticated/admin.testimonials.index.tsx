@@ -1,0 +1,462 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo, useRef, useState } from "react";
+import {
+  ArrowLeft,
+  Copy,
+  GripVertical,
+  Loader2,
+  Pencil,
+  Plus,
+  Search,
+  Sparkles,
+  Star,
+  Trash2,
+} from "lucide-react";
+import { getIsAdmin } from "@/lib/cms.functions";
+import {
+  deleteTestimonial,
+  duplicateTestimonial,
+  listAdminTestimonials,
+  reorderTestimonials,
+  upsertTestimonial,
+  type Testimonial,
+} from "@/lib/testimonials.functions";
+
+export const Route = createFileRoute("/_authenticated/admin/testimonials/")({
+  head: () => ({
+    meta: [
+      { title: "Testimonials — Admin" },
+      { name: "robots", content: "noindex,nofollow" },
+    ],
+  }),
+  component: AdminTestimonialsList,
+});
+
+type StatusFilter = "all" | "draft" | "published" | "featured";
+type RatingFilter = 0 | 1 | 2 | 3 | 4 | 5;
+
+const PAGE_SIZE = 12;
+
+function AdminTestimonialsList() {
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+  const checkAdmin = useServerFn(getIsAdmin);
+  const load = useServerFn(listAdminTestimonials);
+  const save = useServerFn(upsertTestimonial);
+  const del = useServerFn(deleteTestimonial);
+  const dup = useServerFn(duplicateTestimonial);
+  const reorder = useServerFn(reorderTestimonials);
+
+  const admin = useQuery({ queryKey: ["admin-check"], queryFn: () => checkAdmin() });
+  const list = useQuery({
+    queryKey: ["testimonials-admin"],
+    queryFn: () => load(),
+    enabled: !!admin.data?.isAdmin,
+  });
+
+  const [q, setQ] = useState("");
+  const [status, setStatus] = useState<StatusFilter>("all");
+  const [rating, setRating] = useState<RatingFilter>(0);
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<Testimonial[]>([]);
+
+  // Sync local order with server data (needed for drag-and-drop optimistic updates)
+  useMemo(() => {
+    if (list.data?.testimonials) setItems(list.data.testimonials);
+  }, [list.data]);
+
+  const filtered = useMemo(() => {
+    const query = q.trim().toLowerCase();
+    return items.filter((t) => {
+      if (status === "draft" && t.status !== "draft") return false;
+      if (status === "published" && t.status !== "published") return false;
+      if (status === "featured" && !t.featured) return false;
+      if (rating > 0 && t.rating !== rating) return false;
+      if (!query) return true;
+      return (
+        t.client_name.toLowerCase().includes(query) ||
+        t.company.toLowerCase().includes(query) ||
+        t.designation.toLowerCase().includes(query) ||
+        t.testimonial.toLowerCase().includes(query) ||
+        t.location.toLowerCase().includes(query)
+      );
+    });
+  }, [items, q, status, rating]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const toggleMut = useMutation({
+    mutationFn: (t: Testimonial) =>
+      save({
+        data: {
+          ...t,
+          status: t.status === "published" ? "draft" : "published",
+          publish_date:
+            t.status === "published" ? t.publish_date : t.publish_date || new Date().toISOString(),
+        },
+      }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["testimonials-admin"] }),
+  });
+
+  const featureMut = useMutation({
+    mutationFn: (t: Testimonial) => save({ data: { ...t, featured: !t.featured } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["testimonials-admin"] }),
+  });
+
+  const dupMut = useMutation({
+    mutationFn: (id: string) => dup({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["testimonials-admin"] }),
+  });
+
+  const delMut = useMutation({
+    mutationFn: (id: string) => del({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["testimonials-admin"] }),
+  });
+
+  const reorderMut = useMutation({
+    mutationFn: (payload: { id: string; sort_order: number }[]) =>
+      reorder({ data: { items: payload } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["testimonials-admin"] }),
+  });
+
+  // Drag and drop (HTML5)
+  const dragId = useRef<string | null>(null);
+
+  const onDragStart = (id: string) => (e: React.DragEvent) => {
+    dragId.current = id;
+    e.dataTransfer.effectAllowed = "move";
+  };
+  const onDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+  const onDrop = (targetId: string) => (e: React.DragEvent) => {
+    e.preventDefault();
+    const fromId = dragId.current;
+    dragId.current = null;
+    if (!fromId || fromId === targetId) return;
+    // Reorder within the full filtered list
+    const ids = filtered.map((t) => t.id);
+    const from = ids.indexOf(fromId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0) return;
+    const nextIds = [...ids];
+    nextIds.splice(from, 1);
+    nextIds.splice(to, 0, fromId);
+    // Rebuild items with new sort_order for affected rows (assign 0..n)
+    const orderMap = new Map<string, number>();
+    nextIds.forEach((id, i) => orderMap.set(id, i));
+    const nextItems = [...items]
+      .map((t) => (orderMap.has(t.id) ? { ...t, sort_order: orderMap.get(t.id)! } : t))
+      .sort((a, b) => a.sort_order - b.sort_order);
+    setItems(nextItems);
+    reorderMut.mutate(nextIds.map((id, i) => ({ id, sort_order: i })));
+  };
+
+  if (admin.isLoading || list.isLoading) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <Loader2 className="h-5 w-5 animate-spin" />
+      </div>
+    );
+  }
+  if (!admin.data?.isAdmin) {
+    return <div className="grid min-h-screen place-items-center">Access denied</div>;
+  }
+
+  const isEmpty = (list.data?.testimonials ?? []).length === 0;
+
+  return (
+    <div className="min-h-screen bg-[#f7f8fc]">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:px-6">
+          <Link
+            to="/admin"
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" /> Studio
+          </Link>
+          <div className="ml-2 flex items-center gap-2">
+            <span
+              className="grid h-9 w-9 place-items-center rounded-xl text-white"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <Sparkles className="h-4 w-4" />
+            </span>
+            <div className="leading-tight">
+              <div className="text-sm font-semibold tracking-tight">Testimonials</div>
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                Content Studio
+              </div>
+            </div>
+          </div>
+          <div className="ml-auto">
+            <button
+              onClick={() =>
+                navigate({ to: "/admin/testimonials/$id", params: { id: "new" } })
+              }
+              className="btn-primary !px-4 !py-2 text-xs"
+            >
+              <Plus className="h-3 w-3" /> New testimonial
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6">
+        {isEmpty ? (
+          <EmptyState
+            onCreate={() =>
+              navigate({ to: "/admin/testimonials/$id", params: { id: "new" } })
+            }
+          />
+        ) : (
+          <>
+            <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center">
+              <div className="relative flex-1">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  value={q}
+                  onChange={(e) => {
+                    setQ(e.target.value);
+                    setPage(1);
+                  }}
+                  placeholder="Search testimonials…"
+                  className="w-full rounded-full border border-border bg-white px-11 py-2.5 text-sm outline-none focus:border-foreground/30"
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {(["all", "draft", "published", "featured"] as StatusFilter[]).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => {
+                      setStatus(s);
+                      setPage(1);
+                    }}
+                    className={`rounded-full border px-3.5 py-2 text-xs font-medium capitalize transition ${
+                      status === s
+                        ? "border-foreground bg-foreground text-white"
+                        : "border-border bg-white hover:-translate-y-0.5"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+                <div className="flex items-center gap-1 rounded-full border border-border bg-white px-2 py-1">
+                  <button
+                    onClick={() => {
+                      setRating(0);
+                      setPage(1);
+                    }}
+                    className={`rounded-full px-2 py-1 text-[11px] font-medium ${
+                      rating === 0 ? "bg-foreground text-white" : "text-muted-foreground"
+                    }`}
+                  >
+                    All ★
+                  </button>
+                  {[5, 4, 3, 2, 1].map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => {
+                        setRating(r as RatingFilter);
+                        setPage(1);
+                      }}
+                      className={`flex items-center gap-0.5 rounded-full px-2 py-1 text-[11px] font-medium ${
+                        rating === r ? "bg-foreground text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      {r}
+                      <Star className="h-3 w-3 fill-current" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-border bg-white p-16 text-center text-sm text-muted-foreground">
+                No testimonials match your filters.
+              </div>
+            ) : (
+              <>
+                <div className="grid gap-3">
+                  {paged.map((t) => (
+                    <div
+                      key={t.id}
+                      draggable
+                      onDragStart={onDragStart(t.id)}
+                      onDragOver={onDragOver}
+                      onDrop={onDrop(t.id)}
+                      className="flex flex-col gap-3 rounded-2xl border border-border bg-white p-4 sm:flex-row sm:items-center"
+                    >
+                      <button
+                        className="hidden cursor-grab items-center text-muted-foreground hover:text-foreground sm:flex"
+                        title="Drag to reorder"
+                        aria-label="Drag to reorder"
+                      >
+                        <GripVertical className="h-4 w-4" />
+                      </button>
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-border">
+                        {t.client_photo ? (
+                          <img
+                            src={t.client_photo}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div
+                            className="grid h-full w-full place-items-center text-xs font-semibold text-white"
+                            style={{ background: "var(--gradient-brand)" }}
+                          >
+                            {(t.client_name || "?").slice(0, 1).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="truncate text-sm font-semibold">
+                            {t.client_name || "(Unnamed)"}
+                          </div>
+                          <span
+                            className={`rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${
+                              t.status === "published"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-amber-100 text-amber-700"
+                            }`}
+                          >
+                            {t.status}
+                          </span>
+                          {t.featured && (
+                            <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-violet-700">
+                              Featured
+                            </span>
+                          )}
+                          <span className="flex items-center gap-0.5 text-[color:var(--royal)]">
+                            {Array.from({ length: t.rating }).map((_, i) => (
+                              <Star key={i} className="h-3 w-3 fill-current" />
+                            ))}
+                          </span>
+                        </div>
+                        <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                          {[t.designation, t.company, t.location].filter(Boolean).join(" · ")}
+                        </div>
+                        <div className="mt-1 line-clamp-1 text-xs text-muted-foreground">
+                          {t.testimonial}
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => featureMut.mutate(t)}
+                          className={`rounded-full border px-3 py-1.5 text-xs hover:-translate-y-0.5 hover:shadow ${
+                            t.featured
+                              ? "border-violet-300 bg-violet-50 text-violet-700"
+                              : "border-border bg-white"
+                          }`}
+                        >
+                          {t.featured ? "Unfeature" : "Feature"}
+                        </button>
+                        <button
+                          onClick={() => toggleMut.mutate(t)}
+                          className="rounded-full border border-border bg-white px-3 py-1.5 text-xs hover:-translate-y-0.5 hover:shadow"
+                        >
+                          {t.status === "published" ? "Unpublish" : "Publish"}
+                        </button>
+                        <button
+                          onClick={() => dupMut.mutate(t.id)}
+                          className="grid h-8 w-8 place-items-center rounded-full border border-border bg-white hover:-translate-y-0.5 hover:shadow"
+                          title="Duplicate"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                        <Link
+                          to="/admin/testimonials/$id"
+                          params={{ id: t.id }}
+                          className="grid h-8 w-8 place-items-center rounded-full border border-border bg-white hover:-translate-y-0.5 hover:shadow"
+                          title="Edit"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Link>
+                        <button
+                          onClick={() => {
+                            if (confirm("Delete this testimonial? This cannot be undone."))
+                              delMut.mutate(t.id);
+                          }}
+                          className="grid h-8 w-8 place-items-center rounded-full border border-border bg-white text-red-600 hover:-translate-y-0.5 hover:shadow"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="rounded-full border border-border bg-white px-3 py-1.5 text-xs disabled:opacity-40"
+                    >
+                      Previous
+                    </button>
+                    <span className="text-xs text-muted-foreground">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="rounded-full border border-border bg-white px-3 py-1.5 text-xs disabled:opacity-40"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </main>
+    </div>
+  );
+}
+
+function EmptyState({ onCreate }: { onCreate: () => void }) {
+  return (
+    <div className="relative overflow-hidden rounded-3xl border border-border bg-white p-10 text-center sm:p-16">
+      <div
+        className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-30 blur-3xl"
+        style={{ background: "var(--gradient-brand)" }}
+      />
+      <div
+        className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full opacity-20 blur-3xl"
+        style={{ background: "var(--gradient-brand)" }}
+      />
+      <div className="relative mx-auto max-w-md">
+        <div
+          className="mx-auto grid h-14 w-14 place-items-center rounded-2xl text-white"
+          style={{ background: "var(--gradient-brand)" }}
+        >
+          <Star className="h-6 w-6" />
+        </div>
+        <h2
+          className="mt-6 text-3xl font-normal tracking-tight sm:text-4xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Add your first testimonial
+        </h2>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Real words from happy clients build instant credibility. Add photos, ratings and
+          featured picks that shine on your homepage.
+        </p>
+        <button onClick={onCreate} className="btn-primary mt-8 !px-5 !py-2.5 text-sm">
+          <Plus className="h-4 w-4" /> Create First Testimonial
+        </button>
+      </div>
+    </div>
+  );
+}
