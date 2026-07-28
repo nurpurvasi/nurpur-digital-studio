@@ -20,6 +20,7 @@ import { useSiteContent } from "@/content/SiteContentContext";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listPublicProjects, type PortfolioProject } from "@/lib/portfolio.functions";
+import { listFeaturedTestimonials, type Testimonial } from "@/lib/testimonials.functions";
 
 /* ---------------- Stats ---------------- */
 
@@ -329,8 +330,42 @@ export function ProcessSection() {
 
 export function TestimonialsSection() {
   const siteContent = useSiteContent();
-  const testimonials = siteContent.testimonials;
-  const showPlaceholders = testimonials.length === 0;
+  const load = useServerFn(listFeaturedTestimonials);
+  const { data } = useQuery({
+    queryKey: ["testimonials-featured"],
+    queryFn: () => load(),
+    staleTime: 60_000,
+  });
+
+  type Item = {
+    key: string;
+    quote: string;
+    name: string;
+    role: string;
+    avatar?: string;
+    rating: number;
+    logo?: string;
+  };
+
+  const fromDb: Item[] = (data?.testimonials ?? []).map((t: Testimonial) => ({
+    key: t.id,
+    quote: t.testimonial,
+    name: t.client_name,
+    role: [t.designation, t.company].filter(Boolean).join(" · "),
+    avatar: t.client_photo || undefined,
+    rating: t.rating,
+    logo: t.company_logo || undefined,
+  }));
+  const fromSite: Item[] = siteContent.testimonials.map((t, i) => ({
+    key: (t.id ?? "s") + i,
+    quote: t.quote,
+    name: t.name,
+    role: t.role,
+    avatar: t.avatar,
+    rating: 5,
+  }));
+  const items: Item[] = fromDb.length ? fromDb : fromSite;
+  const showPlaceholders = items.length === 0;
 
   return (
     <Section>
@@ -351,7 +386,7 @@ export function TestimonialsSection() {
                 <AddPlaceholder label="Add Testimonial" minHeight="280px" />
               </Reveal>
             ))
-          : testimonials.map((t, i) => {
+          : items.map((t, i) => {
               const initials = t.name
                 .split(" ")
                 .map((w) => w[0])
@@ -360,7 +395,7 @@ export function TestimonialsSection() {
                 .join("")
                 .toUpperCase();
               return (
-                <Reveal key={t.name + i} delay={i * 120}>
+                <Reveal key={t.key} delay={i * 120}>
                   <figure
                     className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
                     style={{
@@ -380,7 +415,7 @@ export function TestimonialsSection() {
                       &ldquo;
                     </span>
                     <div className="flex gap-1 text-[color:var(--royal)]">
-                      {Array.from({ length: 5 }).map((_, k) => (
+                      {Array.from({ length: t.rating }).map((_, k) => (
                         <Star key={k} className="h-4 w-4 fill-current" />
                       ))}
                     </div>
@@ -410,10 +445,18 @@ export function TestimonialsSection() {
                           </span>
                         )}
                       </span>
-                      <div>
-                        <p className="text-sm font-semibold">{t.name}</p>
-                        <p className="text-xs text-muted-foreground">{t.role}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold">{t.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">{t.role}</p>
                       </div>
+                      {t.logo && (
+                        <img
+                          src={t.logo}
+                          alt=""
+                          loading="lazy"
+                          className="h-7 max-w-[70px] object-contain opacity-80"
+                        />
+                      )}
                     </figcaption>
                   </figure>
                 </Reveal>
@@ -423,6 +466,7 @@ export function TestimonialsSection() {
     </Section>
   );
 }
+
 
 /* ---------------- FAQ ---------------- */
 
