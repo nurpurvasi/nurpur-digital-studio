@@ -20,7 +20,7 @@ import {
   Inbox,
 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/admin/leads")({
+export const Route = createFileRoute("/_authenticated/admin/leads/")({
   head: () => ({
     meta: [
       { title: "Leads — NurpurVasi Digitals" },
