@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getLead, updateLead, deleteLead, type LeadStatus, type LeadPriority } from "@/lib/leads.functions";
 import { getIsAdmin } from "@/lib/cms.functions";
-import { statusLabel, statusTone, priorityTone } from "./admin.leads";
+import { statusLabel, statusTone, priorityTone } from "./admin.leads.index";
 import {
   ArrowLeft,
   Loader2,
