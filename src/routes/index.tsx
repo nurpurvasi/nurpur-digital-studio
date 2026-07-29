@@ -11,6 +11,7 @@ import {
   PremiumCTA,
 } from "@/components/site/HomeSections";
 import { PremiumContactSection } from "@/components/site/PremiumContact";
+import { Gallery } from "@/components/site/Gallery";
 import { InlineEditable } from "@/components/site/inline-editor/InlineEditable";
 
 export const Route = createFileRoute("/")({
@@ -50,6 +51,7 @@ function Index() {
       <InlineEditable section="portfolio" label="Portfolio">
         <FeaturedPortfolio />
       </InlineEditable>
+      <Gallery variant="featured" eyebrow="Gallery" title="A closer look" showEmpty={false} />
       <ProcessSection />
       <InlineEditable section="testimonials" label="Testimonials">
         <TestimonialsSection />
