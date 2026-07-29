@@ -80,6 +80,66 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery: {
+        Row: {
+          alt_text: string
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string
+          featured: boolean
+          id: string
+          media_type: string
+          media_url: string
+          publish_date: string | null
+          seo_description: string
+          seo_title: string
+          sort_order: number
+          status: string
+          thumbnail: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          alt_text?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          featured?: boolean
+          id?: string
+          media_type?: string
+          media_url?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          sort_order?: number
+          status?: string
+          thumbnail?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          alt_text?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          featured?: boolean
+          id?: string
+          media_type?: string
+          media_url?: string
+          publish_date?: string | null
+          seo_description?: string
+          seo_title?: string
+          sort_order?: number
+          status?: string
+          thumbnail?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           assigned_to: string | null
