@@ -256,7 +256,7 @@ function AdminTeamEditor() {
                 value={draft.name}
                 onChange={(e) => patch("name", e.target.value)}
                 placeholder="Gaurav Bharti"
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
             <Field label="Designation">
@@ -264,7 +264,7 @@ function AdminTeamEditor() {
                 value={draft.designation}
                 onChange={(e) => patch("designation", e.target.value)}
                 placeholder="Founder & Creative Director"
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
             <Field label="Bio">
@@ -273,7 +273,7 @@ function AdminTeamEditor() {
                 onChange={(e) => patch("bio", e.target.value)}
                 rows={6}
                 placeholder="Short professional introduction…"
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
             <Field label="Profile image">
@@ -292,7 +292,7 @@ function AdminTeamEditor() {
                   value={draft.email}
                   onChange={(e) => patch("email", e.target.value)}
                   placeholder="name@example.com"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
               <Field label="Phone">
@@ -300,7 +300,7 @@ function AdminTeamEditor() {
                   value={draft.phone}
                   onChange={(e) => patch("phone", e.target.value)}
                   placeholder="+91 00000 00000"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
             </div>
@@ -313,7 +313,7 @@ function AdminTeamEditor() {
                   value={draft.social_links.instagram}
                   onChange={(e) => patchSocial("instagram", e.target.value)}
                   placeholder="https://instagram.com/…"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
               <Field label="LinkedIn">
@@ -321,7 +321,7 @@ function AdminTeamEditor() {
                   value={draft.social_links.linkedin}
                   onChange={(e) => patchSocial("linkedin", e.target.value)}
                   placeholder="https://linkedin.com/in/…"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
               <Field label="Facebook">
@@ -329,7 +329,7 @@ function AdminTeamEditor() {
                   value={draft.social_links.facebook}
                   onChange={(e) => patchSocial("facebook", e.target.value)}
                   placeholder="https://facebook.com/…"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
               <Field label="X">
@@ -337,7 +337,7 @@ function AdminTeamEditor() {
                   value={draft.social_links.x}
                   onChange={(e) => patchSocial("x", e.target.value)}
                   placeholder="https://x.com/…"
-                  className="inp"
+                  className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
                 />
               </Field>
             </div>
@@ -348,7 +348,7 @@ function AdminTeamEditor() {
               <input
                 value={draft.seo_title}
                 onChange={(e) => patch("seo_title", e.target.value)}
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
             <Field label="SEO description">
@@ -356,7 +356,7 @@ function AdminTeamEditor() {
                 value={draft.seo_description}
                 onChange={(e) => patch("seo_description", e.target.value)}
                 rows={3}
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
           </Card>
@@ -378,14 +378,14 @@ function AdminTeamEditor() {
                 type="number"
                 value={draft.sort_order}
                 onChange={(e) => patch("sort_order", Number(e.target.value) || 0)}
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               />
             </Field>
             <Field label="Status">
               <select
                 value={draft.status}
                 onChange={(e) => patch("status", e.target.value as Draft["status"])}
-                className="inp"
+                className="w-full rounded-xl border border-border bg-white px-3 py-2 text-sm outline-none focus:border-foreground/30"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
