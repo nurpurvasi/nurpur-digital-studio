@@ -35,6 +35,7 @@ import { Route as AuthenticatedAdminLeadsIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminGalleryIndexRouteImport } from './routes/_authenticated/admin.gallery.index'
 import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
 import { Route as AuthenticatedAdminTestimonialsIdRouteImport } from './routes/_authenticated/admin.testimonials.$id'
+import { Route as AuthenticatedAdminTeamIdRouteImport } from './routes/_authenticated/admin.team.$id'
 import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminLeadsIdRouteImport } from './routes/_authenticated/admin.leads.$id'
 import { Route as AuthenticatedAdminGalleryIdRouteImport } from './routes/_authenticated/admin.gallery.$id'
@@ -179,6 +180,12 @@ const AuthenticatedAdminTestimonialsIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
   } as any)
+const AuthenticatedAdminTeamIdRoute =
+  AuthenticatedAdminTeamIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminTeamRoute,
+  } as any)
 const AuthenticatedAdminPortfolioIdRoute =
   AuthenticatedAdminPortfolioIdRouteImport.update({
     id: '/$id',
@@ -227,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
+  '/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
   '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
@@ -251,6 +259,7 @@ export interface FileRoutesByTo {
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
+  '/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
   '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryIndexRoute
@@ -284,6 +293,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/_authenticated/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
+  '/_authenticated/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
   '/_authenticated/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/_authenticated/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
+    | '/admin/team/$id'
     | '/admin/testimonials/$id'
     | '/admin/blog/'
     | '/admin/gallery/'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
+    | '/admin/team/$id'
     | '/admin/testimonials/$id'
     | '/admin/blog'
     | '/admin/gallery'
@@ -373,6 +385,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/gallery/$id'
     | '/_authenticated/admin/leads/$id'
     | '/_authenticated/admin/portfolio/$id'
+    | '/_authenticated/admin/team/$id'
     | '/_authenticated/admin/testimonials/$id'
     | '/_authenticated/admin/blog/'
     | '/_authenticated/admin/gallery/'
@@ -577,6 +590,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTestimonialsIdRouteImport
       parentRoute: typeof AuthenticatedAdminTestimonialsRoute
     }
+    '/_authenticated/admin/team/$id': {
+      id: '/_authenticated/admin/team/$id'
+      path: '/$id'
+      fullPath: '/admin/team/$id'
+      preLoaderRoute: typeof AuthenticatedAdminTeamIdRouteImport
+      parentRoute: typeof AuthenticatedAdminTeamRoute
+    }
     '/_authenticated/admin/portfolio/$id': {
       id: '/_authenticated/admin/portfolio/$id'
       path: '/$id'
@@ -674,11 +694,13 @@ const AuthenticatedAdminPortfolioRouteWithChildren =
   )
 
 interface AuthenticatedAdminTeamRouteChildren {
+  AuthenticatedAdminTeamIdRoute: typeof AuthenticatedAdminTeamIdRoute
   AuthenticatedAdminTeamIndexRoute: typeof AuthenticatedAdminTeamIndexRoute
 }
 
 const AuthenticatedAdminTeamRouteChildren: AuthenticatedAdminTeamRouteChildren =
   {
+    AuthenticatedAdminTeamIdRoute: AuthenticatedAdminTeamIdRoute,
     AuthenticatedAdminTeamIndexRoute: AuthenticatedAdminTeamIndexRoute,
   }
 
