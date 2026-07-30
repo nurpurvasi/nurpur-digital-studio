@@ -12,7 +12,9 @@ import {
 } from "@/components/site/HomeSections";
 import { PremiumContactSection } from "@/components/site/PremiumContact";
 import { Gallery } from "@/components/site/Gallery";
+import { Team } from "@/components/site/Team";
 import { InlineEditable } from "@/components/site/inline-editor/InlineEditable";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
