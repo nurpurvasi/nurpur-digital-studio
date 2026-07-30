@@ -12,7 +12,9 @@ import {
 } from "@/components/site/HomeSections";
 import { PremiumContactSection } from "@/components/site/PremiumContact";
 import { Gallery } from "@/components/site/Gallery";
+import { Team } from "@/components/site/Team";
 import { InlineEditable } from "@/components/site/inline-editor/InlineEditable";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,7 +54,15 @@ function Index() {
         <FeaturedPortfolio />
       </InlineEditable>
       <Gallery variant="featured" eyebrow="Gallery" title="A closer look" showEmpty={false} />
+      <Team
+        variant="featured"
+        eyebrow="Our Team"
+        title="The people behind the work"
+        subtitle="A focused team of designers, engineers and strategists."
+        showEmpty={false}
+      />
       <ProcessSection />
+
       <InlineEditable section="testimonials" label="Testimonials">
         <TestimonialsSection />
       </InlineEditable>
