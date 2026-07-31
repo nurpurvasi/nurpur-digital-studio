@@ -14,6 +14,7 @@ import {
   Minus,
 } from "lucide-react";
 import { Eyebrow, Section } from "./Layout";
+import { useServiceCards } from "@/components/site/Services";
 import { Reveal } from "./Reveal";
 import { AddPlaceholder } from "./AddPlaceholder";
 import { useSiteContent } from "@/content/SiteContentContext";
@@ -112,16 +113,9 @@ function StatItem({ value, suffix, label, run }: { value: number; suffix: string
 
 /* ---------------- Services ---------------- */
 
-const services = [
-  { icon: Palette, title: "Website Design", desc: "Cinematic, brand-first interfaces designed to feel unmistakably premium.", tag: "Design" },
-  { icon: Code2, title: "Development", desc: "Production-grade builds with buttery motion, blazing performance and clean code.", tag: "Engineering" },
-  { icon: Search, title: "SEO Growth", desc: "Technical SEO, content strategy and Core Web Vitals tuned for organic growth.", tag: "Growth" },
-  { icon: Smartphone, title: "Mobile Experiences", desc: "Mobile-first, fluid layouts and gestures that feel native on every device.", tag: "Mobile" },
-  { icon: LineChart, title: "Analytics & CRO", desc: "Instrumented insights and conversion experiments that compound over time.", tag: "Insights" },
-  { icon: Rocket, title: "Digital Solutions", desc: "End-to-end brand, marketing sites, dashboards and bespoke digital products.", tag: "Product" },
-];
 
 export function ServicesSection() {
+  const services = useServiceCards("featured");
   return (
     <Section id="services">
       <div className="mx-auto max-w-3xl text-center">
@@ -139,7 +133,7 @@ export function ServicesSection() {
 
       <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((s, i) => (
-          <Reveal key={s.title} delay={i * 80}>
+          <Reveal key={s.key} delay={i * 80}>
             <article
               className="group relative h-full overflow-hidden rounded-3xl border border-border bg-white p-8 transition-all duration-500 hover:-translate-y-1.5 hover:border-transparent hover:shadow-[0_40px_80px_-30px_color-mix(in_oklab,var(--navy)_30%,transparent)]"
               style={{ boxShadow: "0 1px 0 rgba(255,255,255,0.6) inset" }}

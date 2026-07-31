@@ -216,6 +216,9 @@ function AdminPage() {
             <Link to="/admin/team" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <Users className="h-3 w-3" /> Team
             </Link>
+            <Link to="/admin/services" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
+              <Sparkles className="h-3 w-3" /> Services
+            </Link>
 
             <button
               onClick={() => discardMut.mutate()}
