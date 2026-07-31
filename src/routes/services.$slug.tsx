@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { Reveal } from "@/components/site/Reveal";
-import { getPublicService } from "@/lib/services.functions";
+import { getPublicService, type ServiceItem } from "@/lib/services.functions";
 import { getServiceIcon } from "@/components/site/service-icons";
 
 export const Route = createFileRoute("/services/$slug")({
@@ -61,9 +61,10 @@ function ServiceDetail() {
   const { item, related } = Route.useLoaderData();
   if (!item) return null;
   const Icon = getServiceIcon(item.icon);
-  const gallery = Array.isArray(item.gallery_images) ? item.gallery_images : [];
-  const features = Array.isArray(item.features) ? item.features : [];
-  const technologies = Array.isArray(item.technologies) ? item.technologies : [];
+  const gallery: string[] = Array.isArray(item.gallery_images) ? item.gallery_images : [];
+  const features: string[] = Array.isArray(item.features) ? item.features : [];
+  const technologies: string[] = Array.isArray(item.technologies) ? item.technologies : [];
+  const relatedItems = (related ?? []) as ServiceItem[];
 
   return (
     <SiteLayout>
@@ -199,11 +200,11 @@ function ServiceDetail() {
           </Reveal>
         )}
 
-        {related.length > 0 && (
+        {relatedItems.length > 0 && (
           <Reveal variant="up" delay={180} className="mt-20 block">
             <h2 className="text-2xl font-semibold tracking-tight">Related services</h2>
             <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((r) => {
+              {relatedItems.map((r) => {
                 const RIcon = getServiceIcon(r.icon);
                 return (
                   <Link

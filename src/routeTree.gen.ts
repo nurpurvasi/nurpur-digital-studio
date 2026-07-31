@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -87,6 +88,11 @@ const IndexRoute = IndexRouteImport.update({
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => ServicesRoute,
 } as any)
 const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
@@ -249,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
@@ -283,6 +290,7 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/services': typeof ServicesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -314,6 +322,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
@@ -352,6 +361,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog/$slug'
     | '/portfolio/$slug'
+    | '/services/$slug'
     | '/services/'
     | '/admin/blog'
     | '/admin/gallery'
@@ -386,6 +396,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/blog/$slug'
     | '/portfolio/$slug'
+    | '/services/$slug'
     | '/services'
     | '/admin/media'
     | '/admin'
@@ -416,6 +427,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/blog/$slug'
     | '/portfolio/$slug'
+    | '/services/$slug'
     | '/services/'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/gallery'
@@ -516,6 +528,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/services/'
       preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
     }
     '/portfolio/$slug': {
@@ -881,10 +900,12 @@ const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
 )
 
 interface ServicesRouteChildren {
+  ServicesSlugRoute: typeof ServicesSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesSlugRoute: ServicesSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
 }
 
