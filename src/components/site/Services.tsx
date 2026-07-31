@@ -44,7 +44,7 @@ export function useServiceCards(variant: "featured" | "all" = "all") {
     key: s.title,
     title: s.title,
     desc: s.desc,
-    tag: s.tag ?? "",
+    tag: "",
     icon: s.icon,
   }));
 }
