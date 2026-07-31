@@ -275,6 +275,87 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          cta_link: string
+          cta_text: string
+          display_order: number
+          duration: string
+          featured: boolean
+          featured_image: string
+          features: Json
+          full_description: string
+          gallery_images: Json
+          icon: string
+          id: string
+          price: string
+          pricing_type: string
+          published: boolean
+          seo_description: string
+          seo_title: string
+          short_description: string
+          slug: string
+          technologies: Json
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          cta_link?: string
+          cta_text?: string
+          display_order?: number
+          duration?: string
+          featured?: boolean
+          featured_image?: string
+          features?: Json
+          full_description?: string
+          gallery_images?: Json
+          icon?: string
+          id?: string
+          price?: string
+          pricing_type?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug: string
+          technologies?: Json
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          cta_link?: string
+          cta_text?: string
+          display_order?: number
+          duration?: string
+          featured?: boolean
+          featured_image?: string
+          features?: Json
+          full_description?: string
+          gallery_images?: Json
+          icon?: string
+          id?: string
+          price?: string
+          pricing_type?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug?: string
+          technologies?: Json
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           draft: Json
