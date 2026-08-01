@@ -12,6 +12,7 @@ import {
 } from "@/components/site/HomeSections";
 import { PremiumContactSection } from "@/components/site/PremiumContact";
 import { Gallery } from "@/components/site/Gallery";
+import { PricingSection } from "@/components/site/Pricing";
 import { Team } from "@/components/site/Team";
 import { InlineEditable } from "@/components/site/inline-editor/InlineEditable";
 
@@ -61,6 +62,7 @@ function Index() {
         subtitle="A focused team of designers, engineers and strategists."
         showEmpty={false}
       />
+      <PricingSection variant="featured" />
       <ProcessSection />
 
       <InlineEditable section="testimonials" label="Testimonials">

@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Check, Minus } from "lucide-react";
@@ -105,8 +104,8 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
       )}
 
       <div className="relative mt-8 pt-2">
-        <Link
-          to={plan.button_link || "/contact"}
+        <a
+          href={plan.button_link || "/contact"}
           className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition ${
             plan.featured ? "text-white" : "border border-border bg-background hover:-translate-y-0.5 hover:shadow"
           }`}
@@ -114,7 +113,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
         >
           {plan.button_text || "Get started"}
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
+        </a>
       </div>
     </div>
   );
