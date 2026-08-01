@@ -90,6 +90,7 @@ export function Footer() {
             title="Studio"
             items={[
               { label: "Services", to: "/services" },
+              { label: "Pricing", to: "/pricing" },
               { label: "Portfolio", to: "/portfolio" },
               { label: "About", to: "/about" },
               { label: "Contact", to: "/contact" },
