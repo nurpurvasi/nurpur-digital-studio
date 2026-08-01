@@ -275,6 +275,81 @@ export type Database = {
         }
         Relationships: []
       }
+      pricing_plans: {
+        Row: {
+          badge: string
+          billing_cycle: string
+          button_link: string
+          button_text: string
+          created_at: string
+          created_by: string | null
+          currency: string
+          display_order: number
+          featured: boolean
+          features: Json
+          icon: string
+          id: string
+          limitations: Json
+          plan_color: string
+          price: string
+          published: boolean
+          seo_description: string
+          seo_title: string
+          short_description: string
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          badge?: string
+          billing_cycle?: string
+          button_link?: string
+          button_text?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          display_order?: number
+          featured?: boolean
+          features?: Json
+          icon?: string
+          id?: string
+          limitations?: Json
+          plan_color?: string
+          price?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          badge?: string
+          billing_cycle?: string
+          button_link?: string
+          button_text?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          display_order?: number
+          featured?: boolean
+          features?: Json
+          icon?: string
+          id?: string
+          limitations?: Json
+          plan_color?: string
+          price?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          short_description?: string
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       services: {
         Row: {
           category: string
