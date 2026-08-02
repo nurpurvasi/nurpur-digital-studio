@@ -17,6 +17,7 @@ import { PageTransition } from "@/components/site/PageTransition";
 import { SiteContentProvider } from "@/content/SiteContentContext";
 import { ThemeApplier } from "@/components/site/ThemeApplier";
 import { AdminModeProvider } from "@/content/AdminModeContext";
+import { TypographyProvider } from "@/content/TypographyContext";
 import { AdminModeToggle } from "@/components/site/inline-editor/AdminModeToggle";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -152,6 +153,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SiteContentProvider>
+        <TypographyProvider>
         <ThemeApplier />
         <AdminModeProvider>
           <LoadingScreen />
@@ -161,6 +163,7 @@ function RootComponent() {
           <FloatingActions />
           <AdminModeToggle />
         </AdminModeProvider>
+        </TypographyProvider>
       </SiteContentProvider>
     </QueryClientProvider>
   );
