@@ -47,6 +47,23 @@
 :root {
   --radius: 1rem;
 
+  /* Typography defaults — overridden at runtime by the Typography CMS */
+  --font-heading: "Instrument Serif", Georgia, serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-nav: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-button: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --weight-heading: 600;
+  --weight-body: 400;
+  --weight-button: 500;
+  --weight-nav: 500;
+  --tracking-heading: -0.02em;
+  --tracking-body: 0em;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --base-font-size: 16px;
+  --heading-transform: none;
+
+
   /* Brand */
   --navy: oklch(0.24 0.07 265);        /* Deep Navy */
   --royal: oklch(0.48 0.19 265);       /* Royal Blue */
