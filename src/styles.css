@@ -109,16 +109,40 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-size: var(--base-font-size);
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
+    font-weight: var(--weight-body);
+    letter-spacing: var(--tracking-body);
+    line-height: var(--leading-body);
     font-feature-settings: "cv11", "ss01", "ss03";
   }
-  h1, h2, h3 { letter-spacing: -0.02em; }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: var(--weight-heading);
+    letter-spacing: var(--tracking-heading);
+    line-height: var(--leading-heading);
+    text-transform: var(--heading-transform);
+  }
+  nav, header nav, nav a, nav button {
+    font-family: var(--font-nav);
+  }
+  nav a, nav button { font-weight: var(--weight-nav); }
+  button, .btn-primary, .btn-ghost, a[role="button"], input, textarea, select, label {
+    font-family: var(--font-button);
+  }
+  button, .btn-primary, .btn-ghost, a[role="button"] { font-weight: var(--weight-button); }
+  input, textarea, select { font-family: var(--font-body); }
   ::selection { background: color-mix(in oklab, var(--royal) 25%, transparent); }
 }
+
 
 @utility container-x {
   @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10;
