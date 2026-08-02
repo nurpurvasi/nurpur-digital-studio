@@ -34,6 +34,7 @@ import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin.gallery'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
+import { Route as AuthenticatedAdminTypographyIndexRouteImport } from './routes/_authenticated/admin.typography.index'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
 import { Route as AuthenticatedAdminTeamIndexRouteImport } from './routes/_authenticated/admin.team.index'
 import { Route as AuthenticatedAdminServicesIndexRouteImport } from './routes/_authenticated/admin.services.index'
@@ -181,6 +182,12 @@ const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminTypographyIndexRoute =
+  AuthenticatedAdminTypographyIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminTypographyRoute,
+  } as any)
 const AuthenticatedAdminTestimonialsIndexRoute =
   AuthenticatedAdminTestimonialsIndexRouteImport.update({
     id: '/',
@@ -301,7 +308,7 @@ export interface FileRoutesByFullPath {
   '/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
   '/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  '/admin/typography': typeof AuthenticatedAdminTypographyRoute
+  '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
@@ -319,6 +326,7 @@ export interface FileRoutesByFullPath {
   '/admin/services/': typeof AuthenticatedAdminServicesIndexRoute
   '/admin/team/': typeof AuthenticatedAdminTeamIndexRoute
   '/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/admin/typography/': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -333,7 +341,6 @@ export interface FileRoutesByTo {
   '/services/$slug': typeof ServicesSlugRoute
   '/services': typeof ServicesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/admin/typography': typeof AuthenticatedAdminTypographyRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
@@ -351,6 +358,7 @@ export interface FileRoutesByTo {
   '/admin/services': typeof AuthenticatedAdminServicesIndexRoute
   '/admin/team': typeof AuthenticatedAdminTeamIndexRoute
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/admin/typography': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -377,7 +385,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRoute
+  '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
@@ -395,6 +403,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/services/': typeof AuthenticatedAdminServicesIndexRoute
   '/_authenticated/admin/team/': typeof AuthenticatedAdminTeamIndexRoute
   '/_authenticated/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/_authenticated/admin/typography/': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -439,6 +448,7 @@ export interface FileRouteTypes {
     | '/admin/services/'
     | '/admin/team/'
     | '/admin/testimonials/'
+    | '/admin/typography/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -453,7 +463,6 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/services'
     | '/admin/media'
-    | '/admin/typography'
     | '/admin'
     | '/admin/blog/$id'
     | '/admin/gallery/$id'
@@ -471,6 +480,7 @@ export interface FileRouteTypes {
     | '/admin/services'
     | '/admin/team'
     | '/admin/testimonials'
+    | '/admin/typography'
   id:
     | '__root__'
     | '/'
@@ -514,6 +524,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/services/'
     | '/_authenticated/admin/team/'
     | '/_authenticated/admin/testimonials/'
+    | '/_authenticated/admin/typography/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -704,6 +715,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/typography/': {
+      id: '/_authenticated/admin/typography/'
+      path: '/'
+      fullPath: '/admin/typography/'
+      preLoaderRoute: typeof AuthenticatedAdminTypographyIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminTypographyRoute
     }
     '/_authenticated/admin/testimonials/': {
       id: '/_authenticated/admin/testimonials/'
@@ -951,6 +969,21 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
     AuthenticatedAdminTestimonialsRouteChildren,
   )
 
+interface AuthenticatedAdminTypographyRouteChildren {
+  AuthenticatedAdminTypographyIndexRoute: typeof AuthenticatedAdminTypographyIndexRoute
+}
+
+const AuthenticatedAdminTypographyRouteChildren: AuthenticatedAdminTypographyRouteChildren =
+  {
+    AuthenticatedAdminTypographyIndexRoute:
+      AuthenticatedAdminTypographyIndexRoute,
+  }
+
+const AuthenticatedAdminTypographyRouteWithChildren =
+  AuthenticatedAdminTypographyRoute._addFileChildren(
+    AuthenticatedAdminTypographyRouteChildren,
+  )
+
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRouteWithChildren
@@ -961,7 +994,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRouteWithChildren
   AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRouteWithChildren
   AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  AuthenticatedAdminTypographyRoute: typeof AuthenticatedAdminTypographyRoute
+  AuthenticatedAdminTypographyRoute: typeof AuthenticatedAdminTypographyRouteWithChildren
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -977,7 +1010,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRouteWithChildren,
   AuthenticatedAdminTestimonialsRoute:
     AuthenticatedAdminTestimonialsRouteWithChildren,
-  AuthenticatedAdminTypographyRoute: AuthenticatedAdminTypographyRoute,
+  AuthenticatedAdminTypographyRoute:
+    AuthenticatedAdminTypographyRouteWithChildren,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
