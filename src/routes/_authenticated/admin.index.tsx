@@ -33,6 +33,7 @@ import {
   Star,
   Trash2,
   Users,
+  Type,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
@@ -194,6 +195,9 @@ function AdminPage() {
           <div className="ml-auto flex items-center gap-2">
             <Link to="/" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <Eye className="h-3 w-3" /> View site
+            </Link>
+            <Link to="/admin/typography" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
+              <Type className="h-3 w-3" /> Typography
             </Link>
             <Link to="/admin/media" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <ImageIcon className="h-3 w-3" /> Media
