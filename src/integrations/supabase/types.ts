@@ -578,6 +578,66 @@ export type Database = {
         }
         Relationships: []
       }
+      typography_settings: {
+        Row: {
+          base_font_size: number
+          body_font: string
+          body_letter_spacing: number
+          body_line_height: number
+          body_weight: number
+          button_font: string
+          button_weight: number
+          heading_font: string
+          heading_letter_spacing: number
+          heading_line_height: number
+          heading_weight: number
+          id: number
+          navigation_font: string
+          navigation_weight: number
+          text_transform: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          base_font_size?: number
+          body_font?: string
+          body_letter_spacing?: number
+          body_line_height?: number
+          body_weight?: number
+          button_font?: string
+          button_weight?: number
+          heading_font?: string
+          heading_letter_spacing?: number
+          heading_line_height?: number
+          heading_weight?: number
+          id?: number
+          navigation_font?: string
+          navigation_weight?: number
+          text_transform?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          base_font_size?: number
+          body_font?: string
+          body_letter_spacing?: number
+          body_line_height?: number
+          body_weight?: number
+          button_font?: string
+          button_weight?: number
+          heading_font?: string
+          heading_letter_spacing?: number
+          heading_line_height?: number
+          heading_weight?: number
+          id?: number
+          navigation_font?: string
+          navigation_weight?: number
+          text_transform?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
