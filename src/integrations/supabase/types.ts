@@ -80,6 +80,60 @@ export type Database = {
         }
         Relationships: []
       }
+      clients: {
+        Row: {
+          category: string
+          company_name: string
+          created_at: string
+          created_by: string | null
+          description: string
+          display_order: number
+          featured: boolean
+          id: string
+          logo: string
+          published: boolean
+          seo_description: string
+          seo_title: string
+          slug: string
+          updated_at: string
+          website: string
+        }
+        Insert: {
+          category?: string
+          company_name?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          display_order?: number
+          featured?: boolean
+          id?: string
+          logo?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          slug: string
+          updated_at?: string
+          website?: string
+        }
+        Update: {
+          category?: string
+          company_name?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          display_order?: number
+          featured?: boolean
+          id?: string
+          logo?: string
+          published?: boolean
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          updated_at?: string
+          website?: string
+        }
+        Relationships: []
+      }
       gallery: {
         Row: {
           alt_text: string

@@ -13,6 +13,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -33,6 +34,7 @@ import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin.gallery'
+import { Route as AuthenticatedAdminClientsRouteImport } from './routes/_authenticated/admin.clients'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 import { Route as AuthenticatedAdminTypographyIndexRouteImport } from './routes/_authenticated/admin.typography.index'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
@@ -42,6 +44,7 @@ import { Route as AuthenticatedAdminPricingIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminPortfolioIndexRouteImport } from './routes/_authenticated/admin.portfolio.index'
 import { Route as AuthenticatedAdminLeadsIndexRouteImport } from './routes/_authenticated/admin.leads.index'
 import { Route as AuthenticatedAdminGalleryIndexRouteImport } from './routes/_authenticated/admin.gallery.index'
+import { Route as AuthenticatedAdminClientsIndexRouteImport } from './routes/_authenticated/admin.clients.index'
 import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
 import { Route as AuthenticatedAdminTypographySettingsRouteImport } from './routes/_authenticated/admin.typography.settings'
 import { Route as AuthenticatedAdminTestimonialsIdRouteImport } from './routes/_authenticated/admin.testimonials.$id'
@@ -51,6 +54,7 @@ import { Route as AuthenticatedAdminPricingIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminLeadsIdRouteImport } from './routes/_authenticated/admin.leads.$id'
 import { Route as AuthenticatedAdminGalleryIdRouteImport } from './routes/_authenticated/admin.gallery.$id'
+import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
 const ServicesRoute = ServicesRouteImport.update({
@@ -71,6 +75,11 @@ const PortfolioRoute = PortfolioRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientsRoute = ClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -178,6 +187,12 @@ const AuthenticatedAdminGalleryRoute =
     path: '/gallery',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminClientsRoute =
+  AuthenticatedAdminClientsRouteImport.update({
+    id: '/clients',
+    path: '/clients',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -230,6 +245,12 @@ const AuthenticatedAdminGalleryIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
+  } as any)
+const AuthenticatedAdminClientsIndexRoute =
+  AuthenticatedAdminClientsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminClientsRoute,
   } as any)
 const AuthenticatedAdminBlogIndexRoute =
   AuthenticatedAdminBlogIndexRouteImport.update({
@@ -285,6 +306,12 @@ const AuthenticatedAdminGalleryIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
   } as any)
+const AuthenticatedAdminClientsIdRoute =
+  AuthenticatedAdminClientsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminClientsRoute,
+  } as any)
 const AuthenticatedAdminBlogIdRoute =
   AuthenticatedAdminBlogIdRouteImport.update({
     id: '/$id',
@@ -297,6 +324,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -307,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
@@ -318,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -327,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
+  '/admin/clients/': typeof AuthenticatedAdminClientsIndexRoute
   '/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
   '/admin/leads/': typeof AuthenticatedAdminLeadsIndexRoute
   '/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
@@ -341,6 +372,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -351,6 +383,7 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -360,6 +393,7 @@ export interface FileRoutesByTo {
   '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
+  '/admin/clients': typeof AuthenticatedAdminClientsIndexRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryIndexRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsIndexRoute
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioIndexRoute
@@ -376,6 +410,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -386,6 +421,7 @@ export interface FileRoutesById {
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
@@ -397,6 +433,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/_authenticated/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/_authenticated/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -406,6 +443,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/_authenticated/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
+  '/_authenticated/admin/clients/': typeof AuthenticatedAdminClientsIndexRoute
   '/_authenticated/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
   '/_authenticated/admin/leads/': typeof AuthenticatedAdminLeadsIndexRoute
   '/_authenticated/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
@@ -422,6 +460,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/clients'
     | '/contact'
     | '/portfolio'
     | '/pricing'
@@ -432,6 +471,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/services/'
     | '/admin/blog'
+    | '/admin/clients'
     | '/admin/gallery'
     | '/admin/leads'
     | '/admin/media'
@@ -443,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin/typography'
     | '/admin/'
     | '/admin/blog/$id'
+    | '/admin/clients/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -452,6 +493,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials/$id'
     | '/admin/typography/settings'
     | '/admin/blog/'
+    | '/admin/clients/'
     | '/admin/gallery/'
     | '/admin/leads/'
     | '/admin/portfolio/'
@@ -466,6 +508,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/clients'
     | '/contact'
     | '/portfolio'
     | '/pricing'
@@ -476,6 +519,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin'
     | '/admin/blog/$id'
+    | '/admin/clients/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -485,6 +529,7 @@ export interface FileRouteTypes {
     | '/admin/testimonials/$id'
     | '/admin/typography/settings'
     | '/admin/blog'
+    | '/admin/clients'
     | '/admin/gallery'
     | '/admin/leads'
     | '/admin/portfolio'
@@ -500,6 +545,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/clients'
     | '/contact'
     | '/portfolio'
     | '/pricing'
@@ -510,6 +556,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/services/'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/admin/clients'
     | '/_authenticated/admin/gallery'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/media'
@@ -521,6 +568,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/typography'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/blog/$id'
+    | '/_authenticated/admin/clients/$id'
     | '/_authenticated/admin/gallery/$id'
     | '/_authenticated/admin/leads/$id'
     | '/_authenticated/admin/portfolio/$id'
@@ -530,6 +578,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/testimonials/$id'
     | '/_authenticated/admin/typography/settings'
     | '/_authenticated/admin/blog/'
+    | '/_authenticated/admin/clients/'
     | '/_authenticated/admin/gallery/'
     | '/_authenticated/admin/leads/'
     | '/_authenticated/admin/portfolio/'
@@ -546,6 +595,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
@@ -580,6 +630,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clients': {
+      id: '/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -722,6 +779,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleryRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/clients': {
+      id: '/_authenticated/admin/clients'
+      path: '/clients'
+      fullPath: '/admin/clients'
+      preLoaderRoute: typeof AuthenticatedAdminClientsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/blog'
@@ -784,6 +848,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/gallery/'
       preLoaderRoute: typeof AuthenticatedAdminGalleryIndexRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
+    }
+    '/_authenticated/admin/clients/': {
+      id: '/_authenticated/admin/clients/'
+      path: '/'
+      fullPath: '/admin/clients/'
+      preLoaderRoute: typeof AuthenticatedAdminClientsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminClientsRoute
     }
     '/_authenticated/admin/blog/': {
       id: '/_authenticated/admin/blog/'
@@ -848,6 +919,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleryIdRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
     }
+    '/_authenticated/admin/clients/$id': {
+      id: '/_authenticated/admin/clients/$id'
+      path: '/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AuthenticatedAdminClientsIdRouteImport
+      parentRoute: typeof AuthenticatedAdminClientsRoute
+    }
     '/_authenticated/admin/blog/$id': {
       id: '/_authenticated/admin/blog/$id'
       path: '/$id'
@@ -872,6 +950,22 @@ const AuthenticatedAdminBlogRouteChildren: AuthenticatedAdminBlogRouteChildren =
 const AuthenticatedAdminBlogRouteWithChildren =
   AuthenticatedAdminBlogRoute._addFileChildren(
     AuthenticatedAdminBlogRouteChildren,
+  )
+
+interface AuthenticatedAdminClientsRouteChildren {
+  AuthenticatedAdminClientsIdRoute: typeof AuthenticatedAdminClientsIdRoute
+  AuthenticatedAdminClientsIndexRoute: typeof AuthenticatedAdminClientsIndexRoute
+}
+
+const AuthenticatedAdminClientsRouteChildren: AuthenticatedAdminClientsRouteChildren =
+  {
+    AuthenticatedAdminClientsIdRoute: AuthenticatedAdminClientsIdRoute,
+    AuthenticatedAdminClientsIndexRoute: AuthenticatedAdminClientsIndexRoute,
+  }
+
+const AuthenticatedAdminClientsRouteWithChildren =
+  AuthenticatedAdminClientsRoute._addFileChildren(
+    AuthenticatedAdminClientsRouteChildren,
   )
 
 interface AuthenticatedAdminGalleryRouteChildren {
@@ -1009,6 +1103,7 @@ const AuthenticatedAdminTypographyRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
+  AuthenticatedAdminClientsRoute: typeof AuthenticatedAdminClientsRouteWithChildren
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRouteWithChildren
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRouteWithChildren
   AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
@@ -1023,6 +1118,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
+  AuthenticatedAdminClientsRoute: AuthenticatedAdminClientsRouteWithChildren,
   AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRouteWithChildren,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRouteWithChildren,
   AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
@@ -1094,6 +1190,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
