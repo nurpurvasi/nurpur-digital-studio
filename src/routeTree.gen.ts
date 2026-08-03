@@ -53,6 +53,7 @@ import { Route as AuthenticatedAdminPricingIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminLeadsIdRouteImport } from './routes/_authenticated/admin.leads.$id'
 import { Route as AuthenticatedAdminGalleryIdRouteImport } from './routes/_authenticated/admin.gallery.$id'
+import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
 const ServicesRoute = ServicesRouteImport.update({
@@ -299,6 +300,12 @@ const AuthenticatedAdminGalleryIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
   } as any)
+const AuthenticatedAdminClientsIdRoute =
+  AuthenticatedAdminClientsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminClientsRoute,
+  } as any)
 const AuthenticatedAdminBlogIdRoute =
   AuthenticatedAdminBlogIdRouteImport.update({
     id: '/$id',
@@ -333,6 +340,7 @@ export interface FileRoutesByFullPath {
   '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -367,6 +375,7 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -415,6 +424,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
+  '/_authenticated/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/_authenticated/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -463,6 +473,7 @@ export interface FileRouteTypes {
     | '/admin/typography'
     | '/admin/'
     | '/admin/blog/$id'
+    | '/admin/clients/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -497,6 +508,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin'
     | '/admin/blog/$id'
+    | '/admin/clients/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -544,6 +556,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/typography'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/blog/$id'
+    | '/_authenticated/admin/clients/$id'
     | '/_authenticated/admin/gallery/$id'
     | '/_authenticated/admin/leads/$id'
     | '/_authenticated/admin/portfolio/$id'
@@ -886,6 +899,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleryIdRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
     }
+    '/_authenticated/admin/clients/$id': {
+      id: '/_authenticated/admin/clients/$id'
+      path: '/$id'
+      fullPath: '/admin/clients/$id'
+      preLoaderRoute: typeof AuthenticatedAdminClientsIdRouteImport
+      parentRoute: typeof AuthenticatedAdminClientsRoute
+    }
     '/_authenticated/admin/blog/$id': {
       id: '/_authenticated/admin/blog/$id'
       path: '/$id'
@@ -913,11 +933,13 @@ const AuthenticatedAdminBlogRouteWithChildren =
   )
 
 interface AuthenticatedAdminClientsRouteChildren {
+  AuthenticatedAdminClientsIdRoute: typeof AuthenticatedAdminClientsIdRoute
   AuthenticatedAdminClientsIndexRoute: typeof AuthenticatedAdminClientsIndexRoute
 }
 
 const AuthenticatedAdminClientsRouteChildren: AuthenticatedAdminClientsRouteChildren =
   {
+    AuthenticatedAdminClientsIdRoute: AuthenticatedAdminClientsIdRoute,
     AuthenticatedAdminClientsIndexRoute: AuthenticatedAdminClientsIndexRoute,
   }
 
