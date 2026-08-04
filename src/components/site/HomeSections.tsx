@@ -22,6 +22,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listPublicProjects, type PortfolioProject } from "@/lib/portfolio.functions";
 import { listFeaturedTestimonials, type Testimonial } from "@/lib/testimonials.functions";
+import { listFeaturedFaqs, type Faq } from "@/lib/faqs.functions";
+import { FaqJsonLd, FaqRichText } from "@/components/site/Faqs";
+
 
 /* ---------------- Stats ---------------- */
 
