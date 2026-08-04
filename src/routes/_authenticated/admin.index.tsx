@@ -229,6 +229,10 @@ function AdminPage() {
             <Link to="/admin/clients" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <Users className="h-3 w-3" /> Clients
             </Link>
+            <Link to="/admin/faqs" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
+              <FileText className="h-3 w-3" /> FAQs
+            </Link>
+
 
             <button
               onClick={() => discardMut.mutate()}

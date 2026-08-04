@@ -134,6 +134,51 @@ export type Database = {
         }
         Relationships: []
       }
+      faqs: {
+        Row: {
+          answer: string
+          category: string
+          created_at: string
+          created_by: string | null
+          display_order: number
+          featured: boolean
+          id: string
+          published: boolean
+          question: string
+          seo_description: string
+          seo_title: string
+          updated_at: string
+        }
+        Insert: {
+          answer?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          display_order?: number
+          featured?: boolean
+          id?: string
+          published?: boolean
+          question?: string
+          seo_description?: string
+          seo_title?: string
+          updated_at?: string
+        }
+        Update: {
+          answer?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          display_order?: number
+          featured?: boolean
+          id?: string
+          published?: boolean
+          question?: string
+          seo_description?: string
+          seo_title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery: {
         Row: {
           alt_text: string
