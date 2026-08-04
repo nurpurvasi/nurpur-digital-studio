@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -70,6 +71,11 @@ const PricingRoute = PricingRouteImport.update({
 const PortfolioRoute = PortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -326,6 +332,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
@@ -374,6 +381,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -412,6 +420,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
@@ -462,6 +471,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/clients'
     | '/contact'
+    | '/faq'
     | '/portfolio'
     | '/pricing'
     | '/services'
@@ -510,6 +520,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/clients'
     | '/contact'
+    | '/faq'
     | '/portfolio'
     | '/pricing'
     | '/blog/$slug'
@@ -547,6 +558,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/clients'
     | '/contact'
+    | '/faq'
     | '/portfolio'
     | '/pricing'
     | '/services'
@@ -597,6 +609,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRouteWithChildren
@@ -623,6 +636,13 @@ declare module '@tanstack/react-router' {
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1192,6 +1212,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRouteWithChildren,
