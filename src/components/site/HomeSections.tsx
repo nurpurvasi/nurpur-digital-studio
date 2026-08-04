@@ -466,11 +466,20 @@ export function TestimonialsSection() {
 
 export function FAQSection() {
   const siteContent = useSiteContent();
-  const faqs = siteContent.faqs;
   const [open, setOpen] = useState<number | null>(0);
+  const loadFaqs = useServerFn(listFeaturedFaqs);
+  const { data } = useQuery({ queryKey: ["faqs-featured"], queryFn: () => loadFaqs() });
+  const dbFaqs = (data?.items ?? []) as Faq[];
+
+  // Prefer CMS-managed featured FAQs; fall back to legacy site content.
+  const faqs =
+    dbFaqs.length > 0
+      ? dbFaqs.map((f) => ({ q: f.question, a: f.answer, rich: true }))
+      : siteContent.faqs.map((f) => ({ q: f.q, a: f.a, rich: false }));
 
   return (
     <Section id="faq">
+      {dbFaqs.length > 0 ? <FaqJsonLd items={dbFaqs} /> : null}
       <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
         <div>
           <Eyebrow>FAQ</Eyebrow>
@@ -483,9 +492,14 @@ export function FAQSection() {
           <p className="mt-5 max-w-md text-muted-foreground">
             Still curious? Reach out — we reply to every inquiry personally.
           </p>
-          <Link to="/contact" className="btn-ghost mt-8">
-            Ask a question <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/contact" className="btn-ghost">
+              Ask a question <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/faq" className="btn-ghost">
+              All FAQs <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
         {faqs.length === 0 ? (
@@ -499,9 +513,10 @@ export function FAQSection() {
             {faqs.map((f, i) => {
               const isOpen = open === i;
               return (
-                <div key={f.q} className="px-6 sm:px-8">
+                <div key={`${f.q}-${i}`} className="px-6 sm:px-8">
                   <button
                     onClick={() => setOpen(isOpen ? null : i)}
+                    aria-expanded={isOpen}
                     className="flex w-full items-center justify-between gap-6 py-6 text-left"
                   >
                     <span className="text-base font-semibold sm:text-lg">{f.q}</span>
@@ -517,9 +532,15 @@ export function FAQSection() {
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="min-h-0">
-                      <p className="pb-6 pr-14 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-                        {f.a}
-                      </p>
+                      {f.rich ? (
+                        <div className="pb-6 pr-4 sm:pr-14">
+                          <FaqRichText html={f.a} />
+                        </div>
+                      ) : (
+                        <p className="pb-6 pr-14 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
+                          {f.a}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -531,6 +552,7 @@ export function FAQSection() {
     </Section>
   );
 }
+
 
 /* ---------------- CTA ---------------- */
 

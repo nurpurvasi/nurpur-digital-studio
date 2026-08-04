@@ -57,6 +57,7 @@ import { Route as AuthenticatedAdminPricingIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminLeadsIdRouteImport } from './routes/_authenticated/admin.leads.$id'
 import { Route as AuthenticatedAdminGalleryIdRouteImport } from './routes/_authenticated/admin.gallery.$id'
+import { Route as AuthenticatedAdminFaqsIdRouteImport } from './routes/_authenticated/admin.faqs.$id'
 import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
@@ -325,6 +326,12 @@ const AuthenticatedAdminGalleryIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
   } as any)
+const AuthenticatedAdminFaqsIdRoute =
+  AuthenticatedAdminFaqsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminFaqsRoute,
+  } as any)
 const AuthenticatedAdminClientsIdRoute =
   AuthenticatedAdminClientsIdRouteImport.update({
     id: '/$id',
@@ -369,6 +376,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
+  '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -407,6 +415,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
+  '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -460,6 +469,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/_authenticated/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
+  '/_authenticated/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/_authenticated/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
   '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
@@ -513,6 +523,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
+    | '/admin/faqs/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -551,6 +562,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
+    | '/admin/faqs/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
     | '/admin/portfolio/$id'
@@ -603,6 +615,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/'
     | '/_authenticated/admin/blog/$id'
     | '/_authenticated/admin/clients/$id'
+    | '/_authenticated/admin/faqs/$id'
     | '/_authenticated/admin/gallery/$id'
     | '/_authenticated/admin/leads/$id'
     | '/_authenticated/admin/portfolio/$id'
@@ -976,6 +989,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleryIdRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
     }
+    '/_authenticated/admin/faqs/$id': {
+      id: '/_authenticated/admin/faqs/$id'
+      path: '/$id'
+      fullPath: '/admin/faqs/$id'
+      preLoaderRoute: typeof AuthenticatedAdminFaqsIdRouteImport
+      parentRoute: typeof AuthenticatedAdminFaqsRoute
+    }
     '/_authenticated/admin/clients/$id': {
       id: '/_authenticated/admin/clients/$id'
       path: '/$id'
@@ -1026,11 +1046,13 @@ const AuthenticatedAdminClientsRouteWithChildren =
   )
 
 interface AuthenticatedAdminFaqsRouteChildren {
+  AuthenticatedAdminFaqsIdRoute: typeof AuthenticatedAdminFaqsIdRoute
   AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
 }
 
 const AuthenticatedAdminFaqsRouteChildren: AuthenticatedAdminFaqsRouteChildren =
   {
+    AuthenticatedAdminFaqsIdRoute: AuthenticatedAdminFaqsIdRoute,
     AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
   }
 
