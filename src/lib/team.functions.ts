@@ -33,6 +33,9 @@ export type TeamMember = {
 const SELECT_COLS =
   "id, name, designation, bio, profile_image, email, phone, social_links, featured, sort_order, status, publish_date, seo_title, seo_description, created_at, updated_at";
 
+const PUBLIC_SELECT_COLS =
+  "id, name, designation, bio, profile_image, social_links, featured, sort_order, status, publish_date, seo_title, seo_description, created_at, updated_at";
+
 function serverPublicClient() {
   const url = process.env.SUPABASE_URL!;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY!;
@@ -57,9 +60,8 @@ export const listPublicTeam = createServerFn({ method: "GET" }).handler(async ()
   const supa = serverPublicClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supa as any)
-    .from("team_members")
-    .select(SELECT_COLS)
-    .eq("status", "published")
+    .from("team_members_public")
+    .select(PUBLIC_SELECT_COLS)
     .order("featured", { ascending: false })
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
@@ -71,9 +73,8 @@ export const listFeaturedTeam = createServerFn({ method: "GET" }).handler(async 
   const supa = serverPublicClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supa as any)
-    .from("team_members")
-    .select(SELECT_COLS)
-    .eq("status", "published")
+    .from("team_members_public")
+    .select(PUBLIC_SELECT_COLS)
     .eq("featured", true)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });

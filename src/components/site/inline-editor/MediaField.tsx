@@ -25,15 +25,14 @@ export function MediaField({
     setBusy(true);
     setErr(null);
     try {
-      const { path, token } = await getUploadUrl({
+      const { path, token, signedUrl } = await getUploadUrl({
         data: { filename: file.name, contentType: file.type || "application/octet-stream" },
       });
       const { error } = await supabase.storage
         .from("site-media")
         .uploadToSignedUrl(path, token, file, { contentType: file.type });
       if (error) throw error;
-      const { data: pub } = supabase.storage.from("site-media").getPublicUrl(path);
-      onChange(pub.publicUrl);
+      onChange(signedUrl);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Upload failed");
     } finally {
