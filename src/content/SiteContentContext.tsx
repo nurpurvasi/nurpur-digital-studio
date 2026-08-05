@@ -19,7 +19,7 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
     queryKey: ["site-content", "published"],
     queryFn: async (): Promise<SiteContent> => {
       const { data, error } = await supabase
-        .from("site_content")
+        .from("site_content_public")
         .select("published")
         .eq("id", 1)
         .maybeSingle();
