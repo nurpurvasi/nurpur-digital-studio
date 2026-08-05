@@ -760,7 +760,75 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      site_content_public: {
+        Row: {
+          id: number | null
+          published: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: number | null
+          published?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: number | null
+          published?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      team_members_public: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          designation: string | null
+          featured: boolean | null
+          id: string | null
+          name: string | null
+          profile_image: string | null
+          publish_date: string | null
+          seo_description: string | null
+          seo_title: string | null
+          social_links: Json | null
+          sort_order: number | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          designation?: string | null
+          featured?: boolean | null
+          id?: string | null
+          name?: string | null
+          profile_image?: string | null
+          publish_date?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          social_links?: Json | null
+          sort_order?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          designation?: string | null
+          featured?: boolean | null
+          id?: string | null
+          name?: string | null
+          profile_image?: string | null
+          publish_date?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          social_links?: Json | null
+          sort_order?: number | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
