@@ -79,14 +79,14 @@ export async function assertMediaUnreferenced(paths: string[]) {
     .from("site_content")
     .select("draft, published");
   if (contentError) throw contentError;
-  if ((content ?? []).some((row) => urls.some((url) => containsDeep(row, url)))) {
+  if ((content ?? []).some((row: unknown) => urls.some((url) => containsDeep(row, url)))) {
     throw new Error("This asset is still used by website content. Remove or replace it there before deleting.");
   }
 
   for (const [table, columns] of Object.entries(MEDIA_COLUMNS)) {
     const { data: rows, error } = await adminDb.from(table).select(columns.join(","));
     if (error) throw error;
-    if ((rows ?? []).some((row) => urls.some((url) => containsDeep(row, url)))) {
+    if ((rows ?? []).some((row: unknown) => urls.some((url) => containsDeep(row, url)))) {
       throw new Error("This asset is still used by a CMS item. Remove or replace it there before deleting.");
     }
   }
