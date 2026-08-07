@@ -53,12 +53,13 @@ export function LoadingScreen() {
             className="absolute -inset-4 rounded-3xl opacity-40 blur-2xl"
             style={{ background: "var(--gradient-brand)" }}
           />
-          <span
-            className="relative grid h-16 w-16 place-items-center rounded-3xl text-xl font-semibold text-white shadow-2xl"
-            style={{ background: "var(--gradient-brand)" }}
-          >
-            {siteContent.brand.initial}
-          </span>
+          {siteContent.theme.loadingLogo || siteContent.brand.logo ? (
+            <img src={siteContent.theme.loadingLogo || siteContent.brand.logo} alt="" className="relative h-16 w-16 rounded-3xl object-contain shadow-2xl" />
+          ) : (
+            <span className="relative grid h-16 w-16 place-items-center rounded-3xl text-xl font-semibold text-white shadow-2xl" style={{ background: "var(--gradient-brand)" }}>
+              {siteContent.brand.initial}
+            </span>
+          )}
         </div>
         <p
           className="text-2xl font-normal tracking-tight"

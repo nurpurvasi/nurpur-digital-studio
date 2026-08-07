@@ -62,12 +62,13 @@ export function Footer() {
         <div className="mt-16 grid gap-12 md:grid-cols-[minmax(0,1.3fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link to="/" className="flex items-center gap-2.5">
-              <span
-                className="grid h-10 w-10 place-items-center rounded-2xl text-sm font-bold text-white"
-                style={{ background: "var(--gradient-brand)" }}
-              >
-                {siteContent.brand.initial}
-              </span>
+              {siteContent.theme.footerLogo || siteContent.brand.logo ? (
+                <img src={siteContent.theme.footerLogo || siteContent.brand.logo} alt={`${siteContent.brand.name} logo`} className="h-10 w-10 rounded-2xl object-contain" />
+              ) : (
+                <span className="grid h-10 w-10 place-items-center rounded-2xl text-sm font-bold text-white" style={{ background: "var(--gradient-brand)" }}>
+                  {siteContent.brand.initial}
+                </span>
+              )}
               <span className="text-base font-semibold tracking-tight">{siteContent.brand.name}</span>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">

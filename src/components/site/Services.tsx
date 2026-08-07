@@ -3,16 +3,6 @@ import { useServerFn } from "@tanstack/react-start";
 import type { LucideIcon } from "lucide-react";
 import { listFeaturedServices, listPublicServices } from "@/lib/services.functions";
 import { getServiceIcon } from "@/components/site/service-icons";
-import { Code2, LineChart, Palette, Rocket, Search, Smartphone } from "lucide-react";
-
-const FALLBACK: ServiceCard[] = [
-  { key: "design", title: "Website Design", desc: "Cinematic, brand-first interfaces designed to feel unmistakably premium.", tag: "Design", icon: Palette },
-  { key: "dev", title: "Development", desc: "Production-grade builds with buttery motion, blazing performance and clean code.", tag: "Engineering", icon: Code2 },
-  { key: "seo", title: "SEO Growth", desc: "Technical SEO, content strategy and Core Web Vitals tuned for organic growth.", tag: "Growth", icon: Search },
-  { key: "mobile", title: "Mobile Experiences", desc: "Mobile-first, fluid layouts and gestures that feel native on every device.", tag: "Mobile", icon: Smartphone },
-  { key: "analytics", title: "Analytics & CRO", desc: "Instrumented insights and conversion experiments that compound over time.", tag: "Insights", icon: LineChart },
-  { key: "solutions", title: "Digital Solutions", desc: "End-to-end brand, marketing sites, dashboards and bespoke digital products.", tag: "Product", icon: Rocket },
-];
 
 export type ServiceCard = {
   key: string;
@@ -24,8 +14,7 @@ export type ServiceCard = {
 };
 
 /**
- * Returns service cards from the CMS when available, otherwise falls back to
- * the built-in starter set so the design never renders empty.
+ * Returns service cards exclusively from published CMS records.
  */
 export function useServiceCards(variant: "featured" | "all" = "all") {
   const fetchFeatured = useServerFn(listFeaturedServices);
@@ -49,5 +38,5 @@ export function useServiceCards(variant: "featured" | "all" = "all") {
     }));
   }
 
-  return FALLBACK;
+  return [];
 }

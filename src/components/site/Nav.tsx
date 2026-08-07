@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useSiteContent } from "@/content/SiteContentContext";
 
 const links = [
   { to: "/", label: "Home" },
@@ -16,6 +17,7 @@ const links = [
 ] as const;
 
 export function Nav() {
+  const site = useSiteContent();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -35,14 +37,15 @@ export function Nav() {
           }`}
         >
           <Link to="/" className="flex items-center gap-2.5 pl-2" onClick={() => setOpen(false)}>
-            <span
-              className="grid h-8 w-8 place-items-center rounded-xl text-[13px] font-bold text-white"
-              style={{ background: "var(--gradient-brand)" }}
-            >
-              N
-            </span>
+            {site.brand.logo ? (
+              <img src={site.brand.logo} alt={`${site.brand.name} logo`} className="h-8 w-8 rounded-xl object-contain" />
+            ) : (
+              <span className="grid h-8 w-8 place-items-center rounded-xl text-[13px] font-bold text-white" style={{ background: "var(--gradient-brand)" }}>
+                {site.brand.initial}
+              </span>
+            )}
             <span className="text-[15px] font-semibold tracking-tight text-foreground">
-              NurpurVasi<span className="text-muted-foreground font-normal"> Digitals</span>
+              {site.brand.name}
             </span>
           </Link>
 

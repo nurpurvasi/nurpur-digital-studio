@@ -103,8 +103,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "NurpurVasi Digitals — Premium Digital Studio by Gaurav Bharti" },
       { name: "twitter:description", content: "NurpurVasi Digitals designs and builds world-class websites, brands and digital products for ambitious companies. Premium web design, development, SEO and digital solutions." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2edcd69c-0140-472c-8190-6ea004ae58b9/id-preview-0c9e5ddb--8bef092b-57ac-4d1c-8fdf-54b9129e7276.lovable.app-1784852886156.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2edcd69c-0140-472c-8190-6ea004ae58b9/id-preview-0c9e5ddb--8bef092b-57ac-4d1c-8fdf-54b9129e7276.lovable.app-1784852886156.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

@@ -2,6 +2,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { defaultSiteContent, mergeSiteContent, type SiteContent } from "./site";
+import { normalizeMediaDeep } from "@/lib/media-url";
 
 const SiteContentCtx = createContext<SiteContent>(defaultSiteContent);
 
@@ -24,10 +25,12 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
         .eq("id", 1)
         .maybeSingle();
       if (error || !data) return defaultSiteContent;
-      return mergeSiteContent(data.published as Partial<SiteContent>);
+      return normalizeMediaDeep(mergeSiteContent(data.published as Partial<SiteContent>));
     },
     initialData: defaultSiteContent,
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 
   return <SiteContentCtx.Provider value={data}>{children}</SiteContentCtx.Provider>;
