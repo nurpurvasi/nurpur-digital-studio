@@ -5,6 +5,9 @@ import { useSiteContent } from "@/content/SiteContentContext";
 
 export function Hero() {
   const siteContent = useSiteContent();
+  const hero = siteContent.hero;
+  const backgroundVideo = siteContent.theme.heroBackgroundVideo;
+  const backgroundImage = siteContent.theme.heroBackgroundImage || hero.media?.src;
   const [y, setY] = useState(0);
   useEffect(() => {
     const onScroll = () => setY(window.scrollY);
@@ -14,6 +17,11 @@ export function Hero() {
   }, []);
   return (
     <section className="relative -mt-24 min-h-[100svh] w-full overflow-hidden">
+      {backgroundVideo ? (
+        <video src={backgroundVideo} className="absolute inset-0 -z-20 h-full w-full object-cover" autoPlay muted loop playsInline />
+      ) : backgroundImage ? (
+        <img src={backgroundImage} alt={hero.media?.alt ?? ""} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+      ) : null}
       {/* Layered premium gradient backdrop */}
       <div
         className="absolute inset-0 -z-20"
@@ -50,7 +58,7 @@ export function Hero() {
         <div className="animate-fade-up" style={{ transform: `translate3d(0, ${y * -0.08}px, 0)` }}>
           <span className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-white/70 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-xl">
             <Sparkles className="h-3.5 w-3.5" style={{ color: "var(--royal)" }} />
-            Premium Digital Studio · Est. 2015
+            {hero.eyebrow}
           </span>
         </div>
 
@@ -58,31 +66,29 @@ export function Hero() {
           className="mx-auto mt-8 max-w-5xl text-balance text-6xl font-normal leading-[0.98] tracking-tight sm:text-7xl md:text-[104px] animate-fade-up"
           style={{ fontFamily: "var(--font-display)", animationDelay: "0.1s" }}
         >
-          Crafting digital <br className="hidden sm:block" />
-          experiences that <span className="text-gradient italic">inspire</span>.
+          {hero.headline}
         </h1>
 
         <p
           className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl animate-fade-up"
           style={{ animationDelay: "0.2s" }}
         >
-          NurpurVasi Digitals designs and builds world-class websites, brands and digital
-          products for ambitious companies that refuse to look ordinary.
+          {hero.subheading}
         </p>
 
         <div
           className="mt-11 flex flex-col items-center justify-center gap-3 sm:flex-row animate-fade-up"
           style={{ animationDelay: "0.3s" }}
         >
-          <Link to="/contact" className="btn-primary group !px-7 !py-3.5 text-[15px]">
-            Start your project
+          <Link to={hero.primaryCta.href || "/contact"} className="btn-primary group !px-7 !py-3.5 text-[15px]">
+            {hero.primaryCta.label}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
-          <Link to="/portfolio" className="btn-ghost !px-7 !py-3.5 text-[15px] group">
+          <Link to={hero.secondaryCta.href || "/portfolio"} className="btn-ghost !px-7 !py-3.5 text-[15px] group">
             <span className="grid h-6 w-6 place-items-center rounded-full" style={{ background: "var(--gradient-brand)" }}>
               <Play className="h-3 w-3 fill-white text-white" />
             </span>
-            Watch showreel
+            {hero.secondaryCta.label}
           </Link>
         </div>
 

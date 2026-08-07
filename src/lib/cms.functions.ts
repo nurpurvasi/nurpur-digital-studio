@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import type { Json } from "@/integrations/supabase/types";
+import { mediaUrlForPath } from "@/lib/media-url";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SupabaseLike = any;
@@ -231,20 +232,14 @@ export const createMediaUploadUrl = createServerFn({ method: "POST" })
       .createSignedUploadUrl(path);
     if (error) throw error;
 
-    const { data: publicUrlData } = context.supabase.storage
-      .from("site-media")
-      .getPublicUrl(path);
-
-    const { data: signedRead } = await context.supabase.storage
-      .from("site-media")
-      .createSignedUrl(path, 60 * 60 * 24 * 365);
+    const stableUrl = mediaUrlForPath(path);
 
     return {
       path,
       uploadUrl: signed.signedUrl,
       token: signed.token,
-      publicUrl: publicUrlData.publicUrl,
-      signedUrl: signedRead?.signedUrl ?? publicUrlData.publicUrl,
+      publicUrl: stableUrl,
+      signedUrl: stableUrl,
     };
   });
 
@@ -266,16 +261,13 @@ export const listMedia = createServerFn({ method: "POST" })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       files.map(async (f: any) => {
         const path = `${data.folder}/${f.name}`;
-        const { data: signed } = await context.supabase.storage
-          .from("site-media")
-          .createSignedUrl(path, 60 * 60 * 24 * 365);
         return {
           name: f.name as string,
           path,
           size: (f.metadata?.size as number) ?? 0,
           contentType: (f.metadata?.mimetype as string) ?? "",
           createdAt: (f.created_at as string) ?? null,
-          url: signed?.signedUrl ?? "",
+          url: mediaUrlForPath(path),
         };
       }),
     );
@@ -290,6 +282,8 @@ export const deleteMedia = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
+    const { assertMediaUnreferenced } = await import("@/lib/media.server");
+    await assertMediaUnreferenced(data.paths);
     const { error } = await context.supabase.storage.from("site-media").remove(data.paths);
     if (error) throw error;
     return { ok: true };
@@ -313,8 +307,7 @@ export const renameMedia = createServerFn({ method: "POST" })
     if (newPath === data.path) return { ok: true, path: newPath, url: "" };
     const { error } = await context.supabase.storage.from("site-media").move(data.path, newPath);
     if (error) throw error;
-    const { data: signed } = await context.supabase.storage
-      .from("site-media")
-      .createSignedUrl(newPath, 60 * 60 * 24 * 365);
-    return { ok: true, path: newPath, url: signed?.signedUrl ?? "" };
+    const { replaceMediaReferences } = await import("@/lib/media.server");
+    await replaceMediaReferences(data.path, newPath);
+    return { ok: true, path: newPath, url: mediaUrlForPath(newPath) };
   });

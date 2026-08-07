@@ -27,7 +27,9 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
       return mergeSiteContent(data.published as Partial<SiteContent>);
     },
     initialData: defaultSiteContent,
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 
   return <SiteContentCtx.Provider value={data}>{children}</SiteContentCtx.Provider>;
