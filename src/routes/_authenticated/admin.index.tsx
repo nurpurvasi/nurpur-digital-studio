@@ -367,14 +367,14 @@ function MediaUploader({
     setBusy(true);
     setErr(null);
     try {
-      const { path, token, publicUrl } = await createUpload({
+      const { path, token, signedUrl } = await createUpload({
         data: { filename: file.name, contentType: file.type || "application/octet-stream" },
       });
       const { error } = await supabase.storage
         .from("site-media")
         .uploadToSignedUrl(path, token, file, { contentType: file.type });
       if (error) throw error;
-      onChange(publicUrl);
+      onChange(signedUrl);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Upload failed");
     } finally {
