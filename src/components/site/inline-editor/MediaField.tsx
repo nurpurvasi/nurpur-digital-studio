@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Upload, X } from "lucide-react";
 import { createMediaUploadUrl } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 export function MediaField({
   value,
@@ -40,17 +41,18 @@ export function MediaField({
     }
   }
 
-  const isVideo = /\.(mp4|webm|mov|ogg)(\?|$)/i.test(value);
+  const resolvedValue = normalizeMediaUrl(value);
+  const isVideo = /\.(mp4|webm|mov|ogg)(\?|$)/i.test(resolvedValue);
 
   return (
     <div className="space-y-2">
       {value ? (
         <div className="relative overflow-hidden rounded-xl border border-border bg-muted">
           {isVideo ? (
-            <video src={value} className="h-40 w-full object-cover" muted playsInline />
+            <video src={resolvedValue} className="h-40 w-full object-cover" muted playsInline />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="h-40 w-full object-cover" />
+            <img src={resolvedValue} alt="" className="h-40 w-full object-cover" />
           )}
           <button
             type="button"
