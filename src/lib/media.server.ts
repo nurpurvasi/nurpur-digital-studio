@@ -1,6 +1,11 @@
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { mediaUrlForPath } from "@/lib/media-url";
 
+// Dynamic table/column traversal is intentionally isolated to this server-only
+// maintenance helper; generated database types cannot express this safely.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const adminDb = supabaseAdmin as any;
+
 const MEDIA_COLUMNS: Record<string, string[]> = {
   blog_posts: ["featured_image", "gallery", "og_image", "content"],
   clients: ["logo"],
@@ -34,13 +39,13 @@ export async function replaceMediaReferences(oldPath: string, newPath: string) {
   const oldUrl = mediaUrlForPath(oldPath);
   const newUrl = mediaUrlForPath(newPath);
 
-  const { data: content, error: contentError } = await supabaseAdmin
+  const { data: content, error: contentError } = await adminDb
     .from("site_content")
     .select("id, draft, published");
   if (contentError) throw contentError;
   for (const row of content ?? []) {
     if (!containsDeep(row, oldUrl)) continue;
-    const { error } = await supabaseAdmin
+    const { error } = await adminDb
       .from("site_content")
       .update({
         draft: replaceDeep(row.draft, oldUrl, newUrl),
@@ -51,7 +56,7 @@ export async function replaceMediaReferences(oldPath: string, newPath: string) {
   }
 
   for (const [table, columns] of Object.entries(MEDIA_COLUMNS)) {
-    const { data: rows, error: readError } = await supabaseAdmin
+    const { data: rows, error: readError } = await adminDb
       .from(table)
       .select(["id", ...columns].join(","));
     if (readError) throw readError;
@@ -62,7 +67,7 @@ export async function replaceMediaReferences(oldPath: string, newPath: string) {
         if (containsDeep(current, oldUrl)) updates[column] = replaceDeep(current, oldUrl, newUrl);
       }
       if (Object.keys(updates).length === 0) continue;
-      const { error } = await supabaseAdmin.from(table).update(updates).eq("id", row.id);
+      const { error } = await adminDb.from(table).update(updates).eq("id", row.id);
       if (error) throw error;
     }
   }
@@ -70,7 +75,7 @@ export async function replaceMediaReferences(oldPath: string, newPath: string) {
 
 export async function assertMediaUnreferenced(paths: string[]) {
   const urls = paths.map(mediaUrlForPath);
-  const { data: content, error: contentError } = await supabaseAdmin
+  const { data: content, error: contentError } = await adminDb
     .from("site_content")
     .select("draft, published");
   if (contentError) throw contentError;
@@ -79,7 +84,7 @@ export async function assertMediaUnreferenced(paths: string[]) {
   }
 
   for (const [table, columns] of Object.entries(MEDIA_COLUMNS)) {
-    const { data: rows, error } = await supabaseAdmin.from(table).select(columns.join(","));
+    const { data: rows, error } = await adminDb.from(table).select(columns.join(","));
     if (error) throw error;
     if ((rows ?? []).some((row) => urls.some((url) => containsDeep(row, url)))) {
       throw new Error("This asset is still used by a CMS item. Remove or replace it there before deleting.");
