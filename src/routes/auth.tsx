@@ -25,17 +25,29 @@ function AuthPage() {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (mounted && data.session) navigate({ to: "/admin" });
-    });
+
+    // Handle the OAuth full-page redirect return trip before anything else,
+    // otherwise the guard sees no session and bounces back to this page.
+    (async () => {
+      const result = await consumeOAuthReturn();
+      if (!mounted) return;
+      if (result.error) {
+        setError(result.error.message);
+        setLoading(false);
+      }
+      const { data } = await supabase.auth.getSession();
+      if (mounted && data.session) navigate({ to: "/admin", replace: true });
+    })();
+
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
-      if (mounted && session) navigate({ to: "/admin" });
+      if (mounted && session) navigate({ to: "/admin", replace: true });
     });
     return () => {
       mounted = false;
       sub.subscription.unsubscribe();
     };
   }, [navigate]);
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
