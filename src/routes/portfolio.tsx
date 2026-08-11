@@ -35,6 +35,7 @@ function PortfolioPage() {
     queryKey: ["public-portfolio"],
     queryFn: () => load(),
     initialData: { projects: [] },
+    initialDataUpdatedAt: 0,
     staleTime: 60_000,
   });
 

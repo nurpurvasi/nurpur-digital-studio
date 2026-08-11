@@ -191,6 +191,7 @@ export function FeaturedPortfolio() {
     queryKey: ["public-portfolio"],
     queryFn: () => load(),
     initialData: { projects: [] },
+    initialDataUpdatedAt: 0,
     staleTime: 60_000,
   });
   const all: PortfolioProject[] = data?.projects ?? [];
