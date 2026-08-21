@@ -180,5 +180,3 @@ function GalleryDetail() {
     </SiteLayout>
   );
 }
-
-export { thumbOf };
