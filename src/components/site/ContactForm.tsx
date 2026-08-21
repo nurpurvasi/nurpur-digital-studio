@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
@@ -38,6 +38,7 @@ export function ContactForm({
   const submit = useServerFn(submitLead);
   const [errors, setErrors] = useState<Errors>({});
   const [done, setDone] = useState(false);
+  const lastSent = useRef<string>("");
 
   const mut = useMutation({
     mutationFn: (input: Parameters<typeof submit>[0]["data"]) => submit({ data: input }),
@@ -65,6 +66,11 @@ export function ContactForm({
     if (phone && !/^[+\d\s()\-.]{5,}$/.test(phone)) next.phone = "Enter a valid phone";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
+
+    // Guard against accidental duplicate submissions of the same content.
+    const fingerprint = `${email}|${message}`;
+    if (mut.isPending || lastSent.current === fingerprint) return;
+    lastSent.current = fingerprint;
 
     mut.mutate({
       name,

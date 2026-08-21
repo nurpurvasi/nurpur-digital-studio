@@ -69,7 +69,7 @@ function ContactPage() {
             </ul>
           </div>
 
-          <ContactForm template="business" />
+          <ContactForm template="media-portal" showCompany={false} showSubject={false} />
         </div>
       </Section>
     </SiteLayout>
