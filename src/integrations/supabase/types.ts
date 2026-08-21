@@ -97,6 +97,7 @@ export type Database = {
           instagram: string
           logo: string
           map_url: string
+          opening_hours: string
           phone: string
           published: boolean
           seo_description: string
@@ -123,6 +124,7 @@ export type Database = {
           instagram?: string
           logo?: string
           map_url?: string
+          opening_hours?: string
           phone?: string
           published?: boolean
           seo_description?: string
@@ -149,6 +151,7 @@ export type Database = {
           instagram?: string
           logo?: string
           map_url?: string
+          opening_hours?: string
           phone?: string
           published?: boolean
           seo_description?: string
@@ -158,6 +161,69 @@ export type Database = {
           website?: string
           whatsapp?: string
           youtube?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          category: string
+          cover_image: string
+          created_at: string
+          created_by: string | null
+          description: string
+          event_date: string | null
+          event_time: string
+          featured: boolean
+          id: string
+          location: string
+          map_url: string
+          name: string
+          seo_description: string
+          seo_title: string
+          slug: string
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date?: string | null
+          event_time?: string
+          featured?: boolean
+          id?: string
+          location?: string
+          map_url?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date?: string | null
+          event_time?: string
+          featured?: boolean
+          id?: string
+          location?: string
+          map_url?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -209,17 +275,21 @@ export type Database = {
       gallery: {
         Row: {
           alt_text: string
+          caption: string
           category: string
           created_at: string
           created_by: string | null
           description: string
           featured: boolean
+          gallery_id: string | null
           id: string
+          location: string
           media_type: string
           media_url: string
           publish_date: string | null
           seo_description: string
           seo_title: string
+          slug: string
           sort_order: number
           status: string
           thumbnail: string
@@ -229,17 +299,21 @@ export type Database = {
         }
         Insert: {
           alt_text?: string
+          caption?: string
           category?: string
           created_at?: string
           created_by?: string | null
           description?: string
           featured?: boolean
+          gallery_id?: string | null
           id?: string
+          location?: string
           media_type?: string
           media_url?: string
           publish_date?: string | null
           seo_description?: string
           seo_title?: string
+          slug?: string
           sort_order?: number
           status?: string
           thumbnail?: string
@@ -249,17 +323,21 @@ export type Database = {
         }
         Update: {
           alt_text?: string
+          caption?: string
           category?: string
           created_at?: string
           created_by?: string | null
           description?: string
           featured?: boolean
+          gallery_id?: string | null
           id?: string
+          location?: string
           media_type?: string
           media_url?: string
           publish_date?: string | null
           seo_description?: string
           seo_title?: string
+          slug?: string
           sort_order?: number
           status?: string
           thumbnail?: string
@@ -326,6 +404,123 @@ export type Database = {
           updated_at?: string
           user_agent?: string | null
           website_template?: string | null
+        }
+        Relationships: []
+      }
+      photo_galleries: {
+        Row: {
+          category: string
+          cover_image: string
+          created_at: string
+          created_by: string | null
+          description: string
+          event_date: string | null
+          featured: boolean
+          id: string
+          location: string
+          name: string
+          seo_description: string
+          seo_title: string
+          slug: string
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date?: string | null
+          featured?: boolean
+          id?: string
+          location?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          event_date?: string | null
+          featured?: boolean
+          id?: string
+          location?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      places: {
+        Row: {
+          category: string
+          cover_image: string
+          created_at: string
+          created_by: string | null
+          description: string
+          featured: boolean
+          gallery: Json
+          id: string
+          location: string
+          map_url: string
+          name: string
+          seo_description: string
+          seo_title: string
+          slug: string
+          sort_order: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          featured?: boolean
+          gallery?: Json
+          id?: string
+          location?: string
+          map_url?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          cover_image?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          featured?: boolean
+          gallery?: Json
+          id?: string
+          location?: string
+          map_url?: string
+          name?: string
+          seo_description?: string
+          seo_title?: string
+          slug?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -703,6 +898,45 @@ export type Database = {
           sort_order?: number
           status?: string
           testimonial?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ticker_items: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          end_date: string | null
+          id: string
+          link: string
+          sort_order: number
+          start_date: string | null
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          link?: string
+          sort_order?: number
+          start_date?: string | null
+          text?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          end_date?: string | null
+          id?: string
+          link?: string
+          sort_order?: number
+          start_date?: string | null
+          text?: string
           updated_at?: string
         }
         Relationships: []
