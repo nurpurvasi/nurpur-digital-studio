@@ -681,15 +681,7 @@ export function LatestReels() {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <Eyebrow>Latest Reels</Eyebrow>
-        <h2
-          className="mt-4 text-3xl tracking-tight sm:text-5xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Straight from our socials
-        </h2>
-      </Reveal>
+      <SectionHeading label="Latest Reels" title="Straight from our socials" />
       <div className="no-scrollbar mt-10 flex gap-4 overflow-x-auto pb-2">
         {reels.map((r) => (
           <a
