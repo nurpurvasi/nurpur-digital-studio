@@ -586,14 +586,20 @@ export function VideoWallPremium({ limit = 7 }: { limit?: number }) {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-background/70">
-                Video
+              <span className="flex items-center gap-3">
+                <span
+                  className="h-[3px] w-10 shrink-0 rounded-full"
+                  style={{ background: "var(--gradient-warm)" }}
+                />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-background/70">
+                  Video
+                </span>
               </span>
               <h2
-                className="mt-3 text-3xl tracking-tight text-background sm:text-5xl"
+                className="mt-3 text-balance text-3xl tracking-tight text-background sm:text-5xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Nurpur in motion
+                Watch Nurpur
               </h2>
             </div>
             <Link
