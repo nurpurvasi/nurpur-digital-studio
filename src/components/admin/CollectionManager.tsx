@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, Loader2, Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import { MediaField } from "@/components/site/inline-editor/MediaField";
 
 export type FieldKind = "text" | "textarea" | "date" | "time" | "url" | "image" | "switch" | "number";
 
