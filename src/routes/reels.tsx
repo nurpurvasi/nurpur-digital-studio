@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink, Film } from "lucide-react";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
-import { useGallery, useReels, socialPlatform, thumbOf, formatDate } from "@/components/media/useGallery";
+import {
+  useGallery,
+  useReels,
+  socialPlatform,
+  thumbOf,
+  formatDate,
+} from "@/components/media/useGallery";
 
 const SITE = "https://nurpur-digital-studio.lovable.app";
 

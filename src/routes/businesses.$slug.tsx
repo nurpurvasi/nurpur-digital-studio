@@ -65,8 +65,19 @@ export const Route = createFileRoute("/businesses/$slug")({
             telephone: b.phone || undefined,
             url: b.website || url,
             address: b.address
-              ? { "@type": "PostalAddress", streetAddress: b.address, addressLocality: "Nurpur", addressRegion: "Himachal Pradesh", addressCountry: "IN" }
-              : { "@type": "PostalAddress", addressLocality: "Nurpur", addressRegion: "Himachal Pradesh", addressCountry: "IN" },
+              ? {
+                  "@type": "PostalAddress",
+                  streetAddress: b.address,
+                  addressLocality: "Nurpur",
+                  addressRegion: "Himachal Pradesh",
+                  addressCountry: "IN",
+                }
+              : {
+                  "@type": "PostalAddress",
+                  addressLocality: "Nurpur",
+                  addressRegion: "Himachal Pradesh",
+                  addressCountry: "IN",
+                },
             hasMap: b.map_url || undefined,
           }),
         },
@@ -124,7 +135,10 @@ function BusinessDetail() {
   return (
     <SiteLayout>
       <Section>
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        <nav
+          aria-label="Breadcrumb"
+          className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
+        >
           <Link to="/" className="hover:text-foreground">
             Home
           </Link>
@@ -174,7 +188,9 @@ function BusinessDetail() {
                 >
                   {b.company_name}
                 </h1>
-                {b.category && <p className="text-sm text-muted-foreground">{b.category} · Nurpur</p>}
+                {b.category && (
+                  <p className="text-sm text-muted-foreground">{b.category} · Nurpur</p>
+                )}
               </div>
             </div>
 
@@ -242,7 +258,10 @@ function BusinessDetail() {
 
         {media.length > 0 && (
           <div className="mt-14">
-            <h2 className="text-2xl tracking-tight sm:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
+            <h2
+              className="text-2xl tracking-tight sm:text-3xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
               Photos & videos
             </h2>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
