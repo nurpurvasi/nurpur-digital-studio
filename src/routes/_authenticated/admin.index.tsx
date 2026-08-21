@@ -167,8 +167,8 @@ function AdminDashboard() {
                       {m.status === "new" ? "unread" : m.status}
                     </span>
                     <Link
-                      to="/admin/leads/$id"
-                      params={{ id: m.id }}
+                      to="/admin/inbox"
+                      search={{}}
                       className="rounded-lg border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       Open
