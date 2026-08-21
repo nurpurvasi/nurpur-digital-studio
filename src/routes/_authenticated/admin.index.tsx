@@ -1,1132 +1,182 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
-  createMediaUploadUrl,
-  discardDraft,
-  getDraftContent,
-  getIsAdmin,
-  publishDraft,
-  saveDraft,
-} from "@/lib/cms.functions";
-import { defaultSiteContent, defaultTheme, mergeSiteContent, type SiteContent, type ThemeSettings } from "@/content/site";
-import { applyThemeToElement } from "@/components/site/ThemeApplier";
-import { supabase } from "@/integrations/supabase/client";
-import {
-  ArrowUpFromLine,
-  Check,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink,
-  Eye,
-  FileText,
+  Building2,
+  CalendarDays,
+  Film,
   Image as ImageIcon,
+  Inbox,
+  Images,
   Loader2,
-  LogOut,
+  MapPin,
+  Megaphone,
   Palette,
   Plus,
-  RotateCcw,
-  Save,
-  Search,
-  Sparkles,
-  Star,
-  Trash2,
-  Users,
-  Type,
+  Video,
+  Eye,
 } from "lucide-react";
+import { AdminShell } from "@/components/admin/AdminShell";
+import { getIsAdmin } from "@/lib/cms.functions";
+import { getAdminOverview } from "@/lib/portal.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   head: () => ({
     meta: [
-      { title: "Admin — NurpurVasi Digitals" },
+      { title: "Dashboard — NurpurVasi Media Admin" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
-  component: AdminPage,
+  component: AdminDashboard,
 });
 
-type Section =
-  | "settings"
-  | "brand"
-  | "theme"
-  | "seo"
-  | "hero"
-  | "contact"
-  | "services"
-  | "portfolio"
-  | "testimonials"
-  | "stats"
-  | "faqs"
-  | "footer";
-
-const SECTIONS: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: "settings", label: "Website Settings", icon: Sparkles },
-  { id: "brand", label: "Brand", icon: Sparkles },
-  { id: "theme", label: "Branding & Theme", icon: Palette },
-  { id: "hero", label: "Hero", icon: Star },
-  { id: "services", label: "Services", icon: Palette },
-  { id: "portfolio", label: "Portfolio", icon: ImageIcon },
-  { id: "testimonials", label: "Testimonials", icon: Users },
-  { id: "stats", label: "Statistics", icon: ArrowUpFromLine },
-  { id: "faqs", label: "FAQ", icon: ChevronDown },
-  { id: "contact", label: "Contact & Social", icon: Users },
-  { id: "seo", label: "SEO & Meta", icon: Search },
-  { id: "footer", label: "Footer", icon: Sparkles },
-];
-
-function AdminPage() {
-  const navigate = useNavigate();
-  const qc = useQueryClient();
+function AdminDashboard() {
   const checkAdmin = useServerFn(getIsAdmin);
-  const loadDraft = useServerFn(getDraftContent);
-  const saveDraftFn = useServerFn(saveDraft);
-  const publishFn = useServerFn(publishDraft);
-  const discardFn = useServerFn(discardDraft);
+  const loadOverview = useServerFn(getAdminOverview);
 
-  const adminCheck = useQuery({ queryKey: ["admin-check"], queryFn: () => checkAdmin() });
-  const draftQuery = useQuery({
-    queryKey: ["cms-draft"],
-    queryFn: () => loadDraft(),
-    enabled: !!adminCheck.data?.isAdmin,
+  const admin = useQuery({ queryKey: ["admin-check"], queryFn: () => checkAdmin() });
+  const overview = useQuery({
+    queryKey: ["admin-overview"],
+    queryFn: () => loadOverview(),
+    enabled: !!admin.data?.isAdmin,
   });
 
-  // Local editable state — merged over defaults for a stable UI
-  const [content, setContent] = useState<SiteContent>(defaultSiteContent);
-  const [section, setSection] = useState<Section>("settings");
-  const [dirty, setDirty] = useState(false);
-  const [savedAt, setSavedAt] = useState<Date | null>(null);
-  const [saving, setSaving] = useState(false);
-  const initialized = useRef(false);
-
-  useEffect(() => {
-    if (draftQuery.data && !initialized.current) {
-      setContent(mergeSiteContent(draftQuery.data.draft as Partial<SiteContent>));
-      initialized.current = true;
-    }
-  }, [draftQuery.data]);
-
-  // Autosave debounce
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => {
-    if (!dirty) return;
-    if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(async () => {
-      setSaving(true);
-      try {
-        await saveDraftFn({ data: { draft: content as unknown as import("@/integrations/supabase/types").Json } });
-        setSavedAt(new Date());
-        setDirty(false);
-      } finally {
-        setSaving(false);
-      }
-    }, 900);
-    return () => {
-      if (saveTimer.current) clearTimeout(saveTimer.current);
-    };
-  }, [content, dirty, saveDraftFn]);
-
-  const patch = (updater: (c: SiteContent) => SiteContent) => {
-    setContent(updater);
-    setDirty(true);
-  };
-
-  const publishMut = useMutation({
-    mutationFn: async () => {
-      // Ensure latest draft saved first
-      if (dirty) {
-        await saveDraftFn({ data: { draft: content as unknown as import("@/integrations/supabase/types").Json } });
-        setDirty(false);
-      }
-      await publishFn();
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["site-content"] });
-      setSavedAt(new Date());
-    },
-  });
-
-  const discardMut = useMutation({
-    mutationFn: () => discardFn(),
-    onSuccess: async () => {
-      const fresh = await loadDraft();
-      setContent(mergeSiteContent(fresh.draft as Partial<SiteContent>));
-      setDirty(false);
-      qc.invalidateQueries({ queryKey: ["cms-draft"] });
-    },
-  });
-
-  async function signOut() {
-    await qc.cancelQueries();
-    qc.clear();
-    await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+  if (admin.isLoading) {
+    return (
+      <AdminShell title="Dashboard">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" /> Checking your access…
+        </div>
+      </AdminShell>
+    );
   }
 
-  if (adminCheck.isLoading) return <FullScreenLoader label="Verifying access…" />;
-  if (!adminCheck.data?.isAdmin) return <NotAdmin onSignOut={signOut} />;
-  if (draftQuery.isLoading) return <FullScreenLoader label="Loading content…" />;
-
-  return (
-    <div className="min-h-screen bg-[#f7f8fc] text-foreground">
-      {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
-              <Sparkles className="h-4 w-4" />
-            </span>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold tracking-tight">Content Studio</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">NurpurVasi Digitals</div>
-            </div>
-          </Link>
-          <div className="ml-4 hidden items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground md:flex">
-            {saving ? (
-              <><Loader2 className="h-3 w-3 animate-spin" /> Saving…</>
-            ) : dirty ? (
-              <><span className="h-2 w-2 rounded-full bg-amber-500" /> Unsaved changes</>
-            ) : savedAt ? (
-              <><Check className="h-3 w-3 text-emerald-600" /> Saved {formatTime(savedAt)}</>
-            ) : (
-              <>All changes saved</>
-            )}
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <Link to="/" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Eye className="h-3 w-3" /> View site
-            </Link>
-            <Link to="/admin/typography" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Type className="h-3 w-3" /> Typography
-            </Link>
-            <Link to="/admin/media" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Media
-            </Link>
-            <Link to="/admin/leads" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Leads
-            </Link>
-            <Link to="/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> Blog
-            </Link>
-            <Link to="/admin/portfolio" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Portfolio CMS
-            </Link>
-            <Link to="/admin/testimonials" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Star className="h-3 w-3" /> Testimonials
-            </Link>
-            <Link to="/admin/gallery" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Gallery
-            </Link>
-            <Link to="/admin/team" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Team
-            </Link>
-            <Link to="/admin/services" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Services
-            </Link>
-            <Link to="/admin/pricing" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Pricing
-            </Link>
-            <Link to="/admin/clients" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Clients
-            </Link>
-            <Link to="/admin/faqs" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> FAQs
-            </Link>
-
-
-            <button
-              onClick={() => discardMut.mutate()}
-              disabled={discardMut.isPending}
-              className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex"
-            >
-              <RotateCcw className="h-3 w-3" /> Discard
-            </button>
-            <button
-              onClick={() => publishMut.mutate()}
-              disabled={publishMut.isPending}
-              className="btn-primary !px-4 !py-2 text-xs"
-            >
-              {publishMut.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <ExternalLink className="h-3 w-3" />}
-              Publish
-            </button>
-            <button onClick={signOut} title="Sign out" className="rounded-full border border-border bg-white p-2 hover:-translate-y-0.5 hover:shadow-md">
-              <LogOut className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="mx-auto grid max-w-[1400px] gap-6 px-6 py-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-        {/* Sidebar */}
-        <aside className="h-fit rounded-3xl border border-border bg-white p-2 lg:sticky lg:top-24">
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col">
-            {SECTIONS.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setSection(s.id)}
-                className={`flex items-center gap-2 rounded-2xl px-3 py-2 text-left text-sm transition ${
-                  section === s.id ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <s.icon className="h-4 w-4" />
-                <span className="whitespace-nowrap">{s.label}</span>
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        {/* Editor panel */}
-        <main className="rounded-3xl border border-border bg-white p-6 md:p-8">
-          {publishMut.isSuccess && !publishMut.isPending && (
-            <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs text-emerald-800">
-              Published successfully — live site updated.
-            </div>
-          )}
-          {section === "settings" && <SettingsEditor content={content} patch={patch} />}
-          {section === "brand" && <BrandEditor content={content} patch={patch} />}
-          {section === "theme" && <ThemeEditor content={content} patch={patch} />}
-          {section === "hero" && <HeroEditor content={content} patch={patch} />}
-          {section === "services" && <ServicesEditor content={content} patch={patch} />}
-          {section === "portfolio" && <PortfolioEditor content={content} patch={patch} />}
-          {section === "testimonials" && <TestimonialsEditor content={content} patch={patch} />}
-          {section === "stats" && <StatsEditor content={content} patch={patch} />}
-          {section === "faqs" && <FAQEditor content={content} patch={patch} />}
-          {section === "contact" && <ContactEditor content={content} patch={patch} />}
-          {section === "seo" && <SEOEditor content={content} patch={patch} />}
-          {section === "footer" && <FooterEditor content={content} patch={patch} />}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- Shared inputs ---------------- */
-
-type Patch = (updater: (c: SiteContent) => SiteContent) => void;
-type EditorProps = { content: SiteContent; patch: Patch };
-
-function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
-  return (
-    <label className="block">
-      <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
-        {hint && <span className="text-[10px] text-muted-foreground/70">{hint}</span>}
-      </div>
-      {children}
-    </label>
-  );
-}
-
-function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      {...props}
-      className={`w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-ring ${props.className ?? ""}`}
-    />
-  );
-}
-
-function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <textarea
-      {...props}
-      className={`w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none transition focus:border-ring ${props.className ?? ""}`}
-    />
-  );
-}
-
-function SectionHeader({ title, desc, action }: { title: string; desc?: string; action?: ReactNode }) {
-  return (
-    <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-border pb-4">
-      <div>
-        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-        {desc && <p className="mt-0.5 text-xs text-muted-foreground">{desc}</p>}
-      </div>
-      {action}
-    </div>
-  );
-}
-
-function MediaUploader({
-  value,
-  onChange,
-  accept = "image/*",
-  label = "Upload image",
-}: {
-  value?: string;
-  onChange: (url: string) => void;
-  accept?: string;
-  label?: string;
-}) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const createUpload = useServerFn(createMediaUploadUrl);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-
-  async function handleFile(file: File) {
-    setBusy(true);
-    setErr(null);
-    try {
-      const { path, token, signedUrl } = await createUpload({
-        data: { filename: file.name, contentType: file.type || "application/octet-stream" },
-      });
-      const { error } = await supabase.storage
-        .from("site-media")
-        .uploadToSignedUrl(path, token, file, { contentType: file.type });
-      if (error) throw error;
-      onChange(signedUrl);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Upload failed");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <div className="space-y-2">
-      {value ? (
-        <div className="flex items-center gap-3 rounded-2xl border border-border bg-background p-3">
-          <img src={value} alt="" className="h-16 w-16 rounded-lg object-cover" />
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-xs text-muted-foreground">{value}</div>
-            <div className="mt-1 flex gap-2">
-              <button onClick={() => inputRef.current?.click()} className="text-xs font-medium text-primary hover:underline">Replace</button>
-              <button onClick={() => onChange("")} className="text-xs font-medium text-red-600 hover:underline">Remove</button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border bg-background/50 px-4 py-6 text-xs text-muted-foreground transition hover:border-ring hover:bg-background"
-          disabled={busy}
-        >
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowUpFromLine className="h-4 w-4" />}
-          {busy ? "Uploading…" : label}
-        </button>
-      )}
-      <input
-        ref={inputRef}
-        type="file"
-        accept={accept}
-        className="hidden"
-        onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) handleFile(f);
-          e.target.value = "";
-        }}
-      />
-      {err && <p className="text-xs text-red-600">{err}</p>}
-      <div className="text-[10px] text-muted-foreground/70">Or paste URL:</div>
-      <TextInput value={value ?? ""} placeholder="https://…" onChange={(e) => onChange(e.target.value)} />
-    </div>
-  );
-}
-
-function ListReorder<T>({
-  items,
-  onChange,
-  renderItem,
-  emptyLabel,
-  onAdd,
-  addLabel,
-}: {
-  items: T[];
-  onChange: (next: T[]) => void;
-  renderItem: (item: T, i: number, update: (patch: Partial<T>) => void) => ReactNode;
-  emptyLabel: string;
-  onAdd: () => void;
-  addLabel: string;
-}) {
-  const move = (i: number, dir: -1 | 1) => {
-    const j = i + dir;
-    if (j < 0 || j >= items.length) return;
-    const next = [...items];
-    [next[i], next[j]] = [next[j], next[i]];
-    onChange(next);
-  };
-  const remove = (i: number) => {
-    if (!confirm("Delete this item?")) return;
-    onChange(items.filter((_, k) => k !== i));
-  };
-  const update = (i: number, p: Partial<T>) => {
-    const next = [...items];
-    next[i] = { ...next[i], ...p };
-    onChange(next);
-  };
-
-  return (
-    <div className="space-y-3">
-      {items.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-border bg-background/50 p-8 text-center text-sm text-muted-foreground">
-          {emptyLabel}
-        </div>
-      ) : (
-        items.map((it, i) => (
-          <div key={i} className="group rounded-2xl border border-border bg-background p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">#{i + 1}</span>
-              <div className="flex items-center gap-1">
-                <button onClick={() => move(i, -1)} disabled={i === 0} className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"><ChevronUp className="h-3.5 w-3.5" /></button>
-                <button onClick={() => move(i, 1)} disabled={i === items.length - 1} className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted disabled:opacity-30"><ChevronDown className="h-3.5 w-3.5" /></button>
-                <button onClick={() => remove(i)} className="rounded-lg p-1.5 text-red-600 hover:bg-red-50"><Trash2 className="h-3.5 w-3.5" /></button>
-              </div>
-            </div>
-            {renderItem(it, i, (p) => update(i, p))}
-          </div>
-        ))
-      )}
-      <button onClick={onAdd} className="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-background/50 py-3 text-sm font-medium text-muted-foreground transition hover:border-ring hover:text-foreground">
-        <Plus className="h-4 w-4" /> {addLabel}
-      </button>
-    </div>
-  );
-}
-
-/* ---------------- Editors ---------------- */
-
-function BrandEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Brand identity" desc="Name, initials, logo, and tagline shown across the site." />
-      <div className="grid gap-5 md:grid-cols-2">
-        <Field label="Brand name">
-          <TextInput value={content.brand.name} onChange={(e) => patch((c) => ({ ...c, brand: { ...c.brand, name: e.target.value } }))} />
-        </Field>
-        <Field label="Initial" hint="Shown in the logo mark">
-          <TextInput maxLength={2} value={content.brand.initial} onChange={(e) => patch((c) => ({ ...c, brand: { ...c.brand, initial: e.target.value } }))} />
-        </Field>
-        <Field label="Tagline">
-          <TextInput value={content.brand.tagline} onChange={(e) => patch((c) => ({ ...c, brand: { ...c.brand, tagline: e.target.value } }))} />
-        </Field>
-        <div />
-        <div className="md:col-span-2">
-          <Field label="Logo image" hint="PNG or SVG on transparent background">
-            <MediaUploader value={content.brand.logo} onChange={(url) => patch((c) => ({ ...c, brand: { ...c.brand, logo: url } }))} />
-          </Field>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HeroEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Hero section" desc="The cinematic first impression on your homepage." />
-      <div className="grid gap-5 md:grid-cols-2">
-        <Field label="Eyebrow">
-          <TextInput value={content.hero.eyebrow} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, eyebrow: e.target.value } }))} />
-        </Field>
-        <div />
-        <div className="md:col-span-2">
-          <Field label="Headline">
-            <TextArea rows={2} value={content.hero.headline} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, headline: e.target.value } }))} />
-          </Field>
-        </div>
-        <div className="md:col-span-2">
-          <Field label="Subheading">
-            <TextArea rows={3} value={content.hero.subheading} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, subheading: e.target.value } }))} />
-          </Field>
-        </div>
-        <Field label="Primary CTA label">
-          <TextInput value={content.hero.primaryCta.label} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, primaryCta: { ...c.hero.primaryCta, label: e.target.value } } }))} />
-        </Field>
-        <Field label="Primary CTA link">
-          <TextInput value={content.hero.primaryCta.href} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, primaryCta: { ...c.hero.primaryCta, href: e.target.value } } }))} />
-        </Field>
-        <Field label="Secondary CTA label">
-          <TextInput value={content.hero.secondaryCta.label} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, secondaryCta: { ...c.hero.secondaryCta, label: e.target.value } } }))} />
-        </Field>
-        <Field label="Secondary CTA link">
-          <TextInput value={content.hero.secondaryCta.href} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, secondaryCta: { ...c.hero.secondaryCta, href: e.target.value } } }))} />
-        </Field>
-        <div className="md:col-span-2">
-          <Field label="Hero image / video URL">
-            <MediaUploader
-              value={content.hero.media.src}
-              onChange={(url) => patch((c) => ({ ...c, hero: { ...c.hero, media: { ...c.hero.media, src: url } } }))}
-              accept="image/*,video/*"
-            />
-          </Field>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ServicesEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Services" desc="Cards showcased on the homepage and services page." />
-      <ListReorder
-        items={content.services}
-        emptyLabel="No services yet. Add your first offering."
-        addLabel="Add service"
-        onAdd={() => patch((c) => ({ ...c, services: [...c.services, { title: "New service", desc: "", icon: "Palette", tag: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, services: next }))}
-        renderItem={(s, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Title"><TextInput value={s.title} onChange={(e) => u({ title: e.target.value })} /></Field>
-            <Field label="Icon name" hint="lucide icon"><TextInput value={s.icon ?? ""} onChange={(e) => u({ icon: e.target.value })} placeholder="Palette" /></Field>
-            <div className="md:col-span-2"><Field label="Description"><TextArea rows={2} value={s.desc} onChange={(e) => u({ desc: e.target.value })} /></Field></div>
-            <Field label="Tag"><TextInput value={s.tag ?? ""} onChange={(e) => u({ tag: e.target.value })} placeholder="e.g. Design" /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
-
-function PortfolioEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Portfolio" desc="Featured projects with images and links." />
-      <ListReorder
-        items={content.portfolio}
-        emptyLabel="No projects yet. Add your first case study."
-        addLabel="Add project"
-        onAdd={() => patch((c) => ({ ...c, portfolio: [...c.portfolio, { title: "New project", tag: "Web", year: String(new Date().getFullYear()), image: "", href: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, portfolio: next }))}
-        renderItem={(p, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="md:col-span-2 grid gap-3 md:grid-cols-2">
-              <Field label="Title"><TextInput value={p.title} onChange={(e) => u({ title: e.target.value })} /></Field>
-              <Field label="Category"><TextInput value={p.tag} onChange={(e) => u({ tag: e.target.value })} /></Field>
-              <Field label="Year"><TextInput value={p.year} onChange={(e) => u({ year: e.target.value })} /></Field>
-              <Field label="Link"><TextInput value={p.href ?? ""} onChange={(e) => u({ href: e.target.value })} placeholder="https://…" /></Field>
-            </div>
-            <Field label="Cover image"><MediaUploader value={p.image} onChange={(url) => u({ image: url } as Partial<typeof p>)} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
-
-function TestimonialsEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Testimonials" desc="Real quotes from your happy clients." />
-      <ListReorder
-        items={content.testimonials}
-        emptyLabel="No testimonials yet."
-        addLabel="Add testimonial"
-        onAdd={() => patch((c) => ({ ...c, testimonials: [...c.testimonials, { quote: "", name: "", role: "", avatar: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, testimonials: next }))}
-        renderItem={(t, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="md:col-span-2 grid gap-3">
-              <Field label="Quote"><TextArea rows={3} value={t.quote} onChange={(e) => u({ quote: e.target.value })} /></Field>
-              <div className="grid gap-3 md:grid-cols-2">
-                <Field label="Name"><TextInput value={t.name} onChange={(e) => u({ name: e.target.value })} /></Field>
-                <Field label="Role / Company"><TextInput value={t.role} onChange={(e) => u({ role: e.target.value })} /></Field>
-              </div>
-            </div>
-            <Field label="Avatar"><MediaUploader value={t.avatar} onChange={(url) => u({ avatar: url } as Partial<typeof t>)} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
-
-function StatsEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Statistics" desc="Numbers that animate on scroll." />
-      <ListReorder
-        items={content.stats}
-        emptyLabel="No stats yet."
-        addLabel="Add statistic"
-        onAdd={() => patch((c) => ({ ...c, stats: [...c.stats, { value: 100, suffix: "+", label: "Metric" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, stats: next }))}
-        renderItem={(s, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Value"><TextInput type="number" value={s.value} onChange={(e) => u({ value: Number(e.target.value) || 0 })} /></Field>
-            <Field label="Suffix"><TextInput value={s.suffix ?? ""} onChange={(e) => u({ suffix: e.target.value })} placeholder="+ / %" /></Field>
-            <Field label="Label"><TextInput value={s.label} onChange={(e) => u({ label: e.target.value })} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
-
-function FAQEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Frequently asked questions" />
-      <ListReorder
-        items={content.faqs}
-        emptyLabel="No FAQs yet."
-        addLabel="Add FAQ"
-        onAdd={() => patch((c) => ({ ...c, faqs: [...c.faqs, { q: "", a: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, faqs: next }))}
-        renderItem={(f, _i, u) => (
-          <div className="grid gap-3">
-            <Field label="Question"><TextInput value={f.q} onChange={(e) => u({ q: e.target.value })} /></Field>
-            <Field label="Answer"><TextArea rows={3} value={f.a} onChange={(e) => u({ a: e.target.value })} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
-
-function ContactEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Contact & social" desc="How visitors can reach you and where they can find you." />
-      <div className="grid gap-5 md:grid-cols-2">
-        <Field label="Email"><TextInput type="email" value={content.contact.email} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, email: e.target.value } }))} /></Field>
-        <Field label="Phone (dial format)" hint="Used for click-to-call"><TextInput value={content.contact.phone} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, phone: e.target.value } }))} placeholder="+919999999999" /></Field>
-        <Field label="Phone (display)"><TextInput value={content.contact.phoneDisplay} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, phoneDisplay: e.target.value } }))} placeholder="+91 99999 99999" /></Field>
-        <Field label="WhatsApp (dial format)"><TextInput value={content.contact.whatsapp} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, whatsapp: e.target.value } }))} /></Field>
-        <div className="md:col-span-2"><Field label="Location"><TextInput value={content.contact.location} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, location: e.target.value } }))} /></Field></div>
-        <Field label="Response time"><TextInput value={content.contact.responseTime} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, responseTime: e.target.value } }))} /></Field>
-        <Field label="Google Maps embed URL"><TextInput value={content.contact.mapEmbed} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, mapEmbed: e.target.value } }))} placeholder="https://www.google.com/maps/embed?…" /></Field>
-        <div className="md:col-span-2 mt-2 border-t border-border pt-5">
-          <h3 className="mb-4 text-sm font-semibold">Social links</h3>
-          <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Instagram"><TextInput value={content.socials.instagram} onChange={(e) => patch((c) => ({ ...c, socials: { ...c.socials, instagram: e.target.value } }))} /></Field>
-            <Field label="Facebook"><TextInput value={content.socials.facebook} onChange={(e) => patch((c) => ({ ...c, socials: { ...c.socials, facebook: e.target.value } }))} /></Field>
-            <Field label="YouTube"><TextInput value={content.socials.youtube} onChange={(e) => patch((c) => ({ ...c, socials: { ...c.socials, youtube: e.target.value } }))} /></Field>
-            <Field label="Email link"><TextInput value={content.socials.email} onChange={(e) => patch((c) => ({ ...c, socials: { ...c.socials, email: e.target.value } }))} placeholder="mailto:hello@…" /></Field>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SEOEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="SEO & analytics" desc="Meta tags, Open Graph, and tracking codes." />
-      <div className="grid gap-5">
-        <Field label="Meta title" hint="< 60 characters"><TextInput value={content.seo.title} onChange={(e) => patch((c) => ({ ...c, seo: { ...c.seo, title: e.target.value } }))} /></Field>
-        <Field label="Meta description" hint="< 160 characters"><TextArea rows={3} value={content.seo.description} onChange={(e) => patch((c) => ({ ...c, seo: { ...c.seo, description: e.target.value } }))} /></Field>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Open Graph image"><MediaUploader value={content.seo.ogImage} onChange={(url) => patch((c) => ({ ...c, seo: { ...c.seo, ogImage: url } }))} /></Field>
-          <Field label="Favicon"><MediaUploader value={content.seo.favicon} onChange={(url) => patch((c) => ({ ...c, seo: { ...c.seo, favicon: url } }))} accept="image/*" /></Field>
-        </div>
-        <Field label="Google Analytics / GTM snippet" hint="Full <script> tag"><TextArea rows={4} value={content.seo.analyticsCode} onChange={(e) => patch((c) => ({ ...c, seo: { ...c.seo, analyticsCode: e.target.value } }))} /></Field>
-        <Field label="Google Search Console verification"><TextInput value={content.seo.gscVerification} onChange={(e) => patch((c) => ({ ...c, seo: { ...c.seo, gscVerification: e.target.value } }))} placeholder="google-site-verification=…" /></Field>
-      </div>
-    </div>
-  );
-}
-
-function FooterEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Footer" />
-      <div className="grid gap-5">
-        <Field label="Copyright" hint="Use {year} for current year"><TextInput value={content.footer.copyright} onChange={(e) => patch((c) => ({ ...c, footer: { ...c.footer, copyright: e.target.value } }))} /></Field>
-        <Field label="Footer tagline"><TextInput value={content.footer.tagline} onChange={(e) => patch((c) => ({ ...c, footer: { ...c.footer, tagline: e.target.value } }))} /></Field>
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- Website Settings (all-in-one) ---------------- */
-
-function SettingsEditor({ content, patch }: EditorProps) {
-  const c = content;
-  const setContact = (u: Partial<SiteContent["contact"]>) =>
-    patch((p) => ({ ...p, contact: { ...p.contact, ...u } }));
-  const setSocials = (u: Partial<SiteContent["socials"]>) =>
-    patch((p) => ({ ...p, socials: { ...p.socials, ...u } }));
-  const setBrand = (u: Partial<SiteContent["brand"]>) =>
-    patch((p) => ({ ...p, brand: { ...p.brand, ...u } }));
-  const setFooter = (u: Partial<SiteContent["footer"]>) =>
-    patch((p) => ({ ...p, footer: { ...p.footer, ...u } }));
-  const setSeo = (u: Partial<SiteContent["seo"]>) =>
-    patch((p) => ({ ...p, seo: { ...p.seo, ...u } }));
-
-  return (
-    <div className="space-y-10">
-      <SectionHeader
-        title="Website Settings"
-        desc="One place to manage business info, contact, socials, legal links and social preview. Autosaves as you type."
-      />
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Business</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Business name">
-            <TextInput value={c.brand.name} onChange={(e) => setBrand({ name: e.target.value })} />
-          </Field>
-          <Field label="Owner name">
-            <TextInput value={c.contact.ownerName} onChange={(e) => setContact({ ownerName: e.target.value })} placeholder="Gaurav Bharti" />
-          </Field>
-          <div className="md:col-span-2">
-            <Field label="Tagline">
-              <TextInput value={c.brand.tagline} onChange={(e) => setBrand({ tagline: e.target.value })} />
-            </Field>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Contact</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Phone number">
-            <TextInput value={c.contact.phoneDisplay} onChange={(e) => setContact({ phoneDisplay: e.target.value, phone: e.target.value.replace(/[^\d+]/g, "") })} placeholder="+91 99999 99999" />
-          </Field>
-          <Field label="WhatsApp number">
-            <TextInput value={c.contact.whatsapp} onChange={(e) => setContact({ whatsapp: e.target.value })} placeholder="+919999999999" />
-          </Field>
-          <Field label="Email">
-            <TextInput type="email" value={c.contact.email} onChange={(e) => setContact({ email: e.target.value })} placeholder="hello@nurpurvasi.com" />
-          </Field>
-          <Field label="Working hours">
-            <TextInput value={c.contact.workingHours} onChange={(e) => setContact({ workingHours: e.target.value })} placeholder="Mon – Fri · 10:00 – 19:00 IST" />
-          </Field>
-          <div className="md:col-span-2">
-            <Field label="Office address">
-              <TextArea rows={2} value={c.contact.location} onChange={(e) => setContact({ location: e.target.value })} />
-            </Field>
-          </div>
-          <div className="md:col-span-2">
-            <Field label="Google Maps URL" hint="Public map link — used for the 'Get directions' button">
-              <TextInput value={c.contact.mapsUrl} onChange={(e) => setContact({ mapsUrl: e.target.value })} placeholder="https://maps.google.com/?q=…" />
-            </Field>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Social profiles</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Instagram">
-            <TextInput value={c.socials.instagram} onChange={(e) => setSocials({ instagram: e.target.value })} placeholder="https://instagram.com/…" />
-          </Field>
-          <Field label="Facebook">
-            <TextInput value={c.socials.facebook} onChange={(e) => setSocials({ facebook: e.target.value })} placeholder="https://facebook.com/…" />
-          </Field>
-          <Field label="YouTube">
-            <TextInput value={c.socials.youtube} onChange={(e) => setSocials({ youtube: e.target.value })} placeholder="https://youtube.com/@…" />
-          </Field>
-          <Field label="LinkedIn">
-            <TextInput value={c.socials.linkedin} onChange={(e) => setSocials({ linkedin: e.target.value })} placeholder="https://linkedin.com/in/…" />
-          </Field>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Legal & footer</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <div className="md:col-span-2">
-            <Field label="Copyright text" hint="Use {year} for the current year">
-              <TextInput value={c.footer.copyright} onChange={(e) => setFooter({ copyright: e.target.value })} />
-            </Field>
-          </div>
-          <Field label="Privacy policy link">
-            <TextInput value={c.footer.privacyUrl} onChange={(e) => setFooter({ privacyUrl: e.target.value })} placeholder="/privacy" />
-          </Field>
-          <Field label="Terms link">
-            <TextInput value={c.footer.termsUrl} onChange={(e) => setFooter({ termsUrl: e.target.value })} placeholder="/terms" />
-          </Field>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Social preview (SEO)</h3>
-        <div className="grid gap-5">
-          <Field label="Meta title" hint="Under 60 characters">
-            <TextInput value={c.seo.title} onChange={(e) => setSeo({ title: e.target.value })} />
-          </Field>
-          <Field label="Meta description" hint="Under 160 characters">
-            <TextArea rows={3} value={c.seo.description} onChange={(e) => setSeo({ description: e.target.value })} />
-          </Field>
-          <Field label="Open Graph image" hint="1200×630 recommended">
-            <MediaUploader value={c.seo.ogImage} onChange={(url) => setSeo({ ogImage: url })} />
-          </Field>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-/* ---------------- Guards ---------------- */
-
-function FullScreenLoader({ label }: { label: string }) {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="flex items-center gap-3 text-sm text-muted-foreground">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function NotAdmin({ onSignOut }: { onSignOut: () => void }) {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md rounded-3xl border border-border bg-white p-8 text-center">
-        <h1 className="text-lg font-semibold">Access denied</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Your account is signed in but does not have admin permissions.
-        </p>
-        <button onClick={onSignOut} className="btn-primary mt-6">Sign out</button>
-      </div>
-    </div>
-  );
-}
-
-function formatTime(d: Date) {
-  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-}
-
-/* ---------------- Branding & Theme ---------------- */
-
-function ColorField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
-  return (
-    <Field label={label}>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={/^#[0-9a-fA-F]{6}$/.test(value) ? value : "#000000"}
-          onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-14 shrink-0 cursor-pointer rounded-xl border border-border bg-background"
-          aria-label={label}
-        />
-        <TextInput value={value} onChange={(e) => onChange(e.target.value)} placeholder="#1a2547" />
-      </div>
-    </Field>
-  );
-}
-
-function ThemeEditor({ content, patch }: EditorProps) {
-  const theme = content.theme ?? defaultTheme;
-  const previewRef = useRef<HTMLDivElement>(null);
-
-  const updateTheme = (u: Partial<ThemeSettings>) =>
-    patch((c) => ({ ...c, theme: { ...(c.theme ?? defaultTheme), ...u } }));
-
-  // Live preview: apply theme vars to the preview container only.
-  useEffect(() => {
-    if (previewRef.current) applyThemeToElement(previewRef.current, theme);
-  }, [theme]);
-
-  const btnRadiusMap = { pill: "9999px", rounded: "0.75rem", square: "0.25rem" } as const;
-
-  return (
-    <div>
-      <SectionHeader
-        title="Branding & Theme"
-        desc="Colors, radius, button style, logos and hero background. Live-updates the site on publish."
-        action={
-          <button
-            type="button"
-            onClick={() => {
-              if (confirm("Reset all theme settings to defaults?")) updateTheme({ ...defaultTheme });
-            }}
-            className="inline-flex items-center gap-1 rounded-full border border-border bg-white px-3 py-1.5 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <RotateCcw className="h-3 w-3" /> Reset to default
-          </button>
-        }
-      />
-
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
-        {/* Controls */}
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 text-sm font-semibold">Identity</h3>
-            <div className="grid gap-5 md:grid-cols-2">
-              <Field label="Website name">
-                <TextInput
-                  value={content.brand.name}
-                  onChange={(e) => patch((c) => ({ ...c, brand: { ...c.brand, name: e.target.value } }))}
-                />
-              </Field>
-              <Field label="Browser title" hint="Shown in the browser tab">
-                <TextInput value={theme.browserTitle} onChange={(e) => updateTheme({ browserTitle: e.target.value })} />
-              </Field>
-              <Field label="Main logo">
-                <MediaUploader
-                  value={content.brand.logo}
-                  onChange={(url) => patch((c) => ({ ...c, brand: { ...c.brand, logo: url } }))}
-                />
-              </Field>
-              <Field label="Favicon" hint="Square, 32×32 or SVG">
-                <MediaUploader
-                  value={content.seo.favicon}
-                  onChange={(url) => patch((c) => ({ ...c, seo: { ...c.seo, favicon: url } }))}
-                />
-              </Field>
-              <Field label="Footer logo">
-                <MediaUploader value={theme.footerLogo} onChange={(url) => updateTheme({ footerLogo: url })} />
-              </Field>
-              <Field label="Loading screen logo">
-                <MediaUploader value={theme.loadingLogo} onChange={(url) => updateTheme({ loadingLogo: url })} />
-              </Field>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 text-sm font-semibold">Hero background</h3>
-            <div className="grid gap-5 md:grid-cols-2">
-              <Field label="Background image">
-                <MediaUploader
-                  value={theme.heroBackgroundImage}
-                  onChange={(url) => updateTheme({ heroBackgroundImage: url })}
-                  accept="image/*"
-                />
-              </Field>
-              <Field label="Background video" hint="MP4/WebM, muted autoplay">
-                <MediaUploader
-                  value={theme.heroBackgroundVideo}
-                  onChange={(url) => updateTheme({ heroBackgroundVideo: url })}
-                  accept="video/*"
-                />
-              </Field>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 text-sm font-semibold">Colors</h3>
-            <div className="grid gap-5 md:grid-cols-3">
-              <ColorField label="Primary" value={theme.primaryColor} onChange={(v) => updateTheme({ primaryColor: v })} />
-              <ColorField label="Secondary" value={theme.secondaryColor} onChange={(v) => updateTheme({ secondaryColor: v })} />
-              <ColorField label="Accent" value={theme.accentColor} onChange={(v) => updateTheme({ accentColor: v })} />
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-3 text-sm font-semibold">Shape & buttons</h3>
-            <div className="grid gap-5 md:grid-cols-3">
-              <Field label="Border radius" hint={`${theme.borderRadius.toFixed(2)} rem`}>
-                <input
-                  type="range"
-                  min={0}
-                  max={2}
-                  step={0.05}
-                  value={theme.borderRadius}
-                  onChange={(e) => updateTheme({ borderRadius: Number(e.target.value) })}
-                  className="w-full accent-[color:var(--royal)]"
-                />
-              </Field>
-              <Field label="Button style">
-                <select
-                  value={theme.buttonStyle}
-                  onChange={(e) => updateTheme({ buttonStyle: e.target.value as ThemeSettings["buttonStyle"] })}
-                  className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
-                >
-                  <option value="pill">Pill (rounded-full)</option>
-                  <option value="rounded">Rounded</option>
-                  <option value="square">Square</option>
-                </select>
-              </Field>
-              <Field label="Theme mode" hint="Dark mode is future-ready">
-                <select
-                  value={theme.mode}
-                  onChange={(e) => updateTheme({ mode: e.target.value as ThemeSettings["mode"] })}
-                  className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
-                >
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                </select>
-              </Field>
-            </div>
-          </div>
-        </div>
-
-        {/* Live Preview */}
-        <div className="lg:sticky lg:top-24 h-fit">
-          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            <Eye className="h-3.5 w-3.5" /> Live preview
-          </div>
-          <div
-            ref={previewRef}
-            className="overflow-hidden rounded-3xl border border-border bg-white shadow-sm"
-          >
-            <div
-              className="relative p-6"
-              style={{
-                background: theme.heroBackgroundImage
-                  ? `linear-gradient(135deg, color-mix(in oklab, ${theme.primaryColor} 55%, transparent), transparent), url(${theme.heroBackgroundImage}) center/cover`
-                  : `linear-gradient(135deg, ${theme.primaryColor}, ${theme.secondaryColor} 55%, ${theme.accentColor})`,
-                color: "white",
-                minHeight: 200,
-              }}
-            >
-              <div className="flex items-center gap-2">
-                {theme.loadingLogo || content.brand.logo ? (
-                  <img src={theme.loadingLogo || content.brand.logo} alt="" className="h-8 w-8 rounded-lg object-cover" />
-                ) : (
-                  <span
-                    className="grid h-8 w-8 place-items-center rounded-lg text-xs font-semibold"
-                    style={{ background: "rgba(255,255,255,.2)" }}
-                  >
-                    {content.brand.initial}
-                  </span>
-                )}
-                <span className="text-sm font-semibold">{content.brand.name}</span>
-              </div>
-              <h4 className="mt-6 text-2xl font-semibold leading-tight" style={{ fontFamily: "var(--font-display)" }}>
-                {content.hero.headline || "Your headline"}
-              </h4>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center px-4 py-2 text-xs font-medium"
-                  style={{
-                    background: `linear-gradient(135deg, ${theme.primaryColor}, ${theme.secondaryColor} 55%, ${theme.accentColor})`,
-                    color: "white",
-                    borderRadius: btnRadiusMap[theme.buttonStyle],
-                  }}
-                >
-                  Primary CTA
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center border px-4 py-2 text-xs font-medium"
-                  style={{
-                    borderColor: "rgba(255,255,255,.4)",
-                    color: "white",
-                    borderRadius: btnRadiusMap[theme.buttonStyle],
-                    background: "rgba(255,255,255,.1)",
-                  }}
-                >
-                  Secondary
-                </button>
-              </div>
-            </div>
-            <div className="p-5">
-              <div
-                className="rounded-2xl border p-4"
-                style={{ borderRadius: `${theme.borderRadius}rem`, borderColor: theme.secondaryColor + "33" }}
-              >
-                <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: theme.accentColor }}>
-                  Card sample
-                </div>
-                <div className="mt-1 text-sm font-medium" style={{ color: theme.primaryColor }}>
-                  Radius {theme.borderRadius.toFixed(2)}rem · {theme.buttonStyle}
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Preview updates instantly. Publish to apply to the live site.
-                </p>
-              </div>
-              {theme.footerLogo && (
-                <div className="mt-4 flex items-center gap-2 border-t border-border pt-3">
-                  <img src={theme.footerLogo} alt="Footer logo" className="h-6" />
-                  <span className="text-[10px] text-muted-foreground">Footer preview</span>
-                </div>
-              )}
-            </div>
-          </div>
-          <p className="mt-3 text-[11px] text-muted-foreground">
-            Autosaved as draft. Click <strong>Publish</strong> to apply to visitors.
+  if (!admin.data?.isAdmin) {
+    return (
+      <AdminShell title="Dashboard">
+        <div className="rounded-2xl border bg-background p-8">
+          <p className="text-sm font-semibold">Admin access required</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            This account does not have admin permissions.
           </p>
         </div>
+      </AdminShell>
+    );
+  }
+
+  const d = overview.data;
+  const stats = [
+    { label: "Photos", value: d?.photos, icon: ImageIcon, to: "/admin/gallery" },
+    { label: "Videos", value: d?.videos, icon: Video, to: "/admin/gallery" },
+    { label: "Reels", value: d?.reels, icon: Film, to: "/admin/gallery" },
+    { label: "Galleries", value: d?.galleries, icon: Images, to: "/admin/galleries" },
+    { label: "Places", value: d?.places, icon: MapPin, to: "/admin/places" },
+    { label: "Upcoming events", value: d?.upcomingEvents, icon: CalendarDays, to: "/admin/events" },
+    { label: "Businesses", value: d?.businesses, icon: Building2, to: "/admin/clients" },
+    { label: "Unread messages", value: d?.unreadMessages, icon: Inbox, to: "/admin/leads" },
+    { label: "Total views", value: d?.views, icon: Eye, to: "/admin/gallery" },
+  ];
+
+  const quick = [
+    { label: "Upload photos & videos", to: "/admin/gallery", icon: Plus },
+    { label: "Add a reel", to: "/admin/gallery", icon: Film },
+    { label: "New gallery", to: "/admin/galleries", icon: Images },
+    { label: "New event", to: "/admin/events", icon: CalendarDays },
+    { label: "Ticker headline", to: "/admin/ticker", icon: Megaphone },
+    { label: "Homepage & branding", to: "/admin/studio", icon: Palette },
+  ];
+
+  return (
+    <AdminShell
+      title="Dashboard"
+      description="Everything happening on NurpurVasi Media at a glance."
+    >
+      <div className="space-y-8">
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Quick actions
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {quick.map((a) => (
+              <Link
+                key={a.label}
+                to={a.to}
+                className="group flex items-center gap-3 rounded-2xl border bg-background p-4 shadow-sm transition hover:border-primary/40 hover:shadow-md"
+              >
+                <span className="rounded-xl bg-primary/10 p-2.5 text-primary">
+                  <a.icon className="h-4 w-4" />
+                </span>
+                <span className="text-sm font-semibold">{a.label}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Overview
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {stats.map((s) => (
+              <Link
+                key={s.label}
+                to={s.to}
+                className="rounded-2xl border bg-background p-4 shadow-sm transition hover:border-primary/40"
+              >
+                <s.icon className="h-4 w-4 text-primary" />
+                <p className="mt-3 text-2xl font-semibold tabular-nums">
+                  {overview.isLoading ? "—" : (s.value ?? 0)}
+                </p>
+                <p className="text-xs text-muted-foreground">{s.label}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            Recent messages
+          </h2>
+          <div className="rounded-2xl border bg-background">
+            {overview.isLoading ? (
+              <div className="flex items-center gap-2 p-6 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" /> Loading…
+              </div>
+            ) : (d?.recentMessages?.length ?? 0) === 0 ? (
+              <p className="p-6 text-sm text-muted-foreground">No messages yet.</p>
+            ) : (
+              <ul className="divide-y">
+                {d!.recentMessages.map((m) => (
+                  <li key={m.id} className="flex items-center gap-3 p-4">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium">{m.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(m.created_at).toLocaleString()}
+                      </p>
+                    </div>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${
+                        m.status === "new"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {m.status === "new" ? "unread" : m.status}
+                    </span>
+                    <Link
+                      to="/admin/leads/$id"
+                      params={{ id: m.id }}
+                      className="rounded-lg border px-3 py-1.5 text-xs font-medium hover:bg-muted"
+                    >
+                      Open
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
       </div>
-    </div>
+    </AdminShell>
   );
 }
-
