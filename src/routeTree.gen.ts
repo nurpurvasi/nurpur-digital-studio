@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
-import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClientsRouteImport } from './routes/clients'
@@ -22,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as PhotosIndexRouteImport } from './routes/photos.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -78,11 +78,6 @@ const PortfolioRoute = PortfolioRouteImport.update({
   path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PhotosRoute = PhotosRouteImport.update({
-  id: '/photos',
-  path: '/photos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -126,6 +121,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ServicesRoute,
+} as any)
+const PhotosIndexRoute = PhotosIndexRouteImport.update({
+  id: '/photos/',
+  path: '/photos/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
@@ -365,7 +365,6 @@ export interface FileRoutesByFullPath {
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/photos': typeof PhotosRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
@@ -373,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
@@ -419,12 +419,12 @@ export interface FileRoutesByTo {
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/photos': typeof PhotosRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos': typeof PhotosIndexRoute
   '/services': typeof ServicesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/api/media/$': typeof ApiMediaSplatRoute
@@ -462,7 +462,6 @@ export interface FileRoutesById {
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/photos': typeof PhotosRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
@@ -470,6 +469,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
@@ -518,7 +518,6 @@ export interface FileRouteTypes {
     | '/clients'
     | '/contact'
     | '/faq'
-    | '/photos'
     | '/portfolio'
     | '/pricing'
     | '/services'
@@ -526,6 +525,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos/'
     | '/services/'
     | '/admin/blog'
     | '/admin/clients'
@@ -572,12 +572,12 @@ export interface FileRouteTypes {
     | '/clients'
     | '/contact'
     | '/faq'
-    | '/photos'
     | '/portfolio'
     | '/pricing'
     | '/blog/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos'
     | '/services'
     | '/admin/media'
     | '/api/media/$'
@@ -614,7 +614,6 @@ export interface FileRouteTypes {
     | '/clients'
     | '/contact'
     | '/faq'
-    | '/photos'
     | '/portfolio'
     | '/pricing'
     | '/services'
@@ -622,6 +621,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos/'
     | '/services/'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/clients'
@@ -670,10 +670,10 @@ export interface RootRouteChildren {
   ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
-  PhotosRoute: typeof PhotosRoute
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  PhotosIndexRoute: typeof PhotosIndexRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
@@ -698,13 +698,6 @@ declare module '@tanstack/react-router' {
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof PortfolioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/photos': {
-      id: '/photos'
-      path: '/photos'
-      fullPath: '/photos'
-      preLoaderRoute: typeof PhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -769,6 +762,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/services/'
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof ServicesRoute
+    }
+    '/photos/': {
+      id: '/photos/'
+      path: '/photos'
+      fullPath: '/photos/'
+      preLoaderRoute: typeof PhotosIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/services/$slug': {
       id: '/services/$slug'
@@ -1328,10 +1328,10 @@ const rootRouteChildren: RootRouteChildren = {
   ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
-  PhotosRoute: PhotosRoute,
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  PhotosIndexRoute: PhotosIndexRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
