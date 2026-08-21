@@ -170,7 +170,7 @@ export function MediaSpotlight() {
               onClick={() => setOpenAt(0)}
               className="group relative block w-full overflow-hidden rounded-[30px] border border-border text-left shadow-[0_50px_100px_-60px_color-mix(in_oklab,var(--navy)_70%,transparent)]"
             >
-              <div className="aspect-[4/5] w-full bg-muted sm:aspect-[16/10]">
+              <div className="aspect-[3/4] w-full bg-muted sm:aspect-[16/10] lg:aspect-[4/3]">
                 {thumbOf(feature) ? (
                   <img
                     src={thumbOf(feature)}
