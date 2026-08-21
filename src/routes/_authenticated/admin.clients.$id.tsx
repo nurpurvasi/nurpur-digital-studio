@@ -18,7 +18,7 @@ import { ClientLogo } from "@/components/site/Clients";
 export const Route = createFileRoute("/_authenticated/admin/clients/$id")({
   head: () => ({
     meta: [
-      { title: "Client editor" },
+      { title: "Business editor" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
@@ -254,10 +254,10 @@ function AdminClientEditor() {
             </span>
             <div className="leading-tight">
               <div className="text-sm font-semibold tracking-tight">
-                {isNew ? "New client" : "Edit client"}
+                {isNew ? "New business" : "Edit business"}
               </div>
               <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                Clients &amp; Brands
+                Business Promotion
               </div>
             </div>
           </Link>
@@ -348,7 +348,7 @@ function AdminClientEditor() {
                 value={draft.description}
                 onChange={(e) => patch("description", e.target.value)}
                 rows={4}
-                placeholder="What we built for this client…"
+                placeholder="What this business offers in Nurpur…"
                 className={inputCls}
               />
             </Field>
