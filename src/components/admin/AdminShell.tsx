@@ -28,45 +28,47 @@ type Group = { title: string; items: Item[] };
 const GROUPS: Group[] = [
   {
     title: "Overview",
-    items: [{ to: "/admin", label: "Dashboard", icon: LayoutDashboard }],
-  },
-  {
-    title: "Media",
     items: [
-      { to: "/admin/galleries", label: "Photo Galleries", icon: Images },
-      { to: "/admin/gallery", label: "Photos & Videos", icon: Video },
-      { to: "/admin/media", label: "Media Library", icon: Film },
+      { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/admin/studio", label: "Home page & branding", icon: Palette },
     ],
   },
   {
-    title: "Social",
+    title: "Photos",
+    items: [
+      { to: "/admin/galleries", label: "Photo galleries", icon: Images },
+      { to: "/admin/gallery", label: "Photos & videos", icon: Video },
+    ],
+  },
+  {
+    title: "Videos & reels",
     items: [{ to: "/admin/reels", label: "Reels", icon: Film }],
   },
   {
-    title: "Content",
+    title: "Places & business",
     items: [
-      { to: "/admin/blog", label: "Blog & News", icon: Newspaper },
-      { to: "/admin/events", label: "Events & Melas", icon: CalendarDays },
-      { to: "/admin/ticker", label: "Breaking Ticker", icon: Megaphone },
+      { to: "/admin/places", label: "Nurpur places", icon: MapPin },
+      { to: "/admin/clients", label: "Business promotions", icon: Building2 },
     ],
   },
   {
-    title: "Local",
+    title: "News & events",
     items: [
-      { to: "/admin/clients", label: "Business Promotions", icon: Building2 },
-      { to: "/admin/places", label: "Nurpur Places", icon: MapPin },
+      { to: "/admin/blog", label: "Blog & news", icon: Newspaper },
+      { to: "/admin/events", label: "Events & melas", icon: CalendarDays },
+      { to: "/admin/ticker", label: "Breaking ticker", icon: Megaphone },
     ],
   },
   {
-    title: "Inbox",
-    items: [{ to: "/admin/inbox", label: "Messages", icon: Inbox }],
+    title: "Messages",
+    items: [{ to: "/admin/inbox", label: "Contact messages", icon: Inbox }],
   },
   {
-    title: "Site",
+    title: "Site settings",
     items: [
-      { to: "/admin/studio", label: "Homepage & Branding", icon: Palette },
-      { to: "/admin/typography", label: "Typography", icon: TypeIcon },
-      { to: "/weather", label: "Weather Page", icon: CloudSun },
+      { to: "/admin/media", label: "Media library", icon: Film },
+      { to: "/admin/typography", label: "Fonts & typography", icon: TypeIcon },
+      { to: "/weather", label: "Weather page", icon: CloudSun },
     ],
   },
 ];
