@@ -104,6 +104,9 @@
                    radial-gradient(700px 400px at 50% 100%, color-mix(in oklab, var(--cyan) 22%, transparent), transparent 60%);
   --gradient-brand: linear-gradient(135deg, var(--navy), var(--royal) 55%, var(--purple));
   --gradient-text: linear-gradient(120deg, var(--navy), var(--royal) 45%, var(--purple));
+  --gradient-warm: linear-gradient(135deg, var(--sun), color-mix(in oklab, var(--purple) 55%, var(--sun)));
+  --gradient-vivid: linear-gradient(120deg, var(--royal), var(--purple) 45%, var(--sun));
+
 
   --shadow-glass: 0 1px 0 0 color-mix(in oklab, white 60%, transparent) inset,
                   0 20px 60px -20px color-mix(in oklab, var(--navy) 25%, transparent);
