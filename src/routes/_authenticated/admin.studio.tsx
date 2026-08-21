@@ -208,10 +208,11 @@ function AdminPage() {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1400px] gap-6 px-6 py-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <div className="mx-auto grid max-w-[1400px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)]">
         {/* Sidebar */}
-        <aside className="h-fit rounded-3xl border border-border bg-white p-2 lg:sticky lg:top-24">
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+        <aside className="h-fit min-w-0 rounded-3xl border border-border bg-white p-2 lg:sticky lg:top-24">
+          <nav className="flex min-w-0 gap-1 overflow-x-auto lg:flex-col">
+
             {SECTIONS.map((s) => (
               <button
                 key={s.id}
