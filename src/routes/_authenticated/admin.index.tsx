@@ -73,7 +73,8 @@ function AdminDashboard() {
     { label: "Places", value: d?.places, icon: MapPin, to: "/admin/places" },
     { label: "Upcoming events", value: d?.upcomingEvents, icon: CalendarDays, to: "/admin/events" },
     { label: "Businesses", value: d?.businesses, icon: Building2, to: "/admin/clients" },
-    { label: "Unread messages", value: d?.unreadMessages, icon: Inbox, to: "/admin/leads" },
+    { label: "Published businesses", value: d?.publishedBusinesses, icon: Building2, to: "/admin/clients" },
+    { label: "Unread messages", value: d?.unreadMessages, icon: Inbox, to: "/admin/inbox" },
     { label: "Total views", value: d?.views, icon: Eye, to: "/admin/gallery" },
   ];
 
@@ -82,6 +83,8 @@ function AdminDashboard() {
     { label: "Add a reel", to: "/admin/reels", icon: Film },
     { label: "New gallery", to: "/admin/galleries", icon: Images },
     { label: "New event", to: "/admin/events", icon: CalendarDays },
+    { label: "Add a business", to: "/admin/clients/new", icon: Building2 },
+    { label: "View messages", to: "/admin/inbox", icon: Inbox },
     { label: "Ticker headline", to: "/admin/ticker", icon: Megaphone },
     { label: "Homepage & branding", to: "/admin/studio", icon: Palette },
   ];
@@ -164,8 +167,8 @@ function AdminDashboard() {
                       {m.status === "new" ? "unread" : m.status}
                     </span>
                     <Link
-                      to="/admin/leads/$id"
-                      params={{ id: m.id }}
+                      to="/admin/inbox"
+                      search={{}}
                       className="rounded-lg border px-3 py-1.5 text-xs font-medium hover:bg-muted"
                     >
                       Open

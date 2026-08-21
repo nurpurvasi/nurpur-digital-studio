@@ -59,7 +59,7 @@ const GROUPS: Group[] = [
   },
   {
     title: "Inbox",
-    items: [{ to: "/admin/leads", label: "Messages", icon: Inbox }],
+    items: [{ to: "/admin/inbox", label: "Messages", icon: Inbox }],
   },
   {
     title: "Site",

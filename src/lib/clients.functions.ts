@@ -39,12 +39,13 @@ export type ClientBrand = {
   facebook: string;
   youtube: string;
   gallery: string[];
+  opening_hours: string;
   created_at: string;
   updated_at: string;
 };
 
 const SELECT_COLS =
-  "id, company_name, slug, logo, website, description, category, featured, display_order, published, seo_title, seo_description, phone, whatsapp, address, map_url, cover_image, instagram, facebook, youtube, gallery, created_at, updated_at";
+  "id, company_name, slug, logo, website, description, category, featured, display_order, published, seo_title, seo_description, phone, whatsapp, address, map_url, cover_image, instagram, facebook, youtube, gallery, opening_hours, created_at, updated_at";
 
 export function slugify(input: string) {
   return input
@@ -159,6 +160,16 @@ const clientInput = z.object({
   published: z.boolean().default(false),
   seo_title: z.string().max(300).default(""),
   seo_description: z.string().max(500).default(""),
+  phone: z.string().max(60).default(""),
+  whatsapp: z.string().max(60).default(""),
+  address: z.string().max(500).default(""),
+  map_url: z.string().max(1000).default(""),
+  cover_image: z.string().max(1000).default(""),
+  instagram: z.string().max(500).default(""),
+  facebook: z.string().max(500).default(""),
+  youtube: z.string().max(500).default(""),
+  opening_hours: z.string().max(500).default(""),
+  gallery: z.array(z.string().max(1000)).max(60).default([]),
 });
 
 export const upsertClient = createServerFn({ method: "POST" })

@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
+  Clock,
+  Share2,
   ExternalLink,
   Facebook,
   Instagram,
@@ -215,6 +217,15 @@ function BusinessDetail() {
               </div>
             )}
 
+            {b.opening_hours && (
+              <div className="mt-6 rounded-2xl border border-border bg-muted/30 p-4">
+                <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" /> Opening hours
+                </p>
+                <p className="mt-2 whitespace-pre-line text-sm">{b.opening_hours}</p>
+              </div>
+            )}
+
             <div className="mt-7 flex flex-wrap gap-3">
               {b.phone && (
                 <a href={`tel:${b.phone}`} className="btn-primary inline-flex">
@@ -241,6 +252,24 @@ function BusinessDetail() {
                   <MapPin className="h-4 w-4" /> Directions
                 </a>
               )}
+              <button
+                type="button"
+                onClick={async () => {
+                  const url = window.location.href;
+                  if (navigator.share) {
+                    try {
+                      await navigator.share({ title: b.company_name, url });
+                      return;
+                    } catch {
+                      /* user cancelled */
+                    }
+                  }
+                  await navigator.clipboard?.writeText(url);
+                }}
+                className="btn-ghost inline-flex"
+              >
+                <Share2 className="h-4 w-4" /> Share
+              </button>
               {socials.map(({ href, label, Icon }) => (
                 <a
                   key={label}
