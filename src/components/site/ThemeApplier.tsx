@@ -38,9 +38,14 @@ export function ThemeApplier() {
     root.classList.toggle("dark", theme.mode === "dark");
   }, [theme]);
 
+  // Browser title from CMS applies to the homepage only — every other route
+  // owns its own SEO title via the route head().
   useEffect(() => {
-    if (theme?.browserTitle) document.title = theme.browserTitle;
+    if (theme?.browserTitle && window.location.pathname === "/") {
+      document.title = theme.browserTitle;
+    }
   }, [theme?.browserTitle]);
+
 
   useEffect(() => {
     const href = site.seo?.favicon;
