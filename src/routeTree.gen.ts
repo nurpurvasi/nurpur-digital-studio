@@ -28,6 +28,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VideosIndexRouteImport } from './routes/videos.index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as PlacesIndexRouteImport } from './routes/places.index'
 import { Route as PhotosIndexRouteImport } from './routes/photos.index'
 import { Route as VideosIdRouteImport } from './routes/videos.$id'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
@@ -174,6 +175,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ServicesRoute,
+} as any)
+const PlacesIndexRoute = PlacesIndexRouteImport.update({
+  id: '/places/',
+  path: '/places/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PhotosIndexRoute = PhotosIndexRouteImport.update({
   id: '/',
@@ -496,6 +502,7 @@ export interface FileRoutesByFullPath {
   '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
   '/photos/': typeof PhotosIndexRoute
+  '/places/': typeof PlacesIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/videos/': typeof VideosIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
@@ -564,6 +571,7 @@ export interface FileRoutesByTo {
   '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
   '/photos': typeof PhotosIndexRoute
+  '/places': typeof PlacesIndexRoute
   '/services': typeof ServicesIndexRoute
   '/videos': typeof VideosIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsRoute
@@ -627,6 +635,7 @@ export interface FileRoutesById {
   '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
   '/photos/': typeof PhotosIndexRoute
+  '/places/': typeof PlacesIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/videos/': typeof VideosIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
@@ -701,6 +710,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/videos/$id'
     | '/photos/'
+    | '/places/'
     | '/services/'
     | '/videos/'
     | '/admin/blog'
@@ -769,6 +779,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/videos/$id'
     | '/photos'
+    | '/places'
     | '/services'
     | '/videos'
     | '/admin/events'
@@ -831,6 +842,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/videos/$id'
     | '/photos/'
+    | '/places/'
     | '/services/'
     | '/videos/'
     | '/_authenticated/admin/blog'
@@ -898,6 +910,7 @@ export interface RootRouteChildren {
   WeatherRoute: typeof WeatherRoute
   BusinessesSlugRoute: typeof BusinessesSlugRoute
   GalleriesSlugRoute: typeof GalleriesSlugRoute
+  PlacesIndexRoute: typeof PlacesIndexRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
@@ -1035,6 +1048,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/services/'
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof ServicesRoute
+    }
+    '/places/': {
+      id: '/places/'
+      path: '/places'
+      fullPath: '/places/'
+      preLoaderRoute: typeof PlacesIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/photos/': {
       id: '/photos/'
@@ -1729,6 +1749,7 @@ const rootRouteChildren: RootRouteChildren = {
   WeatherRoute: WeatherRoute,
   BusinessesSlugRoute: BusinessesSlugRoute,
   GalleriesSlugRoute: GalleriesSlugRoute,
+  PlacesIndexRoute: PlacesIndexRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
