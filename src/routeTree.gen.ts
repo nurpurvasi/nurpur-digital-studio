@@ -43,6 +43,7 @@ import { Route as AuthenticatedAdminStudioRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin.services'
 import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authenticated/admin.pricing'
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
+import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin.places'
 import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin.gallery'
@@ -247,6 +248,12 @@ const AuthenticatedAdminPortfolioRoute =
   AuthenticatedAdminPortfolioRouteImport.update({
     id: '/portfolio',
     path: '/portfolio',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPlacesRoute =
+  AuthenticatedAdminPlacesRouteImport.update({
+    id: '/places',
+    path: '/places',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminMediaRoute = AuthenticatedAdminMediaRouteImport.update({
@@ -460,6 +467,7 @@ export interface FileRoutesByFullPath {
   '/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
+  '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
@@ -517,6 +525,7 @@ export interface FileRoutesByTo {
   '/admin/events': typeof AuthenticatedAdminEventsRoute
   '/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
+  '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/api/media/$': typeof ApiMediaSplatRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -578,6 +587,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
+  '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
@@ -645,6 +655,7 @@ export interface FileRouteTypes {
     | '/admin/gallery'
     | '/admin/leads'
     | '/admin/media'
+    | '/admin/places'
     | '/admin/portfolio'
     | '/admin/pricing'
     | '/admin/services'
@@ -702,6 +713,7 @@ export interface FileRouteTypes {
     | '/admin/events'
     | '/admin/galleries'
     | '/admin/media'
+    | '/admin/places'
     | '/admin/studio'
     | '/api/media/$'
     | '/admin/blog/$id'
@@ -762,6 +774,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/gallery'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/media'
+    | '/_authenticated/admin/places'
     | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/pricing'
     | '/_authenticated/admin/services'
@@ -1053,6 +1066,13 @@ declare module '@tanstack/react-router' {
       path: '/portfolio'
       fullPath: '/admin/portfolio'
       preLoaderRoute: typeof AuthenticatedAdminPortfolioRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/places': {
+      id: '/_authenticated/admin/places'
+      path: '/places'
+      fullPath: '/admin/places'
+      preLoaderRoute: typeof AuthenticatedAdminPlacesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/media': {
@@ -1458,6 +1478,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRouteWithChildren
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRouteWithChildren
   AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
+  AuthenticatedAdminPlacesRoute: typeof AuthenticatedAdminPlacesRoute
   AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
   AuthenticatedAdminPricingRoute: typeof AuthenticatedAdminPricingRouteWithChildren
   AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRouteWithChildren
@@ -1476,6 +1497,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRouteWithChildren,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRouteWithChildren,
   AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
+  AuthenticatedAdminPlacesRoute: AuthenticatedAdminPlacesRoute,
   AuthenticatedAdminPortfolioRoute:
     AuthenticatedAdminPortfolioRouteWithChildren,
   AuthenticatedAdminPricingRoute: AuthenticatedAdminPricingRouteWithChildren,
