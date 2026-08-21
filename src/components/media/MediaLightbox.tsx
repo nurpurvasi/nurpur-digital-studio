@@ -47,7 +47,7 @@ export function MediaLightbox({
   const share = async () => {
     const url = `${window.location.origin}/photos/${item.id}`;
     try {
-      if (navigator.share) await navigator.share({ title: item.title || "NurpurVasi Media", url });
+      if (navigator.share) await navigator.share({ title: displayTitle(item) || "NurpurVasi Media", url });
       else await navigator.clipboard.writeText(url);
     } catch {
       /* user dismissed */
@@ -59,7 +59,7 @@ export function MediaLightbox({
       className="fixed inset-0 z-[120] flex flex-col bg-foreground/95 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
-      aria-label={item.title || "Media viewer"}
+      aria-label={displayTitle(item) || "Media viewer"}
     >
       <div className="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <span className="rounded-full bg-background/15 px-3 py-1 text-xs font-medium text-background">
@@ -139,12 +139,12 @@ export function MediaLightbox({
               </span>
             )}
           </div>
-          {item.title && (
+          {(
             <h2
               className="mt-3 text-xl text-background sm:text-2xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              {item.title}
+              {displayTitle(item)}
             </h2>
           )}
           {item.description && (
@@ -165,7 +165,7 @@ export function MediaLightbox({
               <button
                 key={it.id}
                 onClick={() => onIndex(i)}
-                aria-label={it.title || `Item ${i + 1}`}
+                aria-label={displayTitle(it) || `Item ${i + 1}`}
                 className={`h-12 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
                   i === index ? "border-background" : "border-transparent opacity-60"
                 }`}
