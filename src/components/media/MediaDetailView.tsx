@@ -18,7 +18,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Section } from "@/components/site/Layout";
 import { MediaCard } from "./MediaGrid";
 import { listPublicGalleries } from "@/lib/portal.functions";
-import { formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGallery";
+import { displayTitle, formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGallery";
 
 type Kind = "photos" | "videos";
 
@@ -79,7 +79,7 @@ export function MediaDetailView({
   const share = async () => {
     const url = `${window.location.origin}/${kind}/${item.slug || item.id}`;
     try {
-      if (navigator.share) await navigator.share({ title: item.title || "NurpurVasi Media", url });
+      if (navigator.share) await navigator.share({ title: displayTitle(item) || "NurpurVasi Media", url });
       else await navigator.clipboard.writeText(url);
     } catch {
       /* dismissed */
@@ -125,7 +125,7 @@ export function MediaDetailView({
           ) : (
             <img
               src={item.media_url || thumbOf(item)}
-              alt={item.alt_text || item.title}
+              alt={item.alt_text || displayTitle(item)}
               className="max-h-[75vh] w-full object-contain"
               loading="eager"
               decoding="async"
@@ -182,7 +182,7 @@ export function MediaDetailView({
             className="mt-5 text-3xl tracking-tight sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            {item.title}
+            {displayTitle(item)}
           </h1>
           {item.caption && (
             <p className="mt-4 max-w-3xl text-base font-medium text-foreground/90">{item.caption}</p>
@@ -285,11 +285,12 @@ export function mediaDetailHead({
     };
   }
   const label = kind === "videos" ? "video" : "photo";
-  const title = item.seo_title || `${item.title} — Nurpur ${label} | NurpurVasi Media`;
+  const shown = displayTitle(item);
+  const title = item.seo_title || `${shown} — Nurpur ${label} | NurpurVasi Media`;
   const description =
     item.seo_description ||
     item.description ||
-    `${item.title} — ${label} from ${item.category || "Nurpur"}, Himachal Pradesh, published by NurpurVasi Media.`;
+    `${shown} — ${label} from ${item.category || "Nurpur"}, Himachal Pradesh, published by NurpurVasi Media.`;
   const image = item.media_type === "image" ? item.media_url : item.thumbnail;
   return {
     meta: [
@@ -314,12 +315,12 @@ export function mediaDetailHead({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": item.media_type === "video" ? "VideoObject" : "ImageObject",
-          name: item.title,
+          name: shown,
           description,
           contentUrl: item.media_url,
           thumbnailUrl: item.thumbnail || undefined,
           uploadDate: item.publish_date || item.created_at,
-          caption: item.alt_text || item.title,
+          caption: item.alt_text || displayTitle(item),
           contentLocation: {
             "@type": "Place",
             name: item.category || "Nurpur, Himachal Pradesh",
@@ -339,7 +340,7 @@ export function mediaDetailHead({
               name: kind === "videos" ? "Videos" : "Photos",
               item: `${site}/${kind}`,
             },
-            { "@type": "ListItem", position: 3, name: item.title, item: url },
+            { "@type": "ListItem", position: 3, name: shown, item: url },
           ],
         }),
       },

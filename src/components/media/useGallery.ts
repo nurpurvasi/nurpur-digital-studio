@@ -76,3 +76,38 @@ export function formatDate(value: string | null) {
   if (Number.isNaN(d.getTime())) return "";
   return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 }
+
+/**
+ * True when a stored title is really a storage object name / UUID-ish filename
+ * (e.g. "F48E640A C0B4 4E01 9E9F 5AEE87B4CA39", "IMG 2043", "b7f1c2d4e5...").
+ * Such values must never be shown as a user-facing photo title.
+ */
+export function looksLikeGeneratedName(value: string) {
+  const v = (value || "").trim();
+  if (!v) return true;
+  const compact = v.replace(/[\s_-]+/g, "");
+  if (/^[0-9a-f]{8}[0-9a-f-]{8,}$/i.test(compact)) return true; // uuid / hex blob
+  if (/^[0-9a-f]{16,}$/i.test(compact)) return true;
+  if (/^(img|dsc|dscn|pxl|photo|video|vid|mvimg|screenshot|whatsapp)[\s_-]*\d{3,}/i.test(v)) return true;
+  if (/^\d{6,}$/.test(compact)) return true;
+  return false;
+}
+
+/** The title to render anywhere a photo/video is shown publicly. */
+export function displayTitle(item: {
+  title?: string | null;
+  caption?: string | null;
+  seo_title?: string | null;
+  category?: string | null;
+  media_type?: string | null;
+}) {
+  const title = (item.title || "").trim();
+  if (title && !looksLikeGeneratedName(title)) return title;
+  const caption = (item.caption || "").trim();
+  if (caption) return caption.length > 90 ? `${caption.slice(0, 87)}…` : caption;
+  const seo = (item.seo_title || "").trim();
+  if (seo && !looksLikeGeneratedName(seo)) return seo;
+  const kind = item.media_type === "video" ? "video" : "photo";
+  const cat = (item.category || "").trim();
+  return cat ? `${cat} ${kind}` : `Nurpur ${kind}`;
+}

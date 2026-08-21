@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Camera, Play } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { MediaLightbox } from "./MediaLightbox";
-import { formatDate, thumbOf } from "./useGallery";
+import { displayTitle, formatDate, thumbOf } from "./useGallery";
 
 export function MediaCard({
   item,
@@ -24,7 +24,7 @@ export function MediaCard({
         {thumb ? (
           <img
             src={thumb}
-            alt={item.alt_text || item.title}
+            alt={item.alt_text || displayTitle(item)}
             loading="lazy"
             className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.06]"
           />
@@ -60,7 +60,7 @@ export function MediaCard({
             </span>
           )}
           <span className="mt-2 block truncate text-sm font-semibold text-background">
-            {item.title || "Untitled"}
+            {displayTitle(item)}
           </span>
           {formatDate(item.publish_date || item.created_at) && (
             <span className="mt-0.5 block text-[11px] text-background/75">
