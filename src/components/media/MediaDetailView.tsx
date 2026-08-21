@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CalendarDays,
@@ -32,7 +32,6 @@ export function MediaDetailView({
   kind: Kind;
   galleryName?: string;
 }) {
-  const navigate = useNavigate();
   const { items } = useGallery();
   const photos = usePhotos(items);
   const videos = useVideos(items);
