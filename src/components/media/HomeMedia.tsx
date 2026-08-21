@@ -30,6 +30,51 @@ import {
   useVideos,
 } from "./useGallery";
 
+/** Editorial section heading: colour accent line + small label + display title. */
+export function SectionHeading({
+  label,
+  title,
+  action,
+  tone = "light",
+}: {
+  label: string;
+  title: string;
+  action?: React.ReactNode;
+  tone?: "light" | "dark";
+}) {
+  const dark = tone === "dark";
+  return (
+    <Reveal>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 sm:flex sm:flex-wrap sm:justify-between">
+        <div className="min-w-0">
+          <span className="flex items-center gap-3">
+            <span
+              className="h-[3px] w-10 shrink-0 rounded-full"
+              style={{ background: "var(--gradient-vivid)" }}
+            />
+            <span
+              className={`text-[11px] font-semibold uppercase tracking-[0.24em] ${
+                dark ? "text-background/70" : "text-muted-foreground"
+              }`}
+            >
+              {label}
+            </span>
+          </span>
+          <h2
+            className={`mt-3 text-balance text-3xl tracking-tight sm:text-5xl ${
+              dark ? "text-background" : ""
+            }`}
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {title}
+          </h2>
+        </div>
+        {action}
+      </div>
+    </Reveal>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* 2. Animated ticker                                                  */
 /* ------------------------------------------------------------------ */
