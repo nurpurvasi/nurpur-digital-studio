@@ -85,9 +85,10 @@ export function WeatherPanel({ compact = false }: { compact?: boolean }) {
               {isLoading || !data ? "--" : data.temp}°
             </span>
             <span className="text-sm text-muted-foreground">
-              {data ? (CODES[data.code] ?? "—") : "Loading"}
+              {isError ? "Unavailable" : data ? (CODES[data.code] ?? "—") : "Loading"}
             </span>
           </p>
+          <p className="text-xs text-muted-foreground">Nurpur, Himachal Pradesh</p>
         </div>
         <span
           className="grid h-14 w-14 place-items-center rounded-2xl text-background"
@@ -97,24 +98,56 @@ export function WeatherPanel({ compact = false }: { compact?: boolean }) {
         </span>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-        <Metric icon={<Thermometer className="h-4 w-4" />} label="Feels" value={data ? `${data.temp}°C` : "--"} />
-        <Metric icon={<Droplets className="h-4 w-4" />} label="Humidity" value={data ? `${data.humidity}%` : "--"} />
-        <Metric icon={<Wind className="h-4 w-4" />} label="Wind" value={data ? `${data.wind} km/h` : "--"} />
-      </div>
-
-      {!compact && data && (
-        <div className="mt-6 grid grid-cols-5 gap-2">
-          {data.days.map((d) => (
-            <div key={d.date} className="rounded-2xl bg-background/70 p-3 text-center">
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                {new Date(d.date).toLocaleDateString("en-IN", { weekday: "short" })}
-              </p>
-              <p className="mt-1 text-sm font-semibold">{d.max}°</p>
-              <p className="text-[11px] text-muted-foreground">{d.min}°</p>
-            </div>
-          ))}
+      {isError ? (
+        <div className="mt-6 rounded-2xl bg-background/70 p-4">
+          <p className="text-sm text-muted-foreground">
+            Live weather is temporarily unavailable. Please try again in a moment.
+          </p>
+          <button onClick={() => void refetch()} className="btn-ghost mt-3 inline-flex !py-1.5 !text-xs">
+            {isFetching ? "Retrying…" : "Retry"}
+          </button>
         </div>
+      ) : (
+        <>
+          <div className="mt-6 grid grid-cols-3 gap-3 text-center">
+            <Metric
+              icon={<Thermometer className="h-4 w-4" />}
+              label="Feels like"
+              value={data ? `${data.feels}°C` : "--"}
+            />
+            <Metric icon={<Droplets className="h-4 w-4" />} label="Humidity" value={data ? `${data.humidity}%` : "--"} />
+            <Metric icon={<Wind className="h-4 w-4" />} label="Wind" value={data ? `${data.wind} km/h` : "--"} />
+          </div>
+
+          {compact && data && (
+            <div className="mt-6 grid grid-cols-3 gap-2">
+              {data.days.slice(0, 3).map((d) => (
+                <div key={d.date} className="rounded-2xl bg-background/70 p-2.5 text-center">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {new Date(d.date).toLocaleDateString("en-IN", { weekday: "short" })}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold">{d.max}°</p>
+                  <p className="text-[11px] text-muted-foreground">{d.min}°</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!compact && data && (
+            <div className="mt-6 grid grid-cols-5 gap-2">
+              {data.days.map((d) => (
+                <div key={d.date} className="rounded-2xl bg-background/70 p-3 text-center">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {new Date(d.date).toLocaleDateString("en-IN", { weekday: "short" })}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold">{d.max}°</p>
+                  <p className="text-[11px] text-muted-foreground">{d.min}°</p>
+                  <p className="mt-1 text-[9px] leading-tight text-muted-foreground">{CODES[d.code] ?? ""}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
       <p className="mt-5 text-[10px] text-muted-foreground">Live data · Open-Meteo · updates every 15 minutes</p>
     </div>
