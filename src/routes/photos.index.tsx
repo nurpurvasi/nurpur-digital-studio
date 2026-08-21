@@ -3,7 +3,7 @@ import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import { MediaGrid } from "@/components/media/MediaGrid";
 import { useGallery, usePhotos } from "@/components/media/useGallery";
 
-export const Route = createFileRoute("/photos")({
+export const Route = createFileRoute("/photos/")({
   head: () => ({
     meta: [
       { title: "Nurpur Photos — Fort, Temples, Melas & Nature | NurpurVasi Media" },
