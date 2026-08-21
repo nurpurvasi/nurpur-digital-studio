@@ -30,6 +30,51 @@ import {
   useVideos,
 } from "./useGallery";
 
+/** Editorial section heading: colour accent line + small label + display title. */
+export function SectionHeading({
+  label,
+  title,
+  action,
+  tone = "light",
+}: {
+  label: string;
+  title: string;
+  action?: React.ReactNode;
+  tone?: "light" | "dark";
+}) {
+  const dark = tone === "dark";
+  return (
+    <Reveal>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 sm:flex sm:flex-wrap sm:justify-between">
+        <div className="min-w-0">
+          <span className="flex items-center gap-3">
+            <span
+              className="h-[3px] w-10 shrink-0 rounded-full"
+              style={{ background: "var(--gradient-vivid)" }}
+            />
+            <span
+              className={`text-[11px] font-semibold uppercase tracking-[0.24em] ${
+                dark ? "text-background/70" : "text-muted-foreground"
+              }`}
+            >
+              {label}
+            </span>
+          </span>
+          <h2
+            className={`mt-3 text-balance text-3xl tracking-tight sm:text-5xl ${
+              dark ? "text-background" : ""
+            }`}
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {title}
+          </h2>
+        </div>
+        {action}
+      </div>
+    </Reveal>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* 2. Animated ticker                                                  */
 /* ------------------------------------------------------------------ */
@@ -81,7 +126,7 @@ export function MediaSpotlight() {
   }, [items]);
 
   const feature = ordered[0];
-  const side = ordered.slice(1, 5);
+  const side = ordered.slice(1, 4);
 
   return (
     <section className="relative overflow-hidden pb-14 pt-10 sm:pb-20 sm:pt-14">
@@ -119,13 +164,13 @@ export function MediaSpotlight() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:mt-14 lg:grid-cols-[1.55fr_1fr] lg:gap-6">
+        <div className="mt-10 grid gap-4 lg:mt-14 lg:grid-cols-[1.9fr_1fr] lg:gap-6">
           {feature ? (
             <button
               onClick={() => setOpenAt(0)}
               className="group relative block w-full overflow-hidden rounded-[30px] border border-border text-left shadow-[0_50px_100px_-60px_color-mix(in_oklab,var(--navy)_70%,transparent)]"
             >
-              <div className="aspect-[4/5] w-full bg-muted sm:aspect-[16/10]">
+              <div className="aspect-[3/4] w-full bg-muted sm:aspect-[16/10] lg:aspect-[4/3]">
                 {thumbOf(feature) ? (
                   <img
                     src={thumbOf(feature)}
@@ -145,6 +190,13 @@ export function MediaSpotlight() {
                     "linear-gradient(to top, color-mix(in oklab, var(--navy) 90%, transparent), transparent)",
                 }}
               />
+              <span
+                className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-background shadow-lg backdrop-blur sm:left-7 sm:top-7"
+                style={{ background: "var(--gradient-warm)" }}
+              >
+                <Sparkles className="h-3 w-3" /> Featured
+              </span>
+
               {feature.media_type === "video" && (
                 <span className="absolute inset-0 grid place-items-center" aria-hidden>
                   <span
@@ -196,12 +248,12 @@ export function MediaSpotlight() {
           )}
 
           {side.length > 0 && (
-            <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-rows-4 lg:gap-4 lg:overflow-visible lg:pb-0">
+            <div className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-rows-3 lg:gap-4 lg:overflow-visible lg:pb-0">
               {side.map((item, i) => (
                 <button
                   key={item.id}
                   onClick={() => setOpenAt(i + 1)}
-                  className="group relative flex w-[240px] shrink-0 gap-3 overflow-hidden rounded-3xl border border-border bg-card/80 p-2 text-left backdrop-blur transition hover:-translate-y-0.5 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] lg:w-auto"
+                  className="group relative flex w-[260px] shrink-0 snap-start gap-3 overflow-hidden rounded-3xl border border-border bg-card/80 p-2 text-left backdrop-blur transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] lg:w-auto"
                 >
                   <span className="relative h-20 w-24 shrink-0 overflow-hidden rounded-2xl bg-muted lg:h-full lg:w-28">
                     {thumbOf(item) ? (
@@ -275,7 +327,7 @@ function StripRow({
           <button
             key={`${item.id}-${i}`}
             onClick={() => onOpen(item)}
-            className="group relative h-40 w-60 shrink-0 overflow-hidden rounded-3xl border border-border bg-muted sm:h-48 sm:w-72"
+            className="group relative h-44 w-64 shrink-0 overflow-hidden rounded-3xl border border-border bg-muted transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] sm:h-56 sm:w-80"
           >
             {thumbOf(item) ? (
               <img
@@ -326,15 +378,7 @@ export function PhotoStrips() {
   return (
     <section className="py-14 sm:py-20">
       <div className="container-x">
-        <Reveal>
-          <Eyebrow>In pictures</Eyebrow>
-          <h2
-            className="mt-4 text-3xl tracking-tight sm:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            A moving wall of Nurpur
-          </h2>
-        </Reveal>
+        <SectionHeading label="Latest from Nurpur" title="A moving wall of Nurpur" />
       </div>
       <div className="mt-8 space-y-4">
         {rows.map((row, i) => (
@@ -373,15 +417,7 @@ export function ExploreNurpur() {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <Eyebrow>Explore Nurpur</Eyebrow>
-        <h2
-          className="mt-4 text-3xl tracking-tight sm:text-5xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Fort, temples, melas & everyday life
-        </h2>
-      </Reveal>
+      <SectionHeading label="Explore Nurpur" title="Fort, temples, melas & everyday life" />
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((g, i) => {
           const cover = g.items.find((x) => thumbOf(x)) ?? g.items[0];
@@ -446,24 +482,17 @@ export function LatestPhotosMasonry({ limit = 12 }: { limit?: number }) {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <Eyebrow>Latest photos</Eyebrow>
-            <h2
-              className="mt-4 text-3xl tracking-tight sm:text-5xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Freshly published
-            </h2>
-          </div>
-          <Link to="/photos" className="btn-ghost">
+      <SectionHeading
+        label="Captured Moments"
+        title="Freshly published photos"
+        action={
+          <Link to="/photos" className="btn-ghost !px-5 !py-2.5">
             All photos <ArrowRight className="h-4 w-4" />
           </Link>
-        </div>
-      </Reveal>
+        }
+      />
 
-      <div className="mt-10 columns-2 gap-3 sm:gap-4 md:columns-3 lg:columns-4">
+      <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
         {photos.map((item, i) => (
           <button
             key={item.id}
@@ -541,14 +570,20 @@ export function VideoWallPremium({ limit = 7 }: { limit?: number }) {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-background/70">
-                Video
+              <span className="flex items-center gap-3">
+                <span
+                  className="h-[3px] w-10 shrink-0 rounded-full"
+                  style={{ background: "var(--gradient-warm)" }}
+                />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-background/70">
+                  Video
+                </span>
               </span>
               <h2
-                className="mt-3 text-3xl tracking-tight text-background sm:text-5xl"
+                className="mt-3 text-balance text-3xl tracking-tight text-background sm:text-5xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Nurpur in motion
+                Watch Nurpur
               </h2>
             </div>
             <Link
@@ -636,15 +671,7 @@ export function LatestReels() {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <Eyebrow>Latest Reels</Eyebrow>
-        <h2
-          className="mt-4 text-3xl tracking-tight sm:text-5xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Straight from our socials
-        </h2>
-      </Reveal>
+      <SectionHeading label="Latest Reels" title="Straight from our socials" />
       <div className="no-scrollbar mt-10 flex gap-4 overflow-x-auto pb-2">
         {reels.map((r) => (
           <a
