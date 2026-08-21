@@ -82,55 +82,82 @@ export type Database = {
       }
       clients: {
         Row: {
+          address: string
           category: string
           company_name: string
+          cover_image: string
           created_at: string
           created_by: string | null
           description: string
           display_order: number
+          facebook: string
           featured: boolean
+          gallery: Json
           id: string
+          instagram: string
           logo: string
+          map_url: string
+          phone: string
           published: boolean
           seo_description: string
           seo_title: string
           slug: string
           updated_at: string
           website: string
+          whatsapp: string
+          youtube: string
         }
         Insert: {
+          address?: string
           category?: string
           company_name?: string
+          cover_image?: string
           created_at?: string
           created_by?: string | null
           description?: string
           display_order?: number
+          facebook?: string
           featured?: boolean
+          gallery?: Json
           id?: string
+          instagram?: string
           logo?: string
+          map_url?: string
+          phone?: string
           published?: boolean
           seo_description?: string
           seo_title?: string
           slug: string
           updated_at?: string
           website?: string
+          whatsapp?: string
+          youtube?: string
         }
         Update: {
+          address?: string
           category?: string
           company_name?: string
+          cover_image?: string
           created_at?: string
           created_by?: string | null
           description?: string
           display_order?: number
+          facebook?: string
           featured?: boolean
+          gallery?: Json
           id?: string
+          instagram?: string
           logo?: string
+          map_url?: string
+          phone?: string
           published?: boolean
           seo_description?: string
           seo_title?: string
           slug?: string
           updated_at?: string
           website?: string
+          whatsapp?: string
+          youtube?: string
         }
         Relationships: []
       }
@@ -198,6 +225,7 @@ export type Database = {
           thumbnail: string
           title: string
           updated_at: string
+          views: number
         }
         Insert: {
           alt_text?: string
@@ -217,6 +245,7 @@ export type Database = {
           thumbnail?: string
           title?: string
           updated_at?: string
+          views?: number
         }
         Update: {
           alt_text?: string
@@ -236,6 +265,7 @@ export type Database = {
           thumbnail?: string
           title?: string
           updated_at?: string
+          views?: number
         }
         Relationships: []
       }
@@ -831,7 +861,7 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      increment_gallery_views: { Args: { _id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "editor"

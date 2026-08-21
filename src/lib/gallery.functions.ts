@@ -19,12 +19,13 @@ export type GalleryItem = {
   publish_date: string | null;
   seo_title: string;
   seo_description: string;
+  views: number;
   created_at: string;
   updated_at: string;
 };
 
 const SELECT_COLS =
-  "id, title, description, category, media_type, media_url, thumbnail, alt_text, featured, sort_order, status, publish_date, seo_title, seo_description, created_at, updated_at";
+  "id, title, description, category, media_type, media_url, thumbnail, alt_text, featured, sort_order, status, publish_date, seo_title, seo_description, views, created_at, updated_at";
 
 function serverPublicClient() {
   const url = process.env.SUPABASE_URL!;
@@ -192,6 +193,7 @@ export const duplicateGalleryItem = createServerFn({ method: "POST" })
       status: "draft",
       publish_date: null,
       featured: false,
+      views: 0,
       created_by: context.userId,
       created_at: undefined,
       updated_at: undefined,
@@ -241,4 +243,14 @@ export const getPublicGalleryItem = createServerFn({ method: "GET" })
       .eq("status", "published")
       .maybeSingle();
     return { item: (row ?? null) as GalleryItem | null };
+  });
+
+/** Public: bump the view counter for a published item. Fire-and-forget. */
+export const recordGalleryView = createServerFn({ method: "POST" })
+  .inputValidator((i: { id: string }) => z.object({ id: z.string().uuid() }).parse(i))
+  .handler(async ({ data }) => {
+    const supa = serverPublicClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supa as any).rpc("increment_gallery_views", { _id: data.id });
+    return { ok: true };
   });

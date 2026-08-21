@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Camera, Play } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { MediaLightbox } from "./MediaLightbox";
@@ -8,17 +9,17 @@ export function MediaCard({
   item,
   onOpen,
   aspect = "aspect-[4/3]",
+  detail,
 }: {
   item: GalleryItem;
-  onOpen: () => void;
+  onOpen?: () => void;
   aspect?: string;
+  /** When set, the card links to the crawlable detail page instead of a lightbox. */
+  detail?: "photos" | "videos";
 }) {
   const thumb = thumbOf(item);
-  return (
-    <button
-      onClick={onOpen}
-      className="group relative block w-full overflow-hidden rounded-3xl border border-border bg-card text-left shadow-[0_18px_40px_-32px_color-mix(in_oklab,var(--navy)_45%,transparent)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--royal)_45%,transparent)]"
-    >
+  const shell = (
+    <>
       <div className={`relative ${aspect} overflow-hidden bg-muted`}>
         {thumb ? (
           <img
@@ -68,6 +69,27 @@ export function MediaCard({
           )}
         </span>
       </div>
+    </>
+  );
+
+  const cls =
+    "group relative block w-full overflow-hidden rounded-3xl border border-border bg-card text-left shadow-[0_18px_40px_-32px_color-mix(in_oklab,var(--navy)_45%,transparent)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--royal)_45%,transparent)]";
+
+  if (detail) {
+    return (
+      <Link
+        to={detail === "videos" ? "/videos/$id" : "/photos/$id"}
+        params={{ id: item.id }}
+        className={cls}
+      >
+        {shell}
+      </Link>
+    );
+  }
+
+  return (
+    <button onClick={onOpen} className={cls}>
+      {shell}
     </button>
   );
 }
@@ -76,9 +98,12 @@ export function MediaCard({
 export function MediaGrid({
   items,
   emptyLabel = "No media published yet.",
+  detail,
 }: {
   items: GalleryItem[];
   emptyLabel?: string;
+  /** Link cards to their detail page (SEO) instead of opening a lightbox. */
+  detail?: "photos" | "videos";
 }) {
   const [active, setActive] = useState<string>("All");
   const [openAt, setOpenAt] = useState<number | null>(null);
@@ -94,6 +119,7 @@ export function MediaGrid({
   );
 
   if (items.length === 0) {
+    if (!emptyLabel) return null;
     return (
       <div className="rounded-3xl border border-dashed border-border bg-surface/60 p-12 text-center text-sm text-muted-foreground">
         {emptyLabel}
@@ -124,11 +150,16 @@ export function MediaGrid({
 
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {filtered.map((item, i) => (
-          <MediaCard key={item.id} item={item} onOpen={() => setOpenAt(i)} />
+          <MediaCard
+            key={item.id}
+            item={item}
+            detail={detail}
+            onOpen={() => setOpenAt(i)}
+          />
         ))}
       </div>
 
-      {openAt !== null && (
+      {!detail && openAt !== null && (
         <MediaLightbox
           items={filtered}
           index={openAt}

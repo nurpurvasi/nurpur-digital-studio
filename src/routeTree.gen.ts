@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ReelsRouteImport } from './routes/reels'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as PhotosRouteImport } from './routes/photos'
@@ -24,11 +25,14 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VideosIndexRouteImport } from './routes/videos.index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as PhotosIndexRouteImport } from './routes/photos.index'
+import { Route as VideosIdRouteImport } from './routes/videos.$id'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as PhotosIdRouteImport } from './routes/photos.$id'
+import { Route as BusinessesSlugRouteImport } from './routes/businesses.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -81,6 +85,11 @@ const VideosRoute = VideosRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReelsRoute = ReelsRouteImport.update({
+  id: '/reels',
+  path: '/reels',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -142,6 +151,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VideosIndexRoute = VideosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => VideosRoute,
+} as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -151,6 +165,11 @@ const PhotosIndexRoute = PhotosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PhotosRoute,
+} as any)
+const VideosIdRoute = VideosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => VideosRoute,
 } as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
@@ -166,6 +185,11 @@ const PhotosIdRoute = PhotosIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => PhotosRoute,
+} as any)
+const BusinessesSlugRoute = BusinessesSlugRouteImport.update({
+  id: '/businesses/$slug',
+  path: '/businesses/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -399,16 +423,20 @@ export interface FileRoutesByFullPath {
   '/photos': typeof PhotosRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/reels': typeof ReelsRoute
   '/services': typeof ServicesRouteWithChildren
-  '/videos': typeof VideosRoute
+  '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$slug': typeof BusinessesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/videos/$id': typeof VideosIdRoute
   '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/videos/': typeof VideosIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
@@ -457,14 +485,17 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/videos': typeof VideosRoute
+  '/reels': typeof ReelsRoute
   '/weather': typeof WeatherRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$slug': typeof BusinessesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/videos/$id': typeof VideosIdRoute
   '/photos': typeof PhotosIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/videos': typeof VideosIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/api/media/$': typeof ApiMediaSplatRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -505,16 +536,20 @@ export interface FileRoutesById {
   '/photos': typeof PhotosRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/reels': typeof ReelsRoute
   '/services': typeof ServicesRouteWithChildren
-  '/videos': typeof VideosRoute
+  '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$slug': typeof BusinessesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/videos/$id': typeof VideosIdRoute
   '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/videos/': typeof VideosIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
@@ -566,16 +601,20 @@ export interface FileRouteTypes {
     | '/photos'
     | '/portfolio'
     | '/pricing'
+    | '/reels'
     | '/services'
     | '/videos'
     | '/weather'
     | '/admin'
     | '/blog/$slug'
+    | '/businesses/$slug'
     | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/videos/$id'
     | '/photos/'
     | '/services/'
+    | '/videos/'
     | '/admin/blog'
     | '/admin/clients'
     | '/admin/faqs'
@@ -624,14 +663,17 @@ export interface FileRouteTypes {
     | '/faq'
     | '/portfolio'
     | '/pricing'
-    | '/videos'
+    | '/reels'
     | '/weather'
     | '/blog/$slug'
+    | '/businesses/$slug'
     | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/videos/$id'
     | '/photos'
     | '/services'
+    | '/videos'
     | '/admin/media'
     | '/api/media/$'
     | '/admin'
@@ -671,16 +713,20 @@ export interface FileRouteTypes {
     | '/photos'
     | '/portfolio'
     | '/pricing'
+    | '/reels'
     | '/services'
     | '/videos'
     | '/weather'
     | '/_authenticated/admin'
     | '/blog/$slug'
+    | '/businesses/$slug'
     | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/videos/$id'
     | '/photos/'
     | '/services/'
+    | '/videos/'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/clients'
     | '/_authenticated/admin/faqs'
@@ -732,9 +778,11 @@ export interface RootRouteChildren {
   PhotosRoute: typeof PhotosRouteWithChildren
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
+  ReelsRoute: typeof ReelsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
-  VideosRoute: typeof VideosRoute
+  VideosRoute: typeof VideosRouteWithChildren
   WeatherRoute: typeof WeatherRoute
+  BusinessesSlugRoute: typeof BusinessesSlugRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
@@ -759,6 +807,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reels': {
+      id: '/reels'
+      path: '/reels'
+      fullPath: '/reels'
+      preLoaderRoute: typeof ReelsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -845,6 +900,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/videos/': {
+      id: '/videos/'
+      path: '/'
+      fullPath: '/videos/'
+      preLoaderRoute: typeof VideosIndexRouteImport
+      parentRoute: typeof VideosRoute
+    }
     '/services/': {
       id: '/services/'
       path: '/'
@@ -858,6 +920,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/photos/'
       preLoaderRoute: typeof PhotosIndexRouteImport
       parentRoute: typeof PhotosRoute
+    }
+    '/videos/$id': {
+      id: '/videos/$id'
+      path: '/$id'
+      fullPath: '/videos/$id'
+      preLoaderRoute: typeof VideosIdRouteImport
+      parentRoute: typeof VideosRoute
     }
     '/services/$slug': {
       id: '/services/$slug'
@@ -879,6 +948,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/photos/$id'
       preLoaderRoute: typeof PhotosIdRouteImport
       parentRoute: typeof PhotosRoute
+    }
+    '/businesses/$slug': {
+      id: '/businesses/$slug'
+      path: '/businesses/$slug'
+      fullPath: '/businesses/$slug'
+      preLoaderRoute: typeof BusinessesSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -1428,6 +1504,19 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
   ServicesRouteChildren,
 )
 
+interface VideosRouteChildren {
+  VideosIdRoute: typeof VideosIdRoute
+  VideosIndexRoute: typeof VideosIndexRoute
+}
+
+const VideosRouteChildren: VideosRouteChildren = {
+  VideosIdRoute: VideosIdRoute,
+  VideosIndexRoute: VideosIndexRoute,
+}
+
+const VideosRouteWithChildren =
+  VideosRoute._addFileChildren(VideosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -1441,9 +1530,11 @@ const rootRouteChildren: RootRouteChildren = {
   PhotosRoute: PhotosRouteWithChildren,
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
+  ReelsRoute: ReelsRoute,
   ServicesRoute: ServicesRouteWithChildren,
-  VideosRoute: VideosRoute,
+  VideosRoute: VideosRouteWithChildren,
   WeatherRoute: WeatherRoute,
+  BusinessesSlugRoute: BusinessesSlugRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport

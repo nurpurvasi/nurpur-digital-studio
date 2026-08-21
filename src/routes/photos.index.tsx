@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import { MediaGrid } from "@/components/media/MediaGrid";
+import { MediaCard } from "@/components/media/MediaGrid";
 import { useGallery, usePhotos } from "@/components/media/useGallery";
 
 export const Route = createFileRoute("/photos/")({
@@ -29,6 +30,7 @@ export const Route = createFileRoute("/photos/")({
 function PhotosPage() {
   const { items } = useGallery();
   const photos = usePhotos(items);
+  const featured = photos.filter((p) => p.featured).slice(0, 4);
 
   return (
     <SiteLayout>
@@ -42,11 +44,29 @@ function PhotosPage() {
             Nurpur in <span className="text-gradient italic">pictures</span>
           </h1>
           <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-            Forts, temples, melas, mountains and everyday moments — tap any photo to open it large.
+            Nurpur Fort, temples, melas, mountains and everyday moments — tap any photo to open its
+            full page with details.
           </p>
         </div>
-        <div className="mt-12">
-          <MediaGrid items={photos} emptyLabel="Photos will appear here once published from Admin." />
+        {featured.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-xl font-semibold sm:text-2xl">Featured photos</h2>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
+              {featured.map((p) => (
+                <MediaCard key={p.id} item={p} detail="photos" />
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-14">
+          {photos.length > 0 && <h2 className="mb-5 text-xl font-semibold sm:text-2xl">Latest photos</h2>}
+          <MediaGrid items={photos} detail="photos" emptyLabel="" />
+          {photos.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              Photos will appear here as soon as they are published.
+            </p>
+          )}
         </div>
       </Section>
     </SiteLayout>

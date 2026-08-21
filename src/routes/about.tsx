@@ -1,147 +1,129 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
-import { ContactCTA } from "@/components/site/Sections";
-import { Reveal } from "@/components/site/Reveal";
-import { AddPlaceholder } from "@/components/site/AddPlaceholder";
-import { useSiteContent } from "@/content/SiteContentContext";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Camera, Film, MapPin, Store } from "lucide-react";
+import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
+
+const SITE = "https://nurpur-digital-studio.lovable.app";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Gaurav Bharti — NurpurVasi Digitals" },
+      { title: "About NurpurVasi Media — Local Photos, Videos & Stories of Nurpur" },
       {
         name: "description",
         content:
-          "NurpurVasi Digitals is led by Gaurav Bharti — a senior designer and engineer building premium digital experiences.",
+          "NurpurVasi Media is a local media platform from Nurpur, Himachal Pradesh, sharing photos, videos, reels, local stories, events, culture and businesses of our town.",
       },
-      { property: "og:title", content: "About — NurpurVasi Digitals" },
+      { property: "og:title", content: "About NurpurVasi Media" },
       {
         property: "og:description",
-        content: "Led by Gaurav Bharti. A senior studio for premium digital experiences.",
+        content:
+          "A local media platform documenting Nurpur — its photos, videos, events, culture and businesses.",
       },
-      { property: "og:url", content: "/about" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE}/about` },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: `${SITE}/about` }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "NurpurVasi Media",
+          url: SITE,
+          description:
+            "Local media platform sharing photos, videos, events, culture and businesses of Nurpur, Himachal Pradesh.",
+          areaServed: { "@type": "Place", name: "Nurpur, Himachal Pradesh, India" },
+        }),
+      },
+    ],
   }),
   component: AboutPage,
 });
 
+const pillars = [
+  {
+    Icon: Camera,
+    title: "Photos of Nurpur",
+    body: "Nurpur Fort, temples, melas, mountains, streets and everyday moments — archived so anyone can find them.",
+  },
+  {
+    Icon: Film,
+    title: "Videos & reels",
+    body: "Event coverage, temple festivals, cultural programmes and short clips from our social pages.",
+  },
+  {
+    Icon: Store,
+    title: "Local businesses",
+    body: "A simple, honest listing so local shops and services can be found online by people nearby.",
+  },
+  {
+    Icon: MapPin,
+    title: "Rooted in Nurpur",
+    body: "Everything published here is about Nurpur and its surrounding villages in Kangra, Himachal Pradesh.",
+  },
+];
+
 function AboutPage() {
-  const siteContent = useSiteContent();
   return (
     <SiteLayout>
-      <Section className="pt-8 sm:pt-12">
-        <div className="grid gap-14 lg:grid-cols-[1.15fr_1fr] lg:items-start">
-          <Reveal variant="up">
-            <Eyebrow>About the studio</Eyebrow>
-            <h1
-              className="mt-5 text-5xl font-normal tracking-tight sm:text-7xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              A studio led by <span className="text-gradient italic">Gaurav Bharti</span>.
-            </h1>
-            <div className="mt-8 space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-              <p>
-                NurpurVasi Digitals is a small, senior studio focused on one thing: shipping
-                premium digital work that feels effortless to use and unmistakably crafted.
-              </p>
-              <p>
-                Over the last decade Gaurav has designed and built websites, products and
-                brand systems for founders, agencies and enterprise teams around the world.
-              </p>
-              <p>
-                We work with a handful of partners at a time so every project gets the care,
-                depth and pace it deserves.
-              </p>
-            </div>
+      <Section>
+        <div className="max-w-3xl">
+          <Eyebrow>About us</Eyebrow>
+          <h1
+            className="mt-5 text-4xl tracking-tight sm:text-6xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            A local media platform for <span className="text-gradient italic">Nurpur</span>
+          </h1>
+          <div className="mt-6 space-y-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p>
+              NurpurVasi Media documents our town through pictures and video. We publish photos and
+              videos of Nurpur's places, temples, melas, festivals, sports, culture and daily life,
+              along with short reels from our social pages.
+            </p>
+            <p>
+              The idea is simple: when someone searches for Nurpur — its fort, its temples, its
+              events — they should find real, local images and stories instead of nothing at all.
+              Every photo and video we publish gets its own page with a title, description and date,
+              so it stays easy to find and share.
+            </p>
+            <p>
+              We also keep a small business section so shops and services from Nurpur can be
+              discovered online, and a compact weather panel for the town. We do not publish
+              government notices, job listings, exam information or political content.
+            </p>
+          </div>
+        </div>
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-2">
-              {siteContent.stats.length === 0
-                ? Array.from({ length: 4 }).map((_, i) => (
-                    <Reveal key={i} delay={i * 80} variant="up">
-                      <AddPlaceholder label="Add Statistic" minHeight="88px" />
-                    </Reveal>
-                  ))
-                : siteContent.stats.map((s, i) => (
-                    <Reveal key={s.label} delay={i * 80} variant="up">
-                      <div className="group flex items-center gap-4 rounded-2xl border border-border bg-white/70 p-4 backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-25px_color-mix(in_oklab,var(--royal)_35%,transparent)]">
-                        <span
-                          className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white text-sm font-semibold"
-                          style={{ background: "var(--gradient-brand)", fontFamily: "var(--font-display)" }}
-                        >
-                          {(s.suffix ?? "").slice(0, 1) || "·"}
-                        </span>
-                        <div className="min-w-0">
-                          <p
-                            className="text-2xl font-normal tracking-tight"
-                            style={{ fontFamily: "var(--font-display)" }}
-                          >
-                            {s.value}
-                            {s.suffix ?? ""}
-                          </p>
-                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{s.label}</p>
-                        </div>
-                      </div>
-                    </Reveal>
-                  ))}
+        <div className="mt-14 grid gap-4 sm:grid-cols-2">
+          {pillars.map(({ Icon, title, body }) => (
+            <div key={title} className="rounded-3xl border border-border bg-card p-6">
+              <span
+                className="grid h-11 w-11 place-items-center rounded-2xl text-background"
+                style={{ background: "var(--gradient-vivid)" }}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <h2 className="mt-4 text-lg font-semibold">{title}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{body}</p>
             </div>
-          </Reveal>
+          ))}
+        </div>
 
-          <Reveal variant="scale" delay={120}>
-            <div
-              className="relative overflow-hidden rounded-[32px] border border-border bg-white/70 p-3 backdrop-blur-xl"
-              style={{ boxShadow: "var(--shadow-elegant)" }}
-            >
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[24px]">
-                <div
-                  className="absolute inset-0"
-                  style={{ background: "var(--gradient-brand)" }}
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "radial-gradient(600px 400px at 30% 20%, rgba(255,255,255,0.35), transparent 60%), radial-gradient(400px 300px at 80% 90%, rgba(255,255,255,0.15), transparent 60%)",
-                  }}
-                />
-                <div className="absolute inset-x-5 bottom-5">
-                  <div className="glass flex items-center gap-4 rounded-2xl p-4">
-                    <span
-                      className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-white text-sm font-semibold"
-                      style={{ background: "var(--gradient-brand)" }}
-                    >
-                      GB
-                    </span>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">Gaurav Bharti</p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                        Founder · Design & Engineering
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <aside className="mt-6 glass rounded-3xl p-8">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Principles</p>
-              <ul className="mt-6 space-y-5">
-                {[
-                  { t: "Detail is the design", d: "Micro-interactions, spacing, typography — the details are the product." },
-                  { t: "Speed as a feature", d: "Beautiful and fast. Premium never means sluggish." },
-                  { t: "Long-term partnership", d: "We stay involved after launch to keep the work sharp." },
-                ].map((p) => (
-                  <li key={p.t}>
-                    <p className="text-sm font-semibold">{p.t}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{p.d}</p>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          </Reveal>
+        <div className="mt-14 flex flex-wrap gap-3">
+          <Link to="/photos" className="btn-primary inline-flex">
+            Browse photos
+          </Link>
+          <Link to="/videos" className="btn-ghost inline-flex">
+            Watch videos
+          </Link>
+          <Link to="/contact" className="btn-ghost inline-flex">
+            Contact us
+          </Link>
         </div>
       </Section>
-      <ContactCTA />
     </SiteLayout>
   );
 }

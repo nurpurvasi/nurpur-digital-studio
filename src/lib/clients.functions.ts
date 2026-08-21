@@ -30,12 +30,21 @@ export type ClientBrand = {
   published: boolean;
   seo_title: string;
   seo_description: string;
+  phone: string;
+  whatsapp: string;
+  address: string;
+  map_url: string;
+  cover_image: string;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  gallery: string[];
   created_at: string;
   updated_at: string;
 };
 
 const SELECT_COLS =
-  "id, company_name, slug, logo, website, description, category, featured, display_order, published, seo_title, seo_description, created_at, updated_at";
+  "id, company_name, slug, logo, website, description, category, featured, display_order, published, seo_title, seo_description, phone, whatsapp, address, map_url, cover_image, instagram, facebook, youtube, gallery, created_at, updated_at";
 
 export function slugify(input: string) {
   return input
@@ -250,4 +259,19 @@ export const reorderClients = createServerFn({ method: "POST" })
       if (error) throw error;
     }
     return { ok: true };
+  });
+
+/** Public: one business by slug (published only). */
+export const getPublicClientBySlug = createServerFn({ method: "GET" })
+  .inputValidator((i: { slug: string }) => z.object({ slug: z.string().min(1).max(120) }).parse(i))
+  .handler(async ({ data }) => {
+    const supa = serverPublicClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: row } = await (supa as any)
+      .from("clients")
+      .select(SELECT_COLS)
+      .eq("slug", data.slug)
+      .eq("published", true)
+      .maybeSingle();
+    return { item: (row ?? null) as ClientBrand | null };
   });
