@@ -12,6 +12,7 @@ import { listPublicClients, type ClientBrand } from "@/lib/clients.functions";
 export const Route = createFileRoute("/clients")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex,follow" },
       { title: "Our Clients & Brands — NurpurVasi Digitals" },
       {
         name: "description",

@@ -10,6 +10,7 @@ import { listPublicPricingPlans, type PricingPlan } from "@/lib/pricing.function
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex,follow" },
       { title: "Pricing Plans — NurpurVasi Digitals" },
       {
         name: "description",

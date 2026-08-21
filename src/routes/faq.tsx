@@ -12,6 +12,7 @@ import { listPublicFaqs, faqPlainText, type Faq } from "@/lib/faqs.functions";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex,follow" },
       { title: "Frequently Asked Questions — NurpurVasi Digitals" },
       {
         name: "description",
