@@ -1,17 +1,18 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
+import { createFileRoute } from "@tanstack/react-router";
+import { SiteLayout, Section } from "@/components/site/Layout";
 import {
-  MediaHero,
-  CategoryRows,
-  VideoWall,
-  ReelsRow,
-  LatestMediaStrip,
-} from "@/components/media/MediaSections";
+  MediaTicker,
+  MediaSpotlight,
+  PhotoStrips,
+  ExploreNurpur,
+  LatestPhotosMasonry,
+  VideoWallPremium,
+  LatestReels,
+  LocalBusinessRow,
+  DiscoverCTA,
+} from "@/components/media/HomeMedia";
 import { WeatherPanel } from "@/components/media/WeatherPanel";
-import { PremiumContactSection } from "@/components/site/PremiumContact";
-import { ClientsSection } from "@/components/site/Clients";
-import { PremiumCTA } from "@/components/site/HomeSections";
-import { ArrowRight, Store } from "lucide-react";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
