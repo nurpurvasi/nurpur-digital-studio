@@ -72,7 +72,7 @@ export function MediaHero() {
                   {thumbOf(feature) ? (
                     <img
                       src={thumbOf(feature)}
-                      alt={feature.alt_text || feature.title}
+                      alt={feature.alt_text || displayTitle(feature)}
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.04]"
                     />
                   ) : null}
@@ -123,7 +123,7 @@ export function MediaHero() {
               >
                 <img
                   src={thumbOf(p)}
-                  alt={p.alt_text || p.title}
+                  alt={p.alt_text || displayTitle(p)}
                   loading="lazy"
                   className="h-full w-full object-cover"
                 />
@@ -247,7 +247,7 @@ export function ReelsRow() {
               {thumbOf(r) ? (
                 <img
                   src={thumbOf(r)}
-                  alt={r.alt_text || r.title}
+                  alt={r.alt_text || displayTitle(r)}
                   loading="lazy"
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />

@@ -117,7 +117,7 @@ export function MediaLightbox({
           <img
             key={item.id}
             src={item.media_url || thumbOf(item)}
-            alt={item.alt_text || item.title}
+            alt={item.alt_text || displayTitle(item)}
             className="max-h-full w-auto max-w-full rounded-2xl object-contain animate-fade-up"
           />
         )}

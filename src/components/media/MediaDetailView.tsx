@@ -125,7 +125,7 @@ export function MediaDetailView({
           ) : (
             <img
               src={item.media_url || thumbOf(item)}
-              alt={item.alt_text || item.title}
+              alt={item.alt_text || displayTitle(item)}
               className="max-h-[75vh] w-full object-contain"
               loading="eager"
               decoding="async"
@@ -319,7 +319,7 @@ export function mediaDetailHead({
           contentUrl: item.media_url,
           thumbnailUrl: item.thumbnail || undefined,
           uploadDate: item.publish_date || item.created_at,
-          caption: item.alt_text || item.title,
+          caption: item.alt_text || displayTitle(item),
           contentLocation: {
             "@type": "Place",
             name: item.category || "Nurpur, Himachal Pradesh",

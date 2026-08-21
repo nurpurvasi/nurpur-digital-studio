@@ -174,7 +174,7 @@ export function MediaSpotlight() {
                 {thumbOf(feature) ? (
                   <img
                     src={thumbOf(feature)}
-                    alt={feature.alt_text || feature.title}
+                    alt={feature.alt_text || displayTitle(feature)}
                     className="h-full w-full object-cover transition duration-[900ms] group-hover:scale-[1.05]"
                   />
                 ) : (
@@ -220,7 +220,7 @@ export function MediaSpotlight() {
                   className="mt-3 block text-balance text-2xl font-semibold leading-tight text-background sm:text-4xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  {feature.title || "Untitled"}
+                  {displayTitle(feature)}
                 </span>
                 {feature.description && (
                   <span className="mt-2 line-clamp-2 block max-w-xl text-sm text-background/80">
@@ -259,7 +259,7 @@ export function MediaSpotlight() {
                     {thumbOf(item) ? (
                       <img
                         src={thumbOf(item)}
-                        alt={item.alt_text || item.title}
+                        alt={item.alt_text || displayTitle(item)}
                         loading="lazy"
                         className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                       />
@@ -281,7 +281,7 @@ export function MediaSpotlight() {
                       </span>
                     )}
                     <span className="mt-1 block line-clamp-2 text-sm font-semibold leading-snug">
-                      {item.title || "Untitled"}
+                      {displayTitle(item)}
                     </span>
                     <span className="mt-1 block text-[11px] text-muted-foreground">
                       {formatDate(item.publish_date || item.created_at)}
@@ -332,7 +332,7 @@ function StripRow({
             {thumbOf(item) ? (
               <img
                 src={thumbOf(item)}
-                alt={item.alt_text || item.title}
+                alt={item.alt_text || displayTitle(item)}
                 loading="lazy"
                 className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
               />
@@ -350,7 +350,7 @@ function StripRow({
             />
             <span className="absolute inset-x-0 bottom-0 p-3 text-left">
               <span className="block truncate text-xs font-semibold text-background">
-                {item.title || "Untitled"}
+                {displayTitle(item)}
               </span>
               {item.category && (
                 <span className="text-[10px] text-background/75">{item.category}</span>
@@ -431,7 +431,7 @@ export function ExploreNurpur() {
                   {thumbOf(cover) && (
                     <img
                       src={thumbOf(cover)}
-                      alt={cover.alt_text || cover.title}
+                      alt={cover.alt_text || displayTitle(cover)}
                       loading="lazy"
                       className="h-full w-full object-cover transition duration-[900ms] group-hover:scale-110"
                     />
@@ -502,7 +502,7 @@ export function LatestPhotosMasonry({ limit = 12 }: { limit?: number }) {
             <span className="relative block bg-muted">
               <img
                 src={thumbOf(item)}
-                alt={item.alt_text || item.title}
+                alt={item.alt_text || displayTitle(item)}
                 loading="lazy"
                 className="w-full object-cover transition duration-700 group-hover:scale-[1.05]"
               />
@@ -523,7 +523,7 @@ export function LatestPhotosMasonry({ limit = 12 }: { limit?: number }) {
                   </span>
                 )}
                 <span className="mt-2 block line-clamp-2 text-sm font-semibold text-background">
-                  {item.title || "Untitled"}
+                  {displayTitle(item)}
                 </span>
                 {item.description && (
                   <span className="mt-1 line-clamp-2 block text-[11px] text-background/75">
@@ -604,7 +604,7 @@ export function VideoWallPremium({ limit = 7 }: { limit?: number }) {
               {thumbOf(hero) ? (
                 <img
                   src={thumbOf(hero)}
-                  alt={hero.alt_text || hero.title}
+                  alt={hero.alt_text || displayTitle(hero)}
                   loading="lazy"
                   className="h-full w-full object-cover transition duration-[900ms] group-hover:scale-105"
                 />
@@ -631,7 +631,7 @@ export function VideoWallPremium({ limit = 7 }: { limit?: number }) {
             />
             <span className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
               <span className="block text-lg font-semibold text-background sm:text-2xl">
-                {hero.title || "Untitled"}
+                {displayTitle(hero)}
               </span>
               <span className="mt-1 block text-[11px] text-background/75">
                 {formatDate(hero.publish_date || hero.created_at)}
@@ -685,7 +685,7 @@ export function LatestReels() {
               {thumbOf(r) ? (
                 <img
                   src={thumbOf(r)}
-                  alt={r.alt_text || r.title}
+                  alt={r.alt_text || displayTitle(r)}
                   loading="lazy"
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 />
