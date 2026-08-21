@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as VideosRouteImport } from './routes/videos'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReelsRouteImport } from './routes/reels'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -87,6 +88,11 @@ const WeatherRoute = WeatherRouteImport.update({
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -472,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -540,6 +547,7 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/weather': typeof WeatherRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$slug': typeof BusinessesSlugRoute
@@ -599,6 +607,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
   '/services': typeof ServicesRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -671,6 +680,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reels'
     | '/services'
+    | '/sitemap.xml'
     | '/videos'
     | '/weather'
     | '/admin'
@@ -739,6 +749,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/pricing'
     | '/reels'
+    | '/sitemap.xml'
     | '/weather'
     | '/blog/$slug'
     | '/businesses/$slug'
@@ -797,6 +808,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reels'
     | '/services'
+    | '/sitemap.xml'
     | '/videos'
     | '/weather'
     | '/_authenticated/admin'
@@ -869,6 +881,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ReelsRoute: typeof ReelsRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VideosRoute: typeof VideosRouteWithChildren
   WeatherRoute: typeof WeatherRoute
   BusinessesSlugRoute: typeof BusinessesSlugRoute
@@ -889,6 +902,13 @@ declare module '@tanstack/react-router' {
       path: '/videos'
       fullPath: '/videos'
       preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -1684,6 +1704,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ReelsRoute: ReelsRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   VideosRoute: VideosRouteWithChildren,
   WeatherRoute: WeatherRoute,
   BusinessesSlugRoute: BusinessesSlugRoute,
