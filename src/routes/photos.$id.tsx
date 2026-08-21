@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowLeft, CalendarDays, MapPin, Share2, Tag } from "lucide-react";
@@ -71,6 +71,7 @@ function MediaDetail() {
     initialData: Route.useLoaderData(),
   });
   const item = data?.item ?? null;
+  const navigate = useNavigate();
   const { items } = useGallery();
   const related = items.filter((i) => i.id !== id && i.category === item?.category).slice(0, 8);
 
@@ -173,9 +174,11 @@ function MediaDetail() {
             </h2>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
               {related.map((r) => (
-                <Link key={r.id} to="/photos/$id" params={{ id: r.id }} className="block">
-                  <MediaCard item={r} onOpen={() => undefined} />
-                </Link>
+                <MediaCard
+                  key={r.id}
+                  item={r}
+                  onOpen={() => navigate({ to: "/photos/$id", params: { id: r.id } })}
+                />
               ))}
             </div>
           </div>
