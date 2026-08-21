@@ -248,11 +248,15 @@ export function CollectionManager<T extends CollectionRow>({
                 }
                 return (
                   <div key={f.key} className={`space-y-1.5 ${cls}`}>
-                    <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <label
+                      htmlFor={`field-${f.key}`}
+                      className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
+                    >
                       {f.label}
                     </label>
                     {f.kind === "textarea" ? (
                       <textarea
+                        id={`field-${f.key}`}
                         rows={4}
                         value={String(value ?? "")}
                         placeholder={f.placeholder}
@@ -261,6 +265,7 @@ export function CollectionManager<T extends CollectionRow>({
                       />
                     ) : (
                       <input
+                        id={`field-${f.key}`}
                         type={
                           f.kind === "date"
                             ? "date"
