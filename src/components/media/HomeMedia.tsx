@@ -241,7 +241,7 @@ export function MediaSpotlight() {
           )}
 
           {side.length > 0 && (
-            <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-rows-4 lg:gap-4 lg:overflow-visible lg:pb-0">
+            <div className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-rows-3 lg:gap-4 lg:overflow-visible lg:pb-0">
               {side.map((item, i) => (
                 <button
                   key={item.id}
