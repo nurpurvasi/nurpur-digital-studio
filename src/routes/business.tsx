@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { ExternalLink, Store } from "lucide-react";
@@ -55,9 +55,9 @@ function BusinessPage() {
         </div>
 
         {businesses.length === 0 ? (
-          <div className="mt-12 rounded-3xl border border-dashed border-border bg-surface/60 p-12 text-center text-sm text-muted-foreground">
-            Businesses added from Admin will be listed here.
-          </div>
+          <p className="mt-12 text-sm text-muted-foreground">
+            Local businesses will be listed here as soon as they are published.
+          </p>
         ) : (
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {businesses.map((b) => {
@@ -89,23 +89,17 @@ function BusinessPage() {
                   {b.description && (
                     <p className="mt-4 line-clamp-3 text-sm text-muted-foreground">{b.description}</p>
                   )}
-                  {b.website && (
-                    <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                      Visit <ExternalLink className="h-3 w-3" />
-                    </span>
-                  )}
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    View details <ExternalLink className="h-3 w-3" />
+                  </span>
                 </>
               );
               const cls =
                 "block rounded-3xl border border-border bg-card p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_28px_60px_-40px_color-mix(in_oklab,var(--royal)_45%,transparent)]";
-              return b.website ? (
-                <a key={b.id} href={b.website} target="_blank" rel="noopener noreferrer" className={cls}>
+              return (
+                <Link key={b.id} to="/businesses/$slug" params={{ slug: b.slug }} className={cls}>
                   {Card}
-                </a>
-              ) : (
-                <div key={b.id} className={cls}>
-                  {Card}
-                </div>
+                </Link>
               );
             })}
           </div>

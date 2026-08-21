@@ -7,14 +7,14 @@ import { getPublicGalleryItem } from "@/lib/gallery.functions";
 
 const SITE = "https://nurpur-digital-studio.lovable.app";
 
-export const Route = createFileRoute("/photos/$id")({
+export const Route = createFileRoute("/videos/$id")({
   loader: async ({ params }) => getPublicGalleryItem({ data: { id: params.id } }),
   head: ({ params, loaderData }) =>
-    mediaDetailHead({ item: loaderData?.item, kind: "photos", id: params.id, site: SITE }),
-  component: PhotoDetail,
+    mediaDetailHead({ item: loaderData?.item, kind: "videos", id: params.id, site: SITE }),
+  component: VideoDetail,
 });
 
-function PhotoDetail() {
+function VideoDetail() {
   const { id } = Route.useParams();
   const load = useServerFn(getPublicGalleryItem);
   const { data } = useQuery({
@@ -26,7 +26,7 @@ function PhotoDetail() {
 
   return (
     <SiteLayout>
-      {item ? <MediaDetailView item={item} kind="photos" /> : <MediaMissing kind="photos" />}
+      {item ? <MediaDetailView item={item} kind="videos" /> : <MediaMissing kind="videos" />}
     </SiteLayout>
   );
 }
