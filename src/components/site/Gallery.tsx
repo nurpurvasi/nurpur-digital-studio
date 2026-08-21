@@ -6,6 +6,7 @@ import { Eyebrow, Section } from "./Layout";
 import { Reveal } from "./Reveal";
 import { AddPlaceholder } from "./AddPlaceholder";
 import { listFeaturedGallery, listPublicGallery, type GalleryItem } from "@/lib/gallery.functions";
+import { displayTitle } from "@/components/media/useGallery";
 
 export type GalleryVariant = "featured" | "all";
 
