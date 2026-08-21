@@ -38,11 +38,13 @@ function ContactPage() {
               className="mt-5 text-5xl font-semibold tracking-tight sm:text-7xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Let's build <span className="text-gradient">something great</span>.
+              Share Nurpur's <span className="text-gradient">stories</span> with us.
             </h1>
             <p className="mt-6 max-w-md text-base text-muted-foreground sm:text-lg">
-              Tell us a little about your project and we'll be in touch within one business day.
+              Send us photos, videos or event details from Nurpur, or ask about listing your local
+              business. We usually reply within a day.
             </p>
+
 
             <ul className="mt-10 space-y-5">
               {[
