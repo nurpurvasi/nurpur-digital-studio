@@ -110,7 +110,7 @@ export const defaultTheme: ThemeSettings = {
   buttonStyle: "pill",
   borderRadius: 1,
   mode: "light",
-  browserTitle: "NurpurVasi Digitals — Premium Digital Studio",
+  browserTitle: "NurpurVasi Media — Photos, Videos & Events of Nurpur",
   heroBackgroundImage: "",
   heroBackgroundVideo: "",
   footerLogo: "",
@@ -120,16 +120,16 @@ export const defaultTheme: ThemeSettings = {
 
 export const defaultSiteContent: SiteContent = {
   brand: {
-    name: "NurpurVasi Digitals",
+    name: "NurpurVasi Media",
     initial: "N",
     logo: "",
-    tagline: "Premium Website Design • Development • SEO • Digital Solutions",
+    tagline: "Photos • Videos • Local Events • Culture • Weather",
   },
   theme: defaultTheme,
   seo: {
-    title: "NurpurVasi Digitals — Premium Digital Studio",
+    title: "NurpurVasi Media — Photos, Videos & Events of Nurpur",
     description:
-      "World-class websites, brands and digital products crafted with obsessive care.",
+      "Photos, videos, local events, culture, weather and business promotion from Nurpur, Himachal Pradesh.",
     ogImage: "",
     favicon: "/favicon.ico",
     analyticsCode: "",
@@ -149,12 +149,12 @@ export const defaultSiteContent: SiteContent = {
   },
   socials: { instagram: "", facebook: "", youtube: "", linkedin: "", email: "" },
   hero: {
-    eyebrow: "Premium Digital Studio · Est. 2015",
-    headline: "Crafting digital experiences that inspire.",
+    eyebrow: "Nurpur · Himachal Pradesh",
+    headline: "Your window to Nurpur.",
     subheading:
-      "NurpurVasi Digitals designs and builds world-class websites, brands and digital products for ambitious companies that refuse to look ordinary.",
-    primaryCta: { label: "Start your project", href: "/contact" },
-    secondaryCta: { label: "Watch showreel", href: "/portfolio" },
+      "Photos, videos, local events, culture, weather and neighbourhood businesses — captured and published by NurpurVasi Media.",
+    primaryCta: { label: "Explore photos", href: "/photos" },
+    secondaryCta: { label: "Watch videos", href: "/videos" },
     media: { type: "image", src: "", alt: "Studio showcase" },
   },
   banners: {
@@ -169,8 +169,8 @@ export const defaultSiteContent: SiteContent = {
   stats: [],
   faqs: [],
   footer: {
-    copyright: "© {year} NurpurVasi Digitals. All rights reserved.",
-    tagline: "Premium digital studio",
+    copyright: "© {year} NurpurVasi Media. All rights reserved.",
+    tagline: "Local media portal for Nurpur",
     privacyUrl: "",
     termsUrl: "",
   },
