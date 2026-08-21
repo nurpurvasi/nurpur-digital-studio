@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Play } from "lucide-react";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import { MediaGrid } from "@/components/media/MediaGrid";
 import { useGallery, useVideos, thumbOf, formatDate, displayTitle } from "@/components/media/useGallery";
