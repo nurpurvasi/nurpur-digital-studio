@@ -16,6 +16,7 @@ import {
   Video,
 } from "lucide-react";
 import { getIsAdmin } from "@/lib/cms.functions";
+import { BulkPhotoUpload } from "@/components/admin/BulkPhotoUpload";
 import {
   deleteGalleryItem,
   duplicateGalleryItem,
@@ -209,6 +210,9 @@ function AdminGalleryList() {
       </header>
 
       <main className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6">
+        <div className="mb-6">
+          <BulkPhotoUpload />
+        </div>
         {isEmpty ? (
           <EmptyState
             onCreate={() => navigate({ to: "/admin/gallery/$id", params: { id: "new" } })}
@@ -358,7 +362,7 @@ function AdminGalleryList() {
                               {t.title || "(Untitled)"}
                             </div>
                             <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                              {t.category || "Uncategorised"}
+                              {t.category || "Uncategorised"} · {(t.views ?? 0).toLocaleString("en-IN")} views
                             </div>
                           </div>
                           <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-2">

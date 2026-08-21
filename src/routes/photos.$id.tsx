@@ -26,7 +26,7 @@ function PhotoDetail() {
 
   return (
     <SiteLayout>
-      {item ? <MediaDetailView item={item} kind="photos" /> : <MediaMissing kind="photos" />}
+      {item ? <MediaDetailView item={item} kind="photos" galleryName={data?.galleryName ?? ""} /> : <MediaMissing kind="photos" />}
     </SiteLayout>
   );
 }

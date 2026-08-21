@@ -10,6 +10,8 @@ import {
   type GalleryItem,
 } from "@/lib/gallery.functions";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
+import { listAdminGalleries } from "@/lib/portal.functions";
+import { slugify } from "@/lib/slug";
 
 export const Route = createFileRoute("/_authenticated/admin/gallery/$id")({
   head: () => ({
@@ -23,7 +25,11 @@ export const Route = createFileRoute("/_authenticated/admin/gallery/$id")({
 
 type Draft = {
   id?: string;
+  slug: string;
   title: string;
+  caption: string;
+  location: string;
+  gallery_id: string | null;
   description: string;
   category: string;
   media_type: "image" | "video";
@@ -39,7 +45,11 @@ type Draft = {
 };
 
 const EMPTY: Draft = {
+  slug: "",
   title: "",
+  caption: "",
+  location: "",
+  gallery_id: null,
   description: "",
   category: "",
   media_type: "image",
@@ -57,7 +67,11 @@ const EMPTY: Draft = {
 function fromRow(t: GalleryItem): Draft {
   return {
     id: t.id,
+    slug: t.slug ?? "",
     title: t.title,
+    caption: t.caption ?? "",
+    location: t.location ?? "",
+    gallery_id: t.gallery_id ?? null,
     description: t.description,
     category: t.category,
     media_type: t.media_type,
@@ -82,7 +96,13 @@ function AdminGalleryEditor() {
   const load = useServerFn(getAdminGalleryItem);
   const save = useServerFn(upsertGalleryItem);
 
+  const loadGalleries = useServerFn(listAdminGalleries);
   const admin = useQuery({ queryKey: ["admin-check"], queryFn: () => checkAdmin() });
+  const galleries = useQuery({
+    queryKey: ["admin-photo-galleries"],
+    queryFn: () => loadGalleries(),
+    enabled: !!admin.data?.isAdmin,
+  });
   const existing = useQuery({
     queryKey: ["gallery-admin", id],
     queryFn: () => load({ data: { id } }),
@@ -285,6 +305,49 @@ function AdminGalleryEditor() {
               placeholder="Optional description"
               className="w-full resize-y rounded-xl border border-border bg-white px-4 py-3 text-sm leading-relaxed outline-none focus:border-foreground/40"
             />
+          </Field>
+
+          <Field label="Caption">
+            <input
+              value={draft.caption}
+              onChange={(e) => patch("caption", e.target.value)}
+              placeholder="Short caption shown under the photo"
+              className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none focus:border-foreground/40"
+            />
+          </Field>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Location">
+              <input
+                value={draft.location}
+                onChange={(e) => patch("location", e.target.value)}
+                placeholder="Nurpur Fort, Himachal Pradesh"
+                className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none focus:border-foreground/40"
+              />
+            </Field>
+            <Field label="URL slug">
+              <input
+                value={draft.slug}
+                onChange={(e) => patch("slug", slugify(e.target.value))}
+                placeholder="auto-generated from the title"
+                className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm outline-none focus:border-foreground/40"
+              />
+            </Field>
+          </div>
+
+          <Field label="Gallery / album">
+            <select
+              value={draft.gallery_id ?? ""}
+              onChange={(e) => patch("gallery_id", e.target.value || null)}
+              className="w-full rounded-xl border border-border bg-white px-4 py-3 text-sm"
+            >
+              <option value="">No gallery</option>
+              {(galleries.data?.items ?? []).map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name || "Untitled gallery"}
+                </option>
+              ))}
+            </select>
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">

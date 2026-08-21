@@ -20,7 +20,15 @@ import { formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGall
 type Kind = "photos" | "videos";
 
 /** Shared, SEO-friendly detail page body for a single photo or video. */
-export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind }) {
+export function MediaDetailView({
+  item,
+  kind,
+  galleryName = "",
+}: {
+  item: GalleryItem;
+  kind: Kind;
+  galleryName?: string;
+}) {
   const navigate = useNavigate();
   const { items } = useGallery();
   const photos = usePhotos(items);
@@ -54,7 +62,7 @@ export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind 
   const views = (item.views ?? 0) + 1;
 
   const share = async () => {
-    const url = `${window.location.origin}/${kind}/${item.id}`;
+    const url = `${window.location.origin}/${kind}/${item.slug || item.id}`;
     try {
       if (navigator.share) await navigator.share({ title: item.title || "NurpurVasi Media", url });
       else await navigator.clipboard.writeText(url);
@@ -132,8 +140,14 @@ export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind 
             </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1">
               <MapPin className="h-3 w-3" />
-              Nurpur, Himachal Pradesh
+              {item.location || "Nurpur, Himachal Pradesh"}
             </span>
+            {galleryName && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1">
+                <Tag className="h-3 w-3" />
+                {galleryName}
+              </span>
+            )}
           </div>
 
           <h1
@@ -142,6 +156,9 @@ export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind 
           >
             {item.title}
           </h1>
+          {item.caption && (
+            <p className="mt-4 max-w-3xl text-base font-medium text-foreground/90">{item.caption}</p>
+          )}
           {item.description && (
             <p className="mt-4 max-w-3xl whitespace-pre-line text-base leading-relaxed text-muted-foreground">
               {item.description}
@@ -153,12 +170,12 @@ export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind 
               <Share2 className="h-4 w-4" /> Share
             </button>
             {prev && (
-              <Link to={detailRoute} params={{ id: prev.id }} className="btn-ghost inline-flex">
+              <Link to={detailRoute} params={{ id: prev.slug || prev.id }} className="btn-ghost inline-flex">
                 <ChevronLeft className="h-4 w-4" /> Previous
               </Link>
             )}
             {next && (
-              <Link to={detailRoute} params={{ id: next.id }} className="btn-ghost inline-flex">
+              <Link to={detailRoute} params={{ id: next.slug || next.id }} className="btn-ghost inline-flex">
                 Next <ChevronRight className="h-4 w-4" />
               </Link>
             )}
@@ -179,7 +196,7 @@ export function MediaDetailView({ item, kind }: { item: GalleryItem; kind: Kind 
                 onOpen={() =>
                   navigate({
                     to: r.media_type === "video" ? "/videos/$id" : "/photos/$id",
-                    params: { id: r.id },
+                    params: { id: r.slug || r.id },
                   })
                 }
               />

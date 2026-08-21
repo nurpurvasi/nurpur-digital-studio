@@ -40,7 +40,7 @@ const GROUPS: Group[] = [
   },
   {
     title: "Social",
-    items: [{ to: "/admin/gallery", label: "Reels", icon: Film }],
+    items: [{ to: "/admin/reels", label: "Reels", icon: Film }],
   },
   {
     title: "Content",
