@@ -67,7 +67,7 @@ function BusinessPage() {
                     {b.logo ? (
                       <img
                         src={b.logo}
-                        alt={`${b.name} logo`}
+                        alt={`${b.company_name} logo`}
                         loading="lazy"
                         className="h-12 w-12 rounded-2xl object-contain"
                       />
@@ -80,9 +80,9 @@ function BusinessPage() {
                       </span>
                     )}
                     <div className="min-w-0">
-                      <p className="truncate text-base font-semibold">{b.name}</p>
-                      {b.industry && (
-                        <p className="truncate text-xs text-muted-foreground">{b.industry}</p>
+                      <p className="truncate text-base font-semibold">{b.company_name}</p>
+                      {b.category && (
+                        <p className="truncate text-xs text-muted-foreground">{b.category}</p>
                       )}
                     </div>
                   </div>
