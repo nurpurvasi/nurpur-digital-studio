@@ -39,7 +39,7 @@ import {
 export const Route = createFileRoute("/_authenticated/admin/studio")({
   head: () => ({
     meta: [
-      { title: "Admin — NurpurVasi Digitals" },
+      { title: "Home page & branding — NurpurVasi Media Admin" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
