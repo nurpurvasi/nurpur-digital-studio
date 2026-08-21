@@ -39,7 +39,7 @@ import {
 export const Route = createFileRoute("/_authenticated/admin/studio")({
   head: () => ({
     meta: [
-      { title: "Admin — NurpurVasi Digitals" },
+      { title: "Home page & branding — NurpurVasi Media Admin" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
@@ -153,16 +153,17 @@ function AdminPage() {
     <div className="min-h-screen bg-[#f7f8fc] text-foreground">
       {/* Top bar */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:px-6">
+          <Link to="/admin" className="flex min-w-0 items-center gap-2">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
               <Sparkles className="h-4 w-4" />
             </span>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold tracking-tight">Content Studio</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">NurpurVasi Digitals</div>
+            <div className="min-w-0 leading-tight">
+              <div className="truncate text-sm font-semibold tracking-tight">Home page &amp; branding</div>
+              <div className="truncate text-[10px] uppercase tracking-widest text-muted-foreground">NurpurVasi Media</div>
             </div>
           </Link>
+
           <div className="ml-4 hidden items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground md:flex">
             {saving ? (
               <><Loader2 className="h-3 w-3 animate-spin" /> Saving…</>
@@ -208,10 +209,11 @@ function AdminPage() {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1400px] gap-6 px-6 py-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <div className="mx-auto grid max-w-[1400px] gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)]">
         {/* Sidebar */}
-        <aside className="h-fit rounded-3xl border border-border bg-white p-2 lg:sticky lg:top-24">
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col">
+        <aside className="h-fit min-w-0 rounded-3xl border border-border bg-white p-2 lg:sticky lg:top-24">
+          <nav className="flex min-w-0 gap-1 overflow-x-auto lg:flex-col">
+
             {SECTIONS.map((s) => (
               <button
                 key={s.id}
@@ -228,7 +230,7 @@ function AdminPage() {
         </aside>
 
         {/* Editor panel */}
-        <main className="rounded-3xl border border-border bg-white p-6 md:p-8">
+        <main className="min-w-0 rounded-3xl border border-border bg-white p-4 sm:p-6 md:p-8">
           {publishMut.isSuccess && !publishMut.isPending && (
             <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs text-emerald-800">
               Published successfully — live site updated.
