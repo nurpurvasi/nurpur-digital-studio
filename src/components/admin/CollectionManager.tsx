@@ -246,6 +246,21 @@ export function CollectionManager<T extends CollectionRow>({
                     </label>
                   );
                 }
+                if (f.kind === "image") {
+                  return (
+                    <div key={f.key} className={`space-y-1.5 ${cls}`}>
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {f.label}
+                      </span>
+                      <MediaField
+                        value={String(value ?? "")}
+                        accept="image"
+                        onChange={(url) => setField(f.key, url)}
+                      />
+                      {f.help && <p className="text-xs text-muted-foreground">{f.help}</p>}
+                    </div>
+                  );
+                }
                 return (
                   <div key={f.key} className={`space-y-1.5 ${cls}`}>
                     <label
@@ -286,14 +301,6 @@ export function CollectionManager<T extends CollectionRow>({
                         className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
                       />
                     )}
-                    {f.kind === "image" && String(value ?? "") ? (
-                      <img
-                        src={String(value)}
-                        alt=""
-                        loading="lazy"
-                        className="mt-2 h-28 w-full rounded-xl object-cover"
-                      />
-                    ) : null}
                     {f.help && <p className="text-xs text-muted-foreground">{f.help}</p>}
                   </div>
                 );
