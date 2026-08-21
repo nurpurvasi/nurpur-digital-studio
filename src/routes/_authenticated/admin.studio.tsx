@@ -46,32 +46,14 @@ export const Route = createFileRoute("/_authenticated/admin/studio")({
   component: AdminPage,
 });
 
-type Section =
-  | "settings"
-  | "brand"
-  | "theme"
-  | "seo"
-  | "hero"
-  | "contact"
-  | "services"
-  | "portfolio"
-  | "testimonials"
-  | "stats"
-  | "faqs"
-  | "footer";
+type Section = "brand" | "theme" | "seo" | "hero" | "contact" | "footer";
 
 const SECTIONS: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: "settings", label: "Website Settings", icon: Sparkles },
-  { id: "brand", label: "Brand", icon: Sparkles },
-  { id: "theme", label: "Branding & Theme", icon: Palette },
-  { id: "hero", label: "Hero", icon: Star },
-  { id: "services", label: "Services", icon: Palette },
-  { id: "portfolio", label: "Portfolio", icon: ImageIcon },
-  { id: "testimonials", label: "Testimonials", icon: Users },
-  { id: "stats", label: "Statistics", icon: ArrowUpFromLine },
-  { id: "faqs", label: "FAQ", icon: ChevronDown },
-  { id: "contact", label: "Contact & Social", icon: Users },
-  { id: "seo", label: "SEO & Meta", icon: Search },
+  { id: "brand", label: "Site name & logo", icon: Sparkles },
+  { id: "theme", label: "Colours & theme", icon: Palette },
+  { id: "hero", label: "Homepage hero", icon: Star },
+  { id: "contact", label: "Contact & social", icon: Users },
+  { id: "seo", label: "SEO & meta", icon: Search },
   { id: "footer", label: "Footer", icon: Sparkles },
 ];
 
@@ -93,7 +75,7 @@ function AdminPage() {
 
   // Local editable state — merged over defaults for a stable UI
   const [content, setContent] = useState<SiteContent>(defaultSiteContent);
-  const [section, setSection] = useState<Section>("settings");
+  const [section, setSection] = useState<Section>("brand");
   const [dirty, setDirty] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saving, setSaving] = useState(false);
@@ -202,36 +184,6 @@ function AdminPage() {
             <Link to="/admin/media" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <ImageIcon className="h-3 w-3" /> Media
             </Link>
-            <Link to="/admin/leads" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Leads
-            </Link>
-            <Link to="/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> Blog
-            </Link>
-            <Link to="/admin/portfolio" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Portfolio CMS
-            </Link>
-            <Link to="/admin/testimonials" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Star className="h-3 w-3" /> Testimonials
-            </Link>
-            <Link to="/admin/gallery" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Gallery
-            </Link>
-            <Link to="/admin/team" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Team
-            </Link>
-            <Link to="/admin/services" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Services
-            </Link>
-            <Link to="/admin/pricing" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Pricing
-            </Link>
-            <Link to="/admin/clients" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Clients
-            </Link>
-            <Link to="/admin/faqs" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> FAQs
-            </Link>
 
 
             <button
@@ -282,15 +234,9 @@ function AdminPage() {
               Published successfully — live site updated.
             </div>
           )}
-          {section === "settings" && <SettingsEditor content={content} patch={patch} />}
           {section === "brand" && <BrandEditor content={content} patch={patch} />}
           {section === "theme" && <ThemeEditor content={content} patch={patch} />}
           {section === "hero" && <HeroEditor content={content} patch={patch} />}
-          {section === "services" && <ServicesEditor content={content} patch={patch} />}
-          {section === "portfolio" && <PortfolioEditor content={content} patch={patch} />}
-          {section === "testimonials" && <TestimonialsEditor content={content} patch={patch} />}
-          {section === "stats" && <StatsEditor content={content} patch={patch} />}
-          {section === "faqs" && <FAQEditor content={content} patch={patch} />}
           {section === "contact" && <ContactEditor content={content} patch={patch} />}
           {section === "seo" && <SEOEditor content={content} patch={patch} />}
           {section === "footer" && <FooterEditor content={content} patch={patch} />}
