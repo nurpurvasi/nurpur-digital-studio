@@ -36,7 +36,7 @@ import {
   Type,
 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/admin/")({
+export const Route = createFileRoute("/_authenticated/admin/studio")({
   head: () => ({
     meta: [
       { title: "Admin — NurpurVasi Digitals" },
