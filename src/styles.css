@@ -31,6 +31,9 @@
   --color-royal: var(--royal);
   --color-cyan: var(--cyan);
   --color-purple: var(--purple);
+  --color-sun: var(--sun);
+  --color-leaf: var(--leaf);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -69,6 +72,9 @@
   --royal: oklch(0.48 0.19 265);       /* Royal Blue */
   --cyan: oklch(0.82 0.09 220);        /* Soft Cyan */
   --purple: oklch(0.58 0.19 300);      /* Purple accent */
+  --sun: oklch(0.76 0.16 62);          /* Warm orange accent */
+  --leaf: oklch(0.68 0.14 155);        /* Fresh green accent */
+
 
   --background: oklch(1 0 0);
   --surface: oklch(0.985 0.003 250);   /* Very light grey */
@@ -101,6 +107,9 @@
                    radial-gradient(700px 400px at 50% 100%, color-mix(in oklab, var(--cyan) 22%, transparent), transparent 60%);
   --gradient-brand: linear-gradient(135deg, var(--navy), var(--royal) 55%, var(--purple));
   --gradient-text: linear-gradient(120deg, var(--navy), var(--royal) 45%, var(--purple));
+  --gradient-warm: linear-gradient(135deg, var(--sun), color-mix(in oklab, var(--purple) 55%, var(--sun)));
+  --gradient-vivid: linear-gradient(120deg, var(--royal), var(--purple) 45%, var(--sun));
+
 
   --shadow-glass: 0 1px 0 0 color-mix(in oklab, white 60%, transparent) inset,
                   0 20px 60px -20px color-mix(in oklab, var(--navy) 25%, transparent);
@@ -210,9 +219,20 @@
   100% { transform: translateX(400%) }
 }
 
+@keyframes marquee-x {
+  from { transform: translate3d(0, 0, 0) }
+  to { transform: translate3d(-50%, 0, 0) }
+}
+
 @utility animate-float { animation: float-slow 7s ease-in-out infinite; }
 @utility animate-fade-up { animation: fade-up .9s cubic-bezier(.2,.7,.2,1) both; }
 @utility animate-scroll-hint { animation: scroll-hint 1.8s ease-in-out infinite; }
+@utility animate-marquee { animation: marquee-x var(--marquee-duration, 46s) linear infinite; }
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
 
 /* Custom scrollbar */
 @media (pointer: fine) {

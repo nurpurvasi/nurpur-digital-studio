@@ -9,20 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeatherRouteImport } from './routes/weather'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as PhotosIndexRouteImport } from './routes/photos.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as PhotosIdRouteImport } from './routes/photos.$id'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -62,6 +68,16 @@ import { Route as AuthenticatedAdminFaqsIdRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -77,6 +93,11 @@ const PortfolioRoute = PortfolioRouteImport.update({
   path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PhotosRoute = PhotosRouteImport.update({
+  id: '/photos',
+  path: '/photos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -90,6 +111,11 @@ const ContactRoute = ContactRouteImport.update({
 const ClientsRoute = ClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -121,6 +147,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ServicesRoute,
 } as any)
+const PhotosIndexRoute = PhotosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PhotosRoute,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -130,6 +161,11 @@ const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => PortfolioRoute,
+} as any)
+const PhotosIdRoute = PhotosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PhotosRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -356,16 +392,22 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/photos': typeof PhotosRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
+  '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
@@ -409,14 +451,19 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos': typeof PhotosIndexRoute
   '/services': typeof ServicesIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/api/media/$': typeof ApiMediaSplatRoute
@@ -451,16 +498,22 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/photos': typeof PhotosRouteWithChildren
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
+  '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/photos/': typeof PhotosIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
@@ -506,16 +559,22 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
+    | '/photos'
     | '/portfolio'
     | '/pricing'
     | '/services'
+    | '/videos'
+    | '/weather'
     | '/admin'
     | '/blog/$slug'
+    | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos/'
     | '/services/'
     | '/admin/blog'
     | '/admin/clients'
@@ -559,14 +618,19 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
     | '/portfolio'
     | '/pricing'
+    | '/videos'
+    | '/weather'
     | '/blog/$slug'
+    | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos'
     | '/services'
     | '/admin/media'
     | '/api/media/$'
@@ -600,16 +664,22 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
+    | '/photos'
     | '/portfolio'
     | '/pricing'
     | '/services'
+    | '/videos'
+    | '/weather'
     | '/_authenticated/admin'
     | '/blog/$slug'
+    | '/photos/$id'
     | '/portfolio/$slug'
     | '/services/$slug'
+    | '/photos/'
     | '/services/'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/clients'
@@ -655,17 +725,35 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  BusinessRoute: typeof BusinessRoute
   ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  PhotosRoute: typeof PhotosRouteWithChildren
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  VideosRoute: typeof VideosRoute
+  WeatherRoute: typeof WeatherRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -687,6 +775,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortfolioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/photos': {
+      id: '/photos'
+      path: '/photos'
+      fullPath: '/photos'
+      preLoaderRoute: typeof PhotosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -706,6 +801,13 @@ declare module '@tanstack/react-router' {
       path: '/clients'
       fullPath: '/clients'
       preLoaderRoute: typeof ClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -750,6 +852,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof ServicesRoute
     }
+    '/photos/': {
+      id: '/photos/'
+      path: '/'
+      fullPath: '/photos/'
+      preLoaderRoute: typeof PhotosIndexRouteImport
+      parentRoute: typeof PhotosRoute
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/$slug'
@@ -763,6 +872,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/portfolio/$slug'
       preLoaderRoute: typeof PortfolioSlugRouteImport
       parentRoute: typeof PortfolioRoute
+    }
+    '/photos/$id': {
+      id: '/photos/$id'
+      path: '/$id'
+      fullPath: '/photos/$id'
+      preLoaderRoute: typeof PhotosIdRouteImport
+      parentRoute: typeof PhotosRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -1273,6 +1389,19 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface PhotosRouteChildren {
+  PhotosIdRoute: typeof PhotosIdRoute
+  PhotosIndexRoute: typeof PhotosIndexRoute
+}
+
+const PhotosRouteChildren: PhotosRouteChildren = {
+  PhotosIdRoute: PhotosIdRoute,
+  PhotosIndexRoute: PhotosIndexRoute,
+}
+
+const PhotosRouteWithChildren =
+  PhotosRoute._addFileChildren(PhotosRouteChildren)
+
 interface PortfolioRouteChildren {
   PortfolioSlugRoute: typeof PortfolioSlugRoute
 }
@@ -1305,14 +1434,28 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  BusinessRoute: BusinessRoute,
   ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  PhotosRoute: PhotosRouteWithChildren,
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  VideosRoute: VideosRoute,
+  WeatherRoute: WeatherRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
