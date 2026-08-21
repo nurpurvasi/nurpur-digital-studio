@@ -12,6 +12,7 @@ import {
   type ClientBrand,
 } from "@/lib/clients.functions";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
+import { MediaGalleryField } from "@/components/admin/MediaGalleryField";
 import { ClientLogo } from "@/components/site/Clients";
 
 export const Route = createFileRoute("/_authenticated/admin/clients/$id")({
@@ -37,6 +38,16 @@ type Draft = {
   published: boolean;
   seo_title: string;
   seo_description: string;
+  phone: string;
+  whatsapp: string;
+  address: string;
+  map_url: string;
+  cover_image: string;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  opening_hours: string;
+  gallery: string[];
 };
 
 const EMPTY: Draft = {
@@ -51,6 +62,16 @@ const EMPTY: Draft = {
   published: false,
   seo_title: "",
   seo_description: "",
+  phone: "",
+  whatsapp: "",
+  address: "",
+  map_url: "",
+  cover_image: "",
+  instagram: "",
+  facebook: "",
+  youtube: "",
+  opening_hours: "",
+  gallery: [],
 };
 
 function fromRow(c: ClientBrand): Draft {
@@ -67,6 +88,16 @@ function fromRow(c: ClientBrand): Draft {
     published: c.published,
     seo_title: c.seo_title,
     seo_description: c.seo_description,
+    phone: c.phone ?? "",
+    whatsapp: c.whatsapp ?? "",
+    address: c.address ?? "",
+    map_url: c.map_url ?? "",
+    cover_image: c.cover_image ?? "",
+    instagram: c.instagram ?? "",
+    facebook: c.facebook ?? "",
+    youtube: c.youtube ?? "",
+    opening_hours: c.opening_hours ?? "",
+    gallery: Array.isArray(c.gallery) ? c.gallery.filter(Boolean) : [],
   };
 }
 
@@ -195,15 +226,16 @@ function AdminClientEditor() {
     published: draft.published,
     seo_title: draft.seo_title,
     seo_description: draft.seo_description,
-    phone: "",
-    whatsapp: "",
-    address: "",
-    map_url: "",
-    cover_image: "",
-    instagram: "",
-    facebook: "",
-    youtube: "",
-    gallery: [],
+    phone: draft.phone,
+    whatsapp: draft.whatsapp,
+    address: draft.address,
+    map_url: draft.map_url,
+    cover_image: draft.cover_image,
+    instagram: draft.instagram,
+    facebook: draft.facebook,
+    youtube: draft.youtube,
+    opening_hours: draft.opening_hours,
+    gallery: draft.gallery,
     created_at: "",
     updated_at: "",
   };
@@ -324,6 +356,98 @@ function AdminClientEditor() {
 
           <Card title="Logo">
             <MediaField value={draft.logo} onChange={(v) => patch("logo", v)} accept="image" />
+          </Card>
+
+          <Card title="Cover image">
+            <MediaField
+              value={draft.cover_image}
+              onChange={(v) => patch("cover_image", v)}
+              accept="image"
+            />
+          </Card>
+
+          <Card title="Photos & videos">
+            <MediaGalleryField
+              value={draft.gallery}
+              onChange={(v) => patch("gallery", v)}
+              onSetCover={(url) => patch("cover_image", url)}
+            />
+          </Card>
+
+          <Card title="Contact & location">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Phone">
+                <input
+                  value={draft.phone}
+                  onChange={(e) => patch("phone", e.target.value)}
+                  placeholder="+91 00000 00000"
+                  className={inputCls}
+                />
+              </Field>
+              <Field label="WhatsApp number">
+                <input
+                  value={draft.whatsapp}
+                  onChange={(e) => patch("whatsapp", e.target.value)}
+                  placeholder="+91 00000 00000"
+                  className={inputCls}
+                />
+              </Field>
+            </div>
+            <Field label="Address">
+              <textarea
+                value={draft.address}
+                onChange={(e) => patch("address", e.target.value)}
+                rows={2}
+                placeholder="Main Bazaar, Nurpur, Himachal Pradesh"
+                className={inputCls}
+              />
+            </Field>
+            <Field label="Google Maps URL">
+              <input
+                value={draft.map_url}
+                onChange={(e) => patch("map_url", e.target.value)}
+                placeholder="https://maps.google.com/…"
+                className={inputCls}
+              />
+            </Field>
+            <Field label="Opening hours">
+              <textarea
+                value={draft.opening_hours}
+                onChange={(e) => patch("opening_hours", e.target.value)}
+                rows={3}
+                placeholder={"Mon–Sat: 9:00 AM – 8:00 PM\nSunday: Closed"}
+                className={inputCls}
+              />
+            </Field>
+          </Card>
+
+          <Card title="Social links">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Instagram">
+                <input
+                  value={draft.instagram}
+                  onChange={(e) => patch("instagram", e.target.value)}
+                  placeholder="https://instagram.com/…"
+                  className={inputCls}
+                />
+              </Field>
+              <Field label="Facebook">
+                <input
+                  value={draft.facebook}
+                  onChange={(e) => patch("facebook", e.target.value)}
+                  placeholder="https://facebook.com/…"
+                  className={inputCls}
+                />
+              </Field>
+              <Field label="YouTube">
+                <input
+                  value={draft.youtube}
+                  onChange={(e) => patch("youtube", e.target.value)}
+                  placeholder="https://youtube.com/@…"
+                  className={inputCls}
+                />
+              </Field>
+            </div>
           </Card>
 
           <Card title="SEO">
