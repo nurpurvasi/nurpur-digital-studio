@@ -418,15 +418,7 @@ export function ExploreNurpur() {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <Eyebrow>Explore Nurpur</Eyebrow>
-        <h2
-          className="mt-4 text-3xl tracking-tight sm:text-5xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Fort, temples, melas & everyday life
-        </h2>
-      </Reveal>
+      <SectionHeading label="Explore Nurpur" title="Fort, temples, melas & everyday life" />
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map((g, i) => {
           const cover = g.items.find((x) => thumbOf(x)) ?? g.items[0];
