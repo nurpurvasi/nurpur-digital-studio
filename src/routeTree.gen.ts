@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
@@ -65,6 +66,11 @@ import { Route as AuthenticatedAdminFaqsIdRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -381,6 +387,7 @@ export interface FileRoutesByFullPath {
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
+  '/videos': typeof VideosRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
@@ -435,6 +442,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
+  '/videos': typeof VideosRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -481,6 +489,7 @@ export interface FileRoutesById {
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
+  '/videos': typeof VideosRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
@@ -539,6 +548,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/pricing'
     | '/services'
+    | '/videos'
     | '/admin'
     | '/blog/$slug'
     | '/photos/$id'
@@ -593,6 +603,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/portfolio'
     | '/pricing'
+    | '/videos'
     | '/blog/$slug'
     | '/photos/$id'
     | '/portfolio/$slug'
@@ -638,6 +649,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/pricing'
     | '/services'
+    | '/videos'
     | '/_authenticated/admin'
     | '/blog/$slug'
     | '/photos/$id'
@@ -696,11 +708,19 @@ export interface RootRouteChildren {
   PortfolioRoute: typeof PortfolioRouteWithChildren
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  VideosRoute: typeof VideosRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -1381,6 +1401,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioRoute: PortfolioRouteWithChildren,
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  VideosRoute: VideosRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
