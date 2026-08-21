@@ -18,6 +18,7 @@ import { Route as PhotosRouteImport } from './routes/photos'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
@@ -110,6 +111,11 @@ const ContactRoute = ContactRouteImport.update({
 const ClientsRoute = ClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -386,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -444,6 +451,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -490,6 +498,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/business': typeof BusinessRoute
   '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -550,6 +559,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
@@ -608,6 +618,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
@@ -653,6 +664,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/blog'
+    | '/business'
     | '/clients'
     | '/contact'
     | '/faq'
@@ -713,6 +725,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  BusinessRoute: typeof BusinessRoute
   ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
@@ -788,6 +801,13 @@ declare module '@tanstack/react-router' {
       path: '/clients'
       fullPath: '/clients'
       preLoaderRoute: typeof ClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -1414,6 +1434,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  BusinessRoute: BusinessRoute,
   ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
