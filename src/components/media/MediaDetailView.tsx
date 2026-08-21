@@ -18,7 +18,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { Section } from "@/components/site/Layout";
 import { MediaCard } from "./MediaGrid";
 import { listPublicGalleries } from "@/lib/portal.functions";
-import { formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGallery";
+import { displayTitle, formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGallery";
 
 type Kind = "photos" | "videos";
 

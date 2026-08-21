@@ -28,6 +28,7 @@ import {
   usePhotos,
   useReels,
   useVideos,
+  displayTitle,
 } from "./useGallery";
 
 /** Editorial section heading: colour accent line + small label + display title. */

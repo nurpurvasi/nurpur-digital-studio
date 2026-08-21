@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, MapPin, Share2, Tag, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
-import { formatDate, thumbOf } from "./useGallery";
+import { displayTitle, formatDate, thumbOf } from "./useGallery";
 
 /**
  * Full-screen photo/video viewer with keyboard + swipe-free arrow navigation.

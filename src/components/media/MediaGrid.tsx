@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Camera, Play } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { MediaLightbox } from "./MediaLightbox";
-import { formatDate, thumbOf } from "./useGallery";
+import { displayTitle, formatDate, thumbOf } from "./useGallery";
 
 export function MediaCard({
   item,

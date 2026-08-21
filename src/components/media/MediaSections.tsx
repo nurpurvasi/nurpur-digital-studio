@@ -15,6 +15,7 @@ import {
   usePhotos,
   useReels,
   useVideos,
+  displayTitle,
 } from "./useGallery";
 
 /** Cinematic, visual-first hero built from the newest featured media. */
