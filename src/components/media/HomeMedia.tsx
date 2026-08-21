@@ -246,7 +246,7 @@ export function MediaSpotlight() {
                 <button
                   key={item.id}
                   onClick={() => setOpenAt(i + 1)}
-                  className="group relative flex w-[240px] shrink-0 gap-3 overflow-hidden rounded-3xl border border-border bg-card/80 p-2 text-left backdrop-blur transition hover:-translate-y-0.5 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] lg:w-auto"
+                  className="group relative flex w-[260px] shrink-0 snap-start gap-3 overflow-hidden rounded-3xl border border-border bg-card/80 p-2 text-left backdrop-blur transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] lg:w-auto"
                 >
                   <span className="relative h-20 w-24 shrink-0 overflow-hidden rounded-2xl bg-muted lg:h-full lg:w-28">
                     {thumbOf(item) ? (
