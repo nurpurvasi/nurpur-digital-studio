@@ -152,7 +152,7 @@ export function MediaLightbox({
           )}
           <Link
             to="/photos/$id"
-            params={{ id: item.id }}
+            params={{ id: item.slug || item.id }}
             className="mt-3 inline-flex text-xs font-semibold text-background underline decoration-background/40 underline-offset-4"
           >
             Open full details page

@@ -26,7 +26,7 @@ function VideoDetail() {
 
   return (
     <SiteLayout>
-      {item ? <MediaDetailView item={item} kind="videos" /> : <MediaMissing kind="videos" />}
+      {item ? <MediaDetailView item={item} kind="videos" galleryName={data?.galleryName ?? ""} /> : <MediaMissing kind="videos" />}
     </SiteLayout>
   );
 }

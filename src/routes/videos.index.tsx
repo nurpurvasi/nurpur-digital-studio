@@ -54,7 +54,7 @@ function VideosPage() {
         {feature && (
           <Link
             to="/videos/$id"
-            params={{ id: feature.id }}
+            params={{ id: feature.slug || feature.id }}
             className="group mt-12 block overflow-hidden rounded-[28px] border border-border bg-card"
           >
             <div className="relative aspect-video w-full bg-muted">

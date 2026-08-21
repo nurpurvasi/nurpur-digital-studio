@@ -79,7 +79,7 @@ function AdminDashboard() {
 
   const quick = [
     { label: "Upload photos & videos", to: "/admin/gallery", icon: Plus },
-    { label: "Add a reel", to: "/admin/gallery", icon: Film },
+    { label: "Add a reel", to: "/admin/reels", icon: Film },
     { label: "New gallery", to: "/admin/galleries", icon: Images },
     { label: "New event", to: "/admin/events", icon: CalendarDays },
     { label: "Ticker headline", to: "/admin/ticker", icon: Megaphone },

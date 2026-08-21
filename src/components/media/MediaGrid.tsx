@@ -79,7 +79,7 @@ export function MediaCard({
     return (
       <Link
         to={detail === "videos" ? "/videos/$id" : "/photos/$id"}
-        params={{ id: item.id }}
+        params={{ id: item.slug || item.id }}
         className={cls}
       >
         {shell}
