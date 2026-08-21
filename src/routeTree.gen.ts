@@ -37,6 +37,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiMediaSplatRouteImport } from './routes/api/media/$'
 import { Route as AuthenticatedAdminTypographyRouteImport } from './routes/_authenticated/admin.typography'
+import { Route as AuthenticatedAdminTickerRouteImport } from './routes/_authenticated/admin.ticker'
 import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
 import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin.team'
 import { Route as AuthenticatedAdminStudioRouteImport } from './routes/_authenticated/admin.studio'
@@ -213,6 +214,12 @@ const AuthenticatedAdminTypographyRoute =
   AuthenticatedAdminTypographyRouteImport.update({
     id: '/typography',
     path: '/typography',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminTickerRoute =
+  AuthenticatedAdminTickerRouteImport.update({
+    id: '/ticker',
+    path: '/ticker',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminTestimonialsRoute =
@@ -474,6 +481,7 @@ export interface FileRoutesByFullPath {
   '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
+  '/admin/ticker': typeof AuthenticatedAdminTickerRoute
   '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -527,6 +535,7 @@ export interface FileRoutesByTo {
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/admin/studio': typeof AuthenticatedAdminStudioRoute
+  '/admin/ticker': typeof AuthenticatedAdminTickerRoute
   '/api/media/$': typeof ApiMediaSplatRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
@@ -594,6 +603,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
+  '/_authenticated/admin/ticker': typeof AuthenticatedAdminTickerRoute
   '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
@@ -662,6 +672,7 @@ export interface FileRouteTypes {
     | '/admin/studio'
     | '/admin/team'
     | '/admin/testimonials'
+    | '/admin/ticker'
     | '/admin/typography'
     | '/api/media/$'
     | '/admin/blog/$id'
@@ -715,6 +726,7 @@ export interface FileRouteTypes {
     | '/admin/media'
     | '/admin/places'
     | '/admin/studio'
+    | '/admin/ticker'
     | '/api/media/$'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
@@ -781,6 +793,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/studio'
     | '/_authenticated/admin/team'
     | '/_authenticated/admin/testimonials'
+    | '/_authenticated/admin/ticker'
     | '/_authenticated/admin/typography'
     | '/api/media/$'
     | '/_authenticated/admin/blog/$id'
@@ -1024,6 +1037,13 @@ declare module '@tanstack/react-router' {
       path: '/typography'
       fullPath: '/admin/typography'
       preLoaderRoute: typeof AuthenticatedAdminTypographyRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/ticker': {
+      id: '/_authenticated/admin/ticker'
+      path: '/ticker'
+      fullPath: '/admin/ticker'
+      preLoaderRoute: typeof AuthenticatedAdminTickerRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/testimonials': {
@@ -1485,6 +1505,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminStudioRoute: typeof AuthenticatedAdminStudioRoute
   AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRouteWithChildren
   AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
+  AuthenticatedAdminTickerRoute: typeof AuthenticatedAdminTickerRoute
   AuthenticatedAdminTypographyRoute: typeof AuthenticatedAdminTypographyRouteWithChildren
 }
 
@@ -1506,6 +1527,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRouteWithChildren,
   AuthenticatedAdminTestimonialsRoute:
     AuthenticatedAdminTestimonialsRouteWithChildren,
+  AuthenticatedAdminTickerRoute: AuthenticatedAdminTickerRoute,
   AuthenticatedAdminTypographyRoute:
     AuthenticatedAdminTypographyRouteWithChildren,
 }
