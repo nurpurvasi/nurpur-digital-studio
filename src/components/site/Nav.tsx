@@ -5,16 +5,15 @@ import { useSiteContent } from "@/content/SiteContentContext";
 
 const links = [
   { to: "/", label: "Home" },
-  { to: "/services", label: "Services" },
-  { to: "/portfolio", label: "Portfolio" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/clients", label: "Clients" },
-  { to: "/blog", label: "Blog" },
+  { to: "/photos", label: "Photos" },
+  { to: "/videos", label: "Videos" },
+  { to: "/business", label: "Business" },
+  { to: "/blog", label: "News" },
+  { to: "/weather", label: "Weather" },
   { to: "/about", label: "About" },
-  { to: "/faq", label: "FAQ" },
-
   { to: "/contact", label: "Contact" },
 ] as const;
+
 
 export function Nav() {
   const site = useSiteContent();
