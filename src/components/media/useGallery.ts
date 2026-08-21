@@ -31,9 +31,13 @@ export function youtubeThumb(url: string) {
   return m ? `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` : "";
 }
 
+/**
+ * Thumbnail priority: uploaded/custom thumbnail → the image itself →
+ * platform thumbnail (YouTube) → "" so callers render a clean fallback visual.
+ */
 export function thumbOf(item: GalleryItem) {
-  if (item.thumbnail) return item.thumbnail;
-  if (item.media_type === "image") return item.media_url;
+  if (item.thumbnail) return normalizeMediaUrl(item.thumbnail);
+  if (item.media_type === "image" && item.media_url) return normalizeMediaUrl(item.media_url);
   if (isSocialUrl(item.media_url)) return youtubeThumb(item.media_url);
   return "";
 }
