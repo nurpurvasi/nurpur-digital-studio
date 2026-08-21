@@ -7,19 +7,21 @@ import { ContactForm } from "@/components/site/ContactForm";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — NurpurVasi Digitals" },
+      { title: "Contact NurpurVasi Media — Share News, Photos or Promote Your Business" },
       {
         name: "description",
-        content: "Start a premium project with NurpurVasi Digitals. Get in touch with Gaurav Bharti.",
+        content: "Contact NurpurVasi Media — send us Nurpur photos, videos or event information, or ask about promoting your local business.",
       },
-      { property: "og:title", content: "Contact — NurpurVasi Digitals" },
+      { property: "og:title", content: "Contact NurpurVasi Media" },
       {
         property: "og:description",
-        content: "Start a premium project. We'd love to hear from you.",
+        content: "Send us Nurpur photos, videos, event details or a business promotion enquiry.",
       },
-      { property: "og:url", content: "/contact" },
+      { property: "og:url", content: "https://nurpur-digital-studio.lovable.app/contact" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/contact" }],
+    links: [{ rel: "canonical", href: "https://nurpur-digital-studio.lovable.app/contact" }],
   }),
   component: ContactPage,
 });
