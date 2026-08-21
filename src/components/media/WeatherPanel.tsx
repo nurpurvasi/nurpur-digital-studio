@@ -30,24 +30,30 @@ const CODES: Record<number, string> = {
 
 type Weather = {
   temp: number;
+  feels: number;
   code: number;
   wind: number;
   humidity: number;
   days: { date: string; min: number; max: number; code: number }[];
 };
 
-/** Live Nurpur weather from the free Open-Meteo API — no API key needed. */
+/** Live Nurpur weather from the free Open-Meteo API — no API key needed, no manual updates. */
 export function WeatherPanel({ compact = false }: { compact?: boolean }) {
-  const { data, isLoading } = useQuery<Weather>({
+  const { data, isLoading, isError, refetch, isFetching } = useQuery<Weather>({
     queryKey: ["weather", LAT, LON],
     staleTime: 15 * 60_000,
+    refetchInterval: 15 * 60_000,
+    retry: 1,
     queryFn: async () => {
       const res = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia%2FKolkata&forecast_days=5`,
+        `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia%2FKolkata&forecast_days=5`,
       );
+      if (!res.ok) throw new Error("weather-unavailable");
       const json = await res.json();
+      if (!json?.current || !json?.daily) throw new Error("weather-unavailable");
       return {
         temp: Math.round(json.current.temperature_2m),
+        feels: Math.round(json.current.apparent_temperature ?? json.current.temperature_2m),
         code: json.current.weather_code,
         wind: Math.round(json.current.wind_speed_10m),
         humidity: Math.round(json.current.relative_humidity_2m),
