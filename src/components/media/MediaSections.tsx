@@ -268,7 +268,7 @@ export function ReelsRow() {
               <span className="inline-flex items-center gap-1 rounded-full bg-background/20 px-2 py-0.5 text-[10px] font-semibold text-background">
                 <ExternalLink className="h-3 w-3" /> {socialPlatform(r.media_url)}
               </span>
-              <span className="mt-2 block line-clamp-2 text-sm font-semibold text-background">{r.title}</span>
+              <span className="mt-2 block line-clamp-2 text-sm font-semibold text-background">{displayTitle(r)}</span>
             </span>
           </a>
         ))}
