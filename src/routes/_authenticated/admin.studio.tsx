@@ -153,16 +153,17 @@ function AdminPage() {
     <div className="min-h-screen bg-[#f7f8fc] text-foreground">
       {/* Top bar */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid h-9 w-9 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:px-6">
+          <Link to="/admin" className="flex min-w-0 items-center gap-2">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-white" style={{ background: "var(--gradient-brand)" }}>
               <Sparkles className="h-4 w-4" />
             </span>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold tracking-tight">Content Studio</div>
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">NurpurVasi Digitals</div>
+            <div className="min-w-0 leading-tight">
+              <div className="truncate text-sm font-semibold tracking-tight">Home page &amp; branding</div>
+              <div className="truncate text-[10px] uppercase tracking-widest text-muted-foreground">NurpurVasi Media</div>
             </div>
           </Link>
+
           <div className="ml-4 hidden items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground md:flex">
             {saving ? (
               <><Loader2 className="h-3 w-3 animate-spin" /> Saving…</>
