@@ -93,7 +93,7 @@ function GalleryCard({ item, onOpen }: { item: GalleryItem; onOpen: () => void }
         {thumb ? (
           <img
             src={thumb}
-            alt={item.alt_text || item.title}
+            alt={item.alt_text || displayTitle(item)}
             loading="lazy"
             className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
           />
@@ -118,10 +118,10 @@ function GalleryCard({ item, onOpen }: { item: GalleryItem; onOpen: () => void }
           </span>
         )}
       </div>
-      {(item.title || item.category) && (
+      {true && (
         <div className="flex items-center justify-between gap-3 p-5">
           <div className="min-w-0">
-            <div className="truncate text-sm font-semibold">{item.title || "Untitled"}</div>
+            <div className="truncate text-sm font-semibold">{displayTitle(item)}</div>
             {item.category && (
               <div className="mt-0.5 truncate text-xs text-muted-foreground">
                 {item.category}
@@ -165,13 +165,13 @@ function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void })
         ) : (
           <img
             src={item.media_url}
-            alt={item.alt_text || item.title}
+            alt={item.alt_text || displayTitle(item)}
             className="max-h-[80vh] w-full object-contain"
           />
         )}
-        {(item.title || item.description) && (
+        {true && (
           <div className="bg-black/60 p-5 text-white">
-            {item.title && <div className="text-lg font-semibold">{item.title}</div>}
+            <div className="text-lg font-semibold">{displayTitle(item)}</div>
             {item.description && (
               <p className="mt-1 text-sm text-white/80">{item.description}</p>
             )}

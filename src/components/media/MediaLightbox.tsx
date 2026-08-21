@@ -1,3 +1,4 @@
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useCallback, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -40,13 +41,13 @@ export function MediaLightbox({
     stageRef.current?.scrollTo({ top: 0, left: 0 });
   }, [index]);
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     const el = stageRef.current;
     if (!zoomed || !el || e.pointerType === "touch") return;
     drag.current = { x: e.clientX, y: e.clientY, left: el.scrollLeft, top: el.scrollTop };
     el.setPointerCapture?.(e.pointerId);
   };
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
     const el = stageRef.current;
     if (!drag.current || !el) return;
     el.scrollLeft = drag.current.left - (e.clientX - drag.current.x);

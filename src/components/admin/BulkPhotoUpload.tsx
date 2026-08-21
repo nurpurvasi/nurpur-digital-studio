@@ -5,6 +5,7 @@ import { Loader2, Upload } from "lucide-react";
 import { createMediaUploadUrl } from "@/lib/cms.functions";
 import { createGalleryItems } from "@/lib/gallery.functions";
 import { listAdminGalleries } from "@/lib/portal.functions";
+import { looksLikeGeneratedName } from "@/components/media/useGallery";
 import { supabase } from "@/integrations/supabase/client";
 
 /**
@@ -50,7 +51,7 @@ export function BulkPhotoUpload() {
           .uploadToSignedUrl(path, token, file, { contentType: file.type });
         if (upErr) throw upErr;
         uploaded.push({
-          title: file.name.replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " "),
+          title: cleanTitleFromFilename(file.name),
           media_url: signedUrl,
           media_type: file.type.startsWith("video") ? "video" : "image",
         });
@@ -164,4 +165,10 @@ export function BulkPhotoUpload() {
       </div>
     </div>
   );
+}
+
+/** Camera/storage filenames (UUIDs, IMG_1234) are not usable titles — leave blank. */
+function cleanTitleFromFilename(name: string) {
+  const base = name.replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " ").trim();
+  return looksLikeGeneratedName(base) ? "" : base;
 }
