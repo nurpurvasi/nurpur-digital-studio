@@ -229,7 +229,7 @@ function AdminPage() {
         </aside>
 
         {/* Editor panel */}
-        <main className="rounded-3xl border border-border bg-white p-6 md:p-8">
+        <main className="min-w-0 rounded-3xl border border-border bg-white p-4 sm:p-6 md:p-8">
           {publishMut.isSuccess && !publishMut.isPending && (
             <div className="mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs text-emerald-800">
               Published successfully — live site updated.
