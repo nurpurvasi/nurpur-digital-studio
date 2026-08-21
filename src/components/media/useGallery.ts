@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listPublicGallery, type GalleryItem } from "@/lib/gallery.functions";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 /** Single shared read of the published gallery — every media section reuses it. */
 export function useGallery() {
