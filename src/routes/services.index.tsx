@@ -11,6 +11,7 @@ import { getServiceIcon } from "@/components/site/service-icons";
 export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex,follow" },
       { title: "Services — NurpurVasi Digitals" },
       {
         name: "description",

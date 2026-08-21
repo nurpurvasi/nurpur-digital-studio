@@ -9,13 +9,15 @@ import { Search, Calendar, ArrowRight, Clock } from "lucide-react";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Blog & Insights — NurpurVasi Digitals" },
-      { name: "description", content: "Ideas, case studies and craft notes on premium web design, development and digital growth from NurpurVasi Digitals." },
-      { property: "og:title", content: "Blog & Insights — NurpurVasi Digitals" },
-      { property: "og:description", content: "Ideas, case studies and craft notes from NurpurVasi Digitals." },
+      { title: "Nurpur News & Local Stories — NurpurVasi Media" },
+      { name: "description", content: "Local stories, event reports and updates from Nurpur, Kangra district, Himachal Pradesh — published by NurpurVasi Media." },
+      { property: "og:title", content: "Nurpur News & Local Stories — NurpurVasi Media" },
+      { property: "og:description", content: "Local stories, event reports and updates from Nurpur, Himachal Pradesh." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://nurpur-digital-studio.lovable.app/blog" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://nurpur-digital-studio.lovable.app/blog" }],
   }),
   component: BlogIndex,
 });

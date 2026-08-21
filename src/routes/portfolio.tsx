@@ -12,6 +12,7 @@ import { listPublicProjects, type PortfolioProject } from "@/lib/portfolio.funct
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
     meta: [
+      { name: "robots", content: "noindex,follow" },
       { title: "Portfolio — NurpurVasi Digitals" },
       {
         name: "description",
