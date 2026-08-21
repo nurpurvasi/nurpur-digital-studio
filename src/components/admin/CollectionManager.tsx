@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, Loader2, Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import { MediaField } from "@/components/site/inline-editor/MediaField";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 export type FieldKind = "text" | "textarea" | "date" | "time" | "url" | "image" | "switch" | "number";
 
@@ -133,7 +135,7 @@ export function CollectionManager<T extends CollectionRow>({
       ) : (
         <ul className="space-y-3">
           {filtered.map((it) => {
-            const img = String(it[imageKey] ?? "");
+            const img = normalizeMediaUrl(String(it[imageKey] ?? ""));
             return (
               <li
                 key={String(it.id)}
@@ -246,6 +248,21 @@ export function CollectionManager<T extends CollectionRow>({
                     </label>
                   );
                 }
+                if (f.kind === "image") {
+                  return (
+                    <div key={f.key} className={`space-y-1.5 ${cls}`}>
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {f.label}
+                      </span>
+                      <MediaField
+                        value={String(value ?? "")}
+                        accept="image"
+                        onChange={(url) => setField(f.key, url)}
+                      />
+                      {f.help && <p className="text-xs text-muted-foreground">{f.help}</p>}
+                    </div>
+                  );
+                }
                 return (
                   <div key={f.key} className={`space-y-1.5 ${cls}`}>
                     <label
@@ -286,14 +303,6 @@ export function CollectionManager<T extends CollectionRow>({
                         className="w-full rounded-xl border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
                       />
                     )}
-                    {f.kind === "image" && String(value ?? "") ? (
-                      <img
-                        src={String(value)}
-                        alt=""
-                        loading="lazy"
-                        className="mt-2 h-28 w-full rounded-xl object-cover"
-                      />
-                    ) : null}
                     {f.help && <p className="text-xs text-muted-foreground">{f.help}</p>}
                   </div>
                 );

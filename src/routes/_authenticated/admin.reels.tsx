@@ -33,10 +33,10 @@ const FIELDS: FieldDef[] = [
   },
   {
     key: "thumbnail",
-    label: "Custom thumbnail",
+    label: "Thumbnail",
     kind: "image",
     full: true,
-    help: "Optional. YouTube thumbnails are detected automatically.",
+    help: "Upload a cover image from your phone or computer. YouTube thumbnails are detected automatically when left empty.",
   },
   { key: "description", label: "Description", kind: "textarea" },
   { key: "category", label: "Category", kind: "text", placeholder: "Reels" },

@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Play } from "lucide-react";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import { MediaGrid } from "@/components/media/MediaGrid";
-import { useGallery, useVideos, thumbOf, formatDate } from "@/components/media/useGallery";
+import { useGallery, useVideos, thumbOf, formatDate, displayTitle } from "@/components/media/useGallery";
 
 const SITE = "https://nurpur-digital-studio.lovable.app";
 
@@ -58,12 +59,19 @@ function VideosPage() {
             className="group mt-12 block overflow-hidden rounded-[28px] border border-border bg-card"
           >
             <div className="relative aspect-video w-full bg-muted">
-              {thumbOf(feature) && (
+              {thumbOf(feature) ? (
                 <img
                   src={thumbOf(feature)}
-                  alt={feature.alt_text || feature.title}
+                  alt={feature.alt_text || displayTitle(feature)}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
                 />
+              ) : (
+                <span
+                  className="grid h-full w-full place-items-center text-background/80"
+                  style={{ background: "var(--gradient-vivid)" }}
+                >
+                  <Play className="h-9 w-9" />
+                </span>
               )}
             </div>
             <div className="p-6">
@@ -71,7 +79,7 @@ function VideosPage() {
                 Featured video
               </span>
               <h2 className="mt-2 text-2xl tracking-tight sm:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
-                {feature.title}
+                {displayTitle(feature)}
               </h2>
               <p className="mt-1 text-xs text-muted-foreground">
                 {formatDate(feature.publish_date || feature.created_at)}

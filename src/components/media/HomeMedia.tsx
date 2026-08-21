@@ -500,13 +500,22 @@ export function LatestPhotosMasonry({ limit = 12 }: { limit?: number }) {
             onClick={() => setOpenAt(i)}
             className="group mb-3 block w-full break-inside-avoid overflow-hidden rounded-3xl border border-border bg-card text-left transition hover:-translate-y-1 sm:mb-4"
           >
-            <span className="relative block bg-muted">
+            <span className="relative block min-h-32 bg-muted">
+              {thumbOf(item) ? (
               <img
                 src={thumbOf(item)}
                 alt={item.alt_text || displayTitle(item)}
                 loading="lazy"
                 className="w-full object-cover transition duration-700 group-hover:scale-[1.05]"
               />
+              ) : (
+                <span
+                  className="grid h-40 w-full place-items-center text-background/80"
+                  style={{ background: "var(--gradient-vivid)" }}
+                >
+                  <Camera className="h-7 w-7" />
+                </span>
+              )}
               <span
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 opacity-80"
                 style={{
@@ -708,7 +717,7 @@ export function LatestReels() {
                 <ExternalLink className="h-3 w-3" /> {socialPlatform(r.media_url)}
               </span>
               <span className="mt-2 block line-clamp-2 text-sm font-semibold text-background">
-                {r.title}
+                {displayTitle(r)}
               </span>
               <span className="mt-1 flex items-center justify-between text-[11px] text-background/75">
                 {formatDate(r.publish_date || r.created_at)}

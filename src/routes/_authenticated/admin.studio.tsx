@@ -46,32 +46,14 @@ export const Route = createFileRoute("/_authenticated/admin/studio")({
   component: AdminPage,
 });
 
-type Section =
-  | "settings"
-  | "brand"
-  | "theme"
-  | "seo"
-  | "hero"
-  | "contact"
-  | "services"
-  | "portfolio"
-  | "testimonials"
-  | "stats"
-  | "faqs"
-  | "footer";
+type Section = "brand" | "theme" | "seo" | "hero" | "contact" | "footer";
 
 const SECTIONS: { id: Section; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: "settings", label: "Website Settings", icon: Sparkles },
-  { id: "brand", label: "Brand", icon: Sparkles },
-  { id: "theme", label: "Branding & Theme", icon: Palette },
-  { id: "hero", label: "Hero", icon: Star },
-  { id: "services", label: "Services", icon: Palette },
-  { id: "portfolio", label: "Portfolio", icon: ImageIcon },
-  { id: "testimonials", label: "Testimonials", icon: Users },
-  { id: "stats", label: "Statistics", icon: ArrowUpFromLine },
-  { id: "faqs", label: "FAQ", icon: ChevronDown },
-  { id: "contact", label: "Contact & Social", icon: Users },
-  { id: "seo", label: "SEO & Meta", icon: Search },
+  { id: "brand", label: "Site name & logo", icon: Sparkles },
+  { id: "theme", label: "Colours & theme", icon: Palette },
+  { id: "hero", label: "Homepage hero", icon: Star },
+  { id: "contact", label: "Contact & social", icon: Users },
+  { id: "seo", label: "SEO & meta", icon: Search },
   { id: "footer", label: "Footer", icon: Sparkles },
 ];
 
@@ -93,7 +75,7 @@ function AdminPage() {
 
   // Local editable state — merged over defaults for a stable UI
   const [content, setContent] = useState<SiteContent>(defaultSiteContent);
-  const [section, setSection] = useState<Section>("settings");
+  const [section, setSection] = useState<Section>("brand");
   const [dirty, setDirty] = useState(false);
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saving, setSaving] = useState(false);
@@ -202,36 +184,6 @@ function AdminPage() {
             <Link to="/admin/media" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <ImageIcon className="h-3 w-3" /> Media
             </Link>
-            <Link to="/admin/leads" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Leads
-            </Link>
-            <Link to="/admin/blog" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> Blog
-            </Link>
-            <Link to="/admin/portfolio" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Portfolio CMS
-            </Link>
-            <Link to="/admin/testimonials" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Star className="h-3 w-3" /> Testimonials
-            </Link>
-            <Link to="/admin/gallery" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Gallery
-            </Link>
-            <Link to="/admin/team" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Team
-            </Link>
-            <Link to="/admin/services" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Services
-            </Link>
-            <Link to="/admin/pricing" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Sparkles className="h-3 w-3" /> Pricing
-            </Link>
-            <Link to="/admin/clients" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <Users className="h-3 w-3" /> Clients
-            </Link>
-            <Link to="/admin/faqs" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <FileText className="h-3 w-3" /> FAQs
-            </Link>
 
 
             <button
@@ -282,15 +234,9 @@ function AdminPage() {
               Published successfully — live site updated.
             </div>
           )}
-          {section === "settings" && <SettingsEditor content={content} patch={patch} />}
           {section === "brand" && <BrandEditor content={content} patch={patch} />}
           {section === "theme" && <ThemeEditor content={content} patch={patch} />}
           {section === "hero" && <HeroEditor content={content} patch={patch} />}
-          {section === "services" && <ServicesEditor content={content} patch={patch} />}
-          {section === "portfolio" && <PortfolioEditor content={content} patch={patch} />}
-          {section === "testimonials" && <TestimonialsEditor content={content} patch={patch} />}
-          {section === "stats" && <StatsEditor content={content} patch={patch} />}
-          {section === "faqs" && <FAQEditor content={content} patch={patch} />}
           {section === "contact" && <ContactEditor content={content} patch={patch} />}
           {section === "seo" && <SEOEditor content={content} patch={patch} />}
           {section === "footer" && <FooterEditor content={content} patch={patch} />}
@@ -556,124 +502,10 @@ function HeroEditor({ content, patch }: EditorProps) {
   );
 }
 
-function ServicesEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Services" desc="Cards showcased on the homepage and services page." />
-      <ListReorder
-        items={content.services}
-        emptyLabel="No services yet. Add your first offering."
-        addLabel="Add service"
-        onAdd={() => patch((c) => ({ ...c, services: [...c.services, { title: "New service", desc: "", icon: "Palette", tag: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, services: next }))}
-        renderItem={(s, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Title"><TextInput value={s.title} onChange={(e) => u({ title: e.target.value })} /></Field>
-            <Field label="Icon name" hint="lucide icon"><TextInput value={s.icon ?? ""} onChange={(e) => u({ icon: e.target.value })} placeholder="Palette" /></Field>
-            <div className="md:col-span-2"><Field label="Description"><TextArea rows={2} value={s.desc} onChange={(e) => u({ desc: e.target.value })} /></Field></div>
-            <Field label="Tag"><TextInput value={s.tag ?? ""} onChange={(e) => u({ tag: e.target.value })} placeholder="e.g. Design" /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
 
-function PortfolioEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Portfolio" desc="Featured projects with images and links." />
-      <ListReorder
-        items={content.portfolio}
-        emptyLabel="No projects yet. Add your first case study."
-        addLabel="Add project"
-        onAdd={() => patch((c) => ({ ...c, portfolio: [...c.portfolio, { title: "New project", tag: "Web", year: String(new Date().getFullYear()), image: "", href: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, portfolio: next }))}
-        renderItem={(p, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="md:col-span-2 grid gap-3 md:grid-cols-2">
-              <Field label="Title"><TextInput value={p.title} onChange={(e) => u({ title: e.target.value })} /></Field>
-              <Field label="Category"><TextInput value={p.tag} onChange={(e) => u({ tag: e.target.value })} /></Field>
-              <Field label="Year"><TextInput value={p.year} onChange={(e) => u({ year: e.target.value })} /></Field>
-              <Field label="Link"><TextInput value={p.href ?? ""} onChange={(e) => u({ href: e.target.value })} placeholder="https://…" /></Field>
-            </div>
-            <Field label="Cover image"><MediaUploader value={p.image} onChange={(url) => u({ image: url } as Partial<typeof p>)} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
 
-function TestimonialsEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Testimonials" desc="Real quotes from your happy clients." />
-      <ListReorder
-        items={content.testimonials}
-        emptyLabel="No testimonials yet."
-        addLabel="Add testimonial"
-        onAdd={() => patch((c) => ({ ...c, testimonials: [...c.testimonials, { quote: "", name: "", role: "", avatar: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, testimonials: next }))}
-        renderItem={(t, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="md:col-span-2 grid gap-3">
-              <Field label="Quote"><TextArea rows={3} value={t.quote} onChange={(e) => u({ quote: e.target.value })} /></Field>
-              <div className="grid gap-3 md:grid-cols-2">
-                <Field label="Name"><TextInput value={t.name} onChange={(e) => u({ name: e.target.value })} /></Field>
-                <Field label="Role / Company"><TextInput value={t.role} onChange={(e) => u({ role: e.target.value })} /></Field>
-              </div>
-            </div>
-            <Field label="Avatar"><MediaUploader value={t.avatar} onChange={(url) => u({ avatar: url } as Partial<typeof t>)} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
 
-function StatsEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Statistics" desc="Numbers that animate on scroll." />
-      <ListReorder
-        items={content.stats}
-        emptyLabel="No stats yet."
-        addLabel="Add statistic"
-        onAdd={() => patch((c) => ({ ...c, stats: [...c.stats, { value: 100, suffix: "+", label: "Metric" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, stats: next }))}
-        renderItem={(s, _i, u) => (
-          <div className="grid gap-3 md:grid-cols-3">
-            <Field label="Value"><TextInput type="number" value={s.value} onChange={(e) => u({ value: Number(e.target.value) || 0 })} /></Field>
-            <Field label="Suffix"><TextInput value={s.suffix ?? ""} onChange={(e) => u({ suffix: e.target.value })} placeholder="+ / %" /></Field>
-            <Field label="Label"><TextInput value={s.label} onChange={(e) => u({ label: e.target.value })} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
 
-function FAQEditor({ content, patch }: EditorProps) {
-  return (
-    <div>
-      <SectionHeader title="Frequently asked questions" />
-      <ListReorder
-        items={content.faqs}
-        emptyLabel="No FAQs yet."
-        addLabel="Add FAQ"
-        onAdd={() => patch((c) => ({ ...c, faqs: [...c.faqs, { q: "", a: "" }] }))}
-        onChange={(next) => patch((c) => ({ ...c, faqs: next }))}
-        renderItem={(f, _i, u) => (
-          <div className="grid gap-3">
-            <Field label="Question"><TextInput value={f.q} onChange={(e) => u({ q: e.target.value })} /></Field>
-            <Field label="Answer"><TextArea rows={3} value={f.a} onChange={(e) => u({ a: e.target.value })} /></Field>
-          </div>
-        )}
-      />
-    </div>
-  );
-}
 
 function ContactEditor({ content, patch }: EditorProps) {
   return (
@@ -733,123 +565,6 @@ function FooterEditor({ content, patch }: EditorProps) {
 
 /* ---------------- Website Settings (all-in-one) ---------------- */
 
-function SettingsEditor({ content, patch }: EditorProps) {
-  const c = content;
-  const setContact = (u: Partial<SiteContent["contact"]>) =>
-    patch((p) => ({ ...p, contact: { ...p.contact, ...u } }));
-  const setSocials = (u: Partial<SiteContent["socials"]>) =>
-    patch((p) => ({ ...p, socials: { ...p.socials, ...u } }));
-  const setBrand = (u: Partial<SiteContent["brand"]>) =>
-    patch((p) => ({ ...p, brand: { ...p.brand, ...u } }));
-  const setFooter = (u: Partial<SiteContent["footer"]>) =>
-    patch((p) => ({ ...p, footer: { ...p.footer, ...u } }));
-  const setSeo = (u: Partial<SiteContent["seo"]>) =>
-    patch((p) => ({ ...p, seo: { ...p.seo, ...u } }));
-
-  return (
-    <div className="space-y-10">
-      <SectionHeader
-        title="Website Settings"
-        desc="One place to manage business info, contact, socials, legal links and social preview. Autosaves as you type."
-      />
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Business</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Business name">
-            <TextInput value={c.brand.name} onChange={(e) => setBrand({ name: e.target.value })} />
-          </Field>
-          <Field label="Owner name">
-            <TextInput value={c.contact.ownerName} onChange={(e) => setContact({ ownerName: e.target.value })} placeholder="Gaurav Bharti" />
-          </Field>
-          <div className="md:col-span-2">
-            <Field label="Tagline">
-              <TextInput value={c.brand.tagline} onChange={(e) => setBrand({ tagline: e.target.value })} />
-            </Field>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Contact</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Phone number">
-            <TextInput value={c.contact.phoneDisplay} onChange={(e) => setContact({ phoneDisplay: e.target.value, phone: e.target.value.replace(/[^\d+]/g, "") })} placeholder="+91 99999 99999" />
-          </Field>
-          <Field label="WhatsApp number">
-            <TextInput value={c.contact.whatsapp} onChange={(e) => setContact({ whatsapp: e.target.value })} placeholder="+919999999999" />
-          </Field>
-          <Field label="Email">
-            <TextInput type="email" value={c.contact.email} onChange={(e) => setContact({ email: e.target.value })} placeholder="hello@nurpurvasi.com" />
-          </Field>
-          <Field label="Working hours">
-            <TextInput value={c.contact.workingHours} onChange={(e) => setContact({ workingHours: e.target.value })} placeholder="Mon – Fri · 10:00 – 19:00 IST" />
-          </Field>
-          <div className="md:col-span-2">
-            <Field label="Office address">
-              <TextArea rows={2} value={c.contact.location} onChange={(e) => setContact({ location: e.target.value })} />
-            </Field>
-          </div>
-          <div className="md:col-span-2">
-            <Field label="Google Maps URL" hint="Public map link — used for the 'Get directions' button">
-              <TextInput value={c.contact.mapsUrl} onChange={(e) => setContact({ mapsUrl: e.target.value })} placeholder="https://maps.google.com/?q=…" />
-            </Field>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Social profiles</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <Field label="Instagram">
-            <TextInput value={c.socials.instagram} onChange={(e) => setSocials({ instagram: e.target.value })} placeholder="https://instagram.com/…" />
-          </Field>
-          <Field label="Facebook">
-            <TextInput value={c.socials.facebook} onChange={(e) => setSocials({ facebook: e.target.value })} placeholder="https://facebook.com/…" />
-          </Field>
-          <Field label="YouTube">
-            <TextInput value={c.socials.youtube} onChange={(e) => setSocials({ youtube: e.target.value })} placeholder="https://youtube.com/@…" />
-          </Field>
-          <Field label="LinkedIn">
-            <TextInput value={c.socials.linkedin} onChange={(e) => setSocials({ linkedin: e.target.value })} placeholder="https://linkedin.com/in/…" />
-          </Field>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Legal & footer</h3>
-        <div className="grid gap-5 md:grid-cols-2">
-          <div className="md:col-span-2">
-            <Field label="Copyright text" hint="Use {year} for the current year">
-              <TextInput value={c.footer.copyright} onChange={(e) => setFooter({ copyright: e.target.value })} />
-            </Field>
-          </div>
-          <Field label="Privacy policy link">
-            <TextInput value={c.footer.privacyUrl} onChange={(e) => setFooter({ privacyUrl: e.target.value })} placeholder="/privacy" />
-          </Field>
-          <Field label="Terms link">
-            <TextInput value={c.footer.termsUrl} onChange={(e) => setFooter({ termsUrl: e.target.value })} placeholder="/terms" />
-          </Field>
-        </div>
-      </section>
-
-      <section>
-        <h3 className="mb-4 text-sm font-semibold">Social preview (SEO)</h3>
-        <div className="grid gap-5">
-          <Field label="Meta title" hint="Under 60 characters">
-            <TextInput value={c.seo.title} onChange={(e) => setSeo({ title: e.target.value })} />
-          </Field>
-          <Field label="Meta description" hint="Under 160 characters">
-            <TextArea rows={3} value={c.seo.description} onChange={(e) => setSeo({ description: e.target.value })} />
-          </Field>
-          <Field label="Open Graph image" hint="1200×630 recommended">
-            <MediaUploader value={c.seo.ogImage} onChange={(url) => setSeo({ ogImage: url })} />
-          </Field>
-        </div>
-      </section>
-    </div>
-  );
-}
 
 /* ---------------- Guards ---------------- */
 

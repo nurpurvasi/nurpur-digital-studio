@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listPublicGallery, type GalleryItem } from "@/lib/gallery.functions";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 /** Single shared read of the published gallery — every media section reuses it. */
 export function useGallery() {
@@ -31,9 +32,13 @@ export function youtubeThumb(url: string) {
   return m ? `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` : "";
 }
 
+/**
+ * Thumbnail priority: uploaded/custom thumbnail → the image itself →
+ * platform thumbnail (YouTube) → "" so callers render a clean fallback visual.
+ */
 export function thumbOf(item: GalleryItem) {
-  if (item.thumbnail) return item.thumbnail;
-  if (item.media_type === "image") return item.media_url;
+  if (item.thumbnail) return normalizeMediaUrl(item.thumbnail);
+  if (item.media_type === "image" && item.media_url) return normalizeMediaUrl(item.media_url);
   if (isSocialUrl(item.media_url)) return youtubeThumb(item.media_url);
   return "";
 }
