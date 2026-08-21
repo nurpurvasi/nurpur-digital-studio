@@ -190,6 +190,13 @@ export function MediaSpotlight() {
                     "linear-gradient(to top, color-mix(in oklab, var(--navy) 90%, transparent), transparent)",
                 }}
               />
+              <span
+                className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-background shadow-lg backdrop-blur sm:left-7 sm:top-7"
+                style={{ background: "var(--gradient-warm)" }}
+              >
+                <Sparkles className="h-3 w-3" /> Featured
+              </span>
+
               {feature.media_type === "video" && (
                 <span className="absolute inset-0 grid place-items-center" aria-hidden>
                   <span
