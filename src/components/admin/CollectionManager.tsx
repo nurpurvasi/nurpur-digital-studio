@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, Loader2, Pencil, Plus, Search, Trash2, X } from "lucide-react";
 import { MediaField } from "@/components/site/inline-editor/MediaField";
+import { normalizeMediaUrl } from "@/lib/media-url";
 
 export type FieldKind = "text" | "textarea" | "date" | "time" | "url" | "image" | "switch" | "number";
 
@@ -134,7 +135,7 @@ export function CollectionManager<T extends CollectionRow>({
       ) : (
         <ul className="space-y-3">
           {filtered.map((it) => {
-            const img = String(it[imageKey] ?? "");
+            const img = normalizeMediaUrl(String(it[imageKey] ?? ""));
             return (
               <li
                 key={String(it.id)}

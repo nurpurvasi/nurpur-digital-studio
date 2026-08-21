@@ -6,6 +6,7 @@ import {
   useReels,
   socialPlatform,
   thumbOf,
+  displayTitle,
   formatDate,
 } from "@/components/media/useGallery";
 
@@ -73,13 +74,16 @@ function ReelsPage() {
                   {thumbOf(r) ? (
                     <img
                       src={thumbOf(r)}
-                      alt={r.alt_text || r.title}
+                      alt={r.alt_text || displayTitle(r)}
                       loading="lazy"
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
                   ) : (
-                    <span className="grid h-full w-full place-items-center text-muted-foreground">
-                      <Film className="h-7 w-7" />
+                    <span
+                      className="grid h-full w-full place-items-center text-background/80"
+                      style={{ background: "var(--gradient-vivid)" }}
+                    >
+                      <Film className="h-8 w-8" />
                     </span>
                   )}
                 </div>
@@ -95,7 +99,7 @@ function ReelsPage() {
                     <ExternalLink className="h-3 w-3" /> {socialPlatform(r.media_url)}
                   </span>
                   <span className="mt-2 block line-clamp-2 text-sm font-semibold text-background">
-                    {r.title}
+                    {displayTitle(r)}
                   </span>
                   {formatDate(r.publish_date || r.created_at) && (
                     <span className="mt-0.5 block text-[11px] text-background/75">
