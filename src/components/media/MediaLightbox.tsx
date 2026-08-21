@@ -1,5 +1,6 @@
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useCallback, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronLeft,
@@ -92,9 +93,9 @@ export function MediaLightbox({
     }
   };
 
-  return (
+  const overlay = (
     <div
-      className="fixed inset-0 z-[120] flex flex-col bg-foreground/95 backdrop-blur-md"
+      className="fixed inset-0 z-[120] flex h-[100dvh] max-h-[100dvh] w-screen flex-col overflow-hidden bg-foreground/95 backdrop-blur-md"
       role="dialog"
       aria-modal="true"
       aria-label={displayTitle(item) || "Media viewer"}
@@ -249,4 +250,8 @@ export function MediaLightbox({
       </div>
     </div>
   );
+
+  // Portal to <body>: animated/transformed ancestors otherwise break `position: fixed`
+  // and push the viewer off-screen (mobile photo appeared blank).
+  return typeof document === "undefined" ? overlay : createPortal(overlay, document.body);
 }
