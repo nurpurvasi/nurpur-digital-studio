@@ -227,3 +227,18 @@ export const reorderGallery = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+// Public single-item read used by the photo/video detail pages.
+export const getPublicGalleryItem = createServerFn({ method: "GET" })
+  .inputValidator((i: { id: string }) => z.object({ id: z.string().min(1).max(100) }).parse(i))
+  .handler(async ({ data }) => {
+    const supa = serverPublicClient();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: row } = await (supa as any)
+      .from("gallery")
+      .select(SELECT_COLS)
+      .eq("id", data.id)
+      .eq("status", "published")
+      .maybeSingle();
+    return { item: (row ?? null) as GalleryItem | null };
+  });
