@@ -31,6 +31,9 @@
   --color-royal: var(--royal);
   --color-cyan: var(--cyan);
   --color-purple: var(--purple);
+  --color-sun: var(--sun);
+  --color-leaf: var(--leaf);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
