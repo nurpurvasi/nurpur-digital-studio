@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CalendarDays,
@@ -7,6 +8,7 @@ import {
   ChevronRight,
   Eye,
   MapPin,
+  Images,
   Share2,
   Tag,
 } from "lucide-react";
@@ -15,6 +17,7 @@ import { recordGalleryView } from "@/lib/gallery.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { Section } from "@/components/site/Layout";
 import { MediaCard } from "./MediaGrid";
+import { listPublicGalleries } from "@/lib/portal.functions";
 import { formatDate, thumbOf, useGallery, usePhotos, useVideos } from "./useGallery";
 
 type Kind = "photos" | "videos";
@@ -29,7 +32,6 @@ export function MediaDetailView({
   kind: Kind;
   galleryName?: string;
 }) {
-  const navigate = useNavigate();
   const { items } = useGallery();
   const photos = usePhotos(items);
   const videos = useVideos(items);
@@ -53,9 +55,22 @@ export function MediaDetailView({
     return { prev: siblings[i - 1] ?? null, next: siblings[i + 1] ?? null };
   }, [siblings, item.id]);
 
-  const related = items
-    .filter((i) => i.id !== item.id && (i.category || "") === (item.category || ""))
-    .slice(0, 8);
+  const loadGalleries = useServerFn(listPublicGalleries);
+  const { data: galleryData } = useQuery({
+    queryKey: ["public-galleries"],
+    queryFn: () => loadGalleries(),
+    staleTime: 5 * 60_000,
+    enabled: Boolean(item.gallery_id),
+  });
+  const parentGallery = item.gallery_id
+    ? (galleryData?.items.find((g) => g.id === item.gallery_id) ?? null)
+    : null;
+
+  const sameCategory = items.filter(
+    (i) => i.id !== item.id && (i.category || "") === (item.category || ""),
+  );
+  const relatedPhotos = sameCategory.filter((i) => i.media_type === "image").slice(0, 8);
+  const relatedVideos = sameCategory.filter((i) => i.media_type === "video").slice(0, 4);
 
   const detailRoute = kind === "videos" ? "/videos/$id" : "/photos/$id";
   const listRoute = kind === "videos" ? "/videos" : "/photos";
@@ -113,6 +128,8 @@ export function MediaDetailView({
               alt={item.alt_text || item.title}
               className="max-h-[75vh] w-full object-contain"
               loading="eager"
+              decoding="async"
+              fetchPriority="high"
             />
           )}
         </div>
@@ -142,11 +159,22 @@ export function MediaDetailView({
               <MapPin className="h-3 w-3" />
               {item.location || "Nurpur, Himachal Pradesh"}
             </span>
-            {galleryName && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1">
-                <Tag className="h-3 w-3" />
-                {galleryName}
-              </span>
+            {parentGallery ? (
+              <Link
+                to="/galleries/$slug"
+                params={{ slug: parentGallery.slug }}
+                className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1 font-semibold hover:text-foreground"
+              >
+                <Images className="h-3 w-3" />
+                {parentGallery.name}
+              </Link>
+            ) : (
+              galleryName && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-surface px-2.5 py-1">
+                  <Tag className="h-3 w-3" />
+                  {galleryName}
+                </span>
+              )
             )}
           </div>
 
@@ -183,27 +211,40 @@ export function MediaDetailView({
         </div>
       </div>
 
-      {related.length > 0 && (
+      {parentGallery && (
+        <div className="mt-12">
+          <Link to="/galleries/$slug" params={{ slug: parentGallery.slug }} className="btn-ghost inline-flex">
+            <Images className="h-4 w-4" /> See the full {parentGallery.name} gallery
+          </Link>
+        </div>
+      )}
+
+      {relatedPhotos.length > 0 && (
         <div className="mt-16">
           <h2 className="text-2xl tracking-tight sm:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
-            More from {item.category || "Nurpur"}
+            More photos from {item.category || "Nurpur"}
           </h2>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
-            {related.map((r) => (
-              <MediaCard
-                key={r.id}
-                item={r}
-                onOpen={() =>
-                  navigate({
-                    to: r.media_type === "video" ? "/videos/$id" : "/photos/$id",
-                    params: { id: r.slug || r.id },
-                  })
-                }
-              />
+            {relatedPhotos.map((r) => (
+              <MediaCard key={r.id} item={r} detail="photos" />
             ))}
           </div>
         </div>
       )}
+
+      {relatedVideos.length > 0 && (
+        <div className="mt-14">
+          <h2 className="text-2xl tracking-tight sm:text-3xl" style={{ fontFamily: "var(--font-display)" }}>
+            Videos from {item.category || "Nurpur"}
+          </h2>
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
+            {relatedVideos.map((r) => (
+              <MediaCard key={r.id} item={r} detail="videos" />
+            ))}
+          </div>
+        </div>
+      )}
+
     </Section>
   );
 }
