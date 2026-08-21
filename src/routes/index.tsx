@@ -1,17 +1,18 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
+import { createFileRoute } from "@tanstack/react-router";
+import { SiteLayout, Section } from "@/components/site/Layout";
 import {
-  MediaHero,
-  CategoryRows,
-  VideoWall,
-  ReelsRow,
-  LatestMediaStrip,
-} from "@/components/media/MediaSections";
+  MediaTicker,
+  MediaSpotlight,
+  PhotoStrips,
+  ExploreNurpur,
+  LatestPhotosMasonry,
+  VideoWallPremium,
+  LatestReels,
+  LocalBusinessRow,
+  DiscoverCTA,
+} from "@/components/media/HomeMedia";
 import { WeatherPanel } from "@/components/media/WeatherPanel";
-import { PremiumContactSection } from "@/components/site/PremiumContact";
-import { ClientsSection } from "@/components/site/Clients";
-import { PremiumCTA } from "@/components/site/HomeSections";
-import { ArrowRight, Store } from "lucide-react";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,43 +41,23 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <SiteLayout>
-      <MediaHero />
-      <LatestMediaStrip />
-      <CategoryRows />
-      <VideoWall />
-      <ReelsRow />
+      <MediaTicker />
+      <MediaSpotlight />
+      <PhotoStrips />
+      <ExploreNurpur />
+      <LatestPhotosMasonry />
+      <VideoWallPremium />
+      <LatestReels />
 
-      <Section className="!py-16 sm:!py-24">
-        <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-          <WeatherPanel />
-          <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
-            <Eyebrow>Local business</Eyebrow>
-            <h2
-              className="mt-5 text-2xl tracking-tight sm:text-3xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Promote your shop to all of Nurpur
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              We photograph, film and publish local businesses across our website and social pages —
-              reaching thousands of neighbours every week.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/business" className="btn-primary group">
-                <Store className="h-4 w-4" /> Business directory
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link to="/contact" className="btn-ghost">
-                Get featured
-              </Link>
-            </div>
-          </div>
+      <Section className="!py-14 sm:!py-16">
+        <div className="mx-auto max-w-3xl">
+          <WeatherPanel compact />
         </div>
       </Section>
 
-      <ClientsSection />
-      <PremiumContactSection />
-      <PremiumCTA />
+      <LocalBusinessRow />
+      <DiscoverCTA />
     </SiteLayout>
   );
+
 }

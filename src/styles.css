@@ -223,15 +223,24 @@
   from { transform: translate3d(0, 0, 0) }
   to { transform: translate3d(-50%, 0, 0) }
 }
+@keyframes marquee-x-rev {
+  from { transform: translate3d(-50%, 0, 0) }
+  to { transform: translate3d(0, 0, 0) }
+}
 
 @utility animate-float { animation: float-slow 7s ease-in-out infinite; }
 @utility animate-fade-up { animation: fade-up .9s cubic-bezier(.2,.7,.2,1) both; }
 @utility animate-scroll-hint { animation: scroll-hint 1.8s ease-in-out infinite; }
 @utility animate-marquee { animation: marquee-x var(--marquee-duration, 46s) linear infinite; }
+@utility animate-marquee-rev { animation: marquee-x-rev var(--marquee-duration, 46s) linear infinite; }
+@utility marquee-pausable {
+  &:hover, &:active { animation-play-state: paused; }
+}
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
+
 
 
 /* Custom scrollbar */
