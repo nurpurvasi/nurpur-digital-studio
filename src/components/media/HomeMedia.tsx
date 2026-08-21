@@ -126,7 +126,7 @@ export function MediaSpotlight() {
   }, [items]);
 
   const feature = ordered[0];
-  const side = ordered.slice(1, 5);
+  const side = ordered.slice(1, 4);
 
   return (
     <section className="relative overflow-hidden pb-14 pt-10 sm:pb-20 sm:pt-14">
