@@ -371,15 +371,7 @@ export function PhotoStrips() {
   return (
     <section className="py-14 sm:py-20">
       <div className="container-x">
-        <Reveal>
-          <Eyebrow>In pictures</Eyebrow>
-          <h2
-            className="mt-4 text-3xl tracking-tight sm:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            A moving wall of Nurpur
-          </h2>
-        </Reveal>
+        <SectionHeading label="Latest from Nurpur" title="A moving wall of Nurpur" />
       </div>
       <div className="mt-8 space-y-4">
         {rows.map((row, i) => (
