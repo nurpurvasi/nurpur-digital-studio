@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createFileRoute as _unused } from "@tanstack/react-router";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import {
   MediaHero,
