@@ -320,7 +320,7 @@ function StripRow({
           <button
             key={`${item.id}-${i}`}
             onClick={() => onOpen(item)}
-            className="group relative h-40 w-60 shrink-0 overflow-hidden rounded-3xl border border-border bg-muted sm:h-48 sm:w-72"
+            className="group relative h-44 w-64 shrink-0 overflow-hidden rounded-3xl border border-border bg-muted transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] sm:h-56 sm:w-80"
           >
             {thumbOf(item) ? (
               <img
