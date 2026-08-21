@@ -139,6 +139,8 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdminArea = pathname.startsWith("/admin");
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
@@ -155,11 +157,15 @@ function RootComponent() {
         <TypographyProvider>
         <ThemeApplier />
         <AdminModeProvider>
-          <LoadingScreen />
-          <PageTransition>
+          {!isAdminArea && <LoadingScreen />}
+          {isAdminArea ? (
             <Outlet />
-          </PageTransition>
-          <FloatingActions />
+          ) : (
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
+          )}
+          {!isAdminArea && <FloatingActions />}
           <AdminModeToggle />
         </AdminModeProvider>
         </TypographyProvider>
