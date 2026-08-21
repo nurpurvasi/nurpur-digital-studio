@@ -49,6 +49,7 @@ import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin.places'
 import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
+import { Route as AuthenticatedAdminInboxRouteImport } from './routes/_authenticated/admin.inbox'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin.gallery'
 import { Route as AuthenticatedAdminGalleriesRouteImport } from './routes/_authenticated/admin.galleries'
 import { Route as AuthenticatedAdminFaqsRouteImport } from './routes/_authenticated/admin.faqs'
@@ -285,6 +286,11 @@ const AuthenticatedAdminLeadsRoute = AuthenticatedAdminLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminInboxRoute = AuthenticatedAdminInboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminGalleryRoute =
   AuthenticatedAdminGalleryRouteImport.update({
     id: '/gallery',
@@ -484,6 +490,7 @@ export interface FileRoutesByFullPath {
   '/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
   '/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
+  '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
@@ -545,6 +552,7 @@ export interface FileRoutesByTo {
   '/videos': typeof VideosIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsRoute
   '/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
+  '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/admin/reels': typeof AuthenticatedAdminReelsRoute
@@ -609,6 +617,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
   '/_authenticated/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
+  '/_authenticated/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
   '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
   '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
@@ -680,6 +689,7 @@ export interface FileRouteTypes {
     | '/admin/faqs'
     | '/admin/galleries'
     | '/admin/gallery'
+    | '/admin/inbox'
     | '/admin/leads'
     | '/admin/media'
     | '/admin/places'
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/admin/events'
     | '/admin/galleries'
+    | '/admin/inbox'
     | '/admin/media'
     | '/admin/places'
     | '/admin/reels'
@@ -804,6 +815,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/faqs'
     | '/_authenticated/admin/galleries'
     | '/_authenticated/admin/gallery'
+    | '/_authenticated/admin/inbox'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/media'
     | '/_authenticated/admin/places'
@@ -1143,6 +1155,13 @@ declare module '@tanstack/react-router' {
       path: '/leads'
       fullPath: '/admin/leads'
       preLoaderRoute: typeof AuthenticatedAdminLeadsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/inbox': {
+      id: '/_authenticated/admin/inbox'
+      path: '/inbox'
+      fullPath: '/admin/inbox'
+      preLoaderRoute: typeof AuthenticatedAdminInboxRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/gallery': {
@@ -1532,6 +1551,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminFaqsRoute: typeof AuthenticatedAdminFaqsRouteWithChildren
   AuthenticatedAdminGalleriesRoute: typeof AuthenticatedAdminGalleriesRoute
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRouteWithChildren
+  AuthenticatedAdminInboxRoute: typeof AuthenticatedAdminInboxRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRouteWithChildren
   AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
   AuthenticatedAdminPlacesRoute: typeof AuthenticatedAdminPlacesRoute
@@ -1554,6 +1574,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminFaqsRoute: AuthenticatedAdminFaqsRouteWithChildren,
   AuthenticatedAdminGalleriesRoute: AuthenticatedAdminGalleriesRoute,
   AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRouteWithChildren,
+  AuthenticatedAdminInboxRoute: AuthenticatedAdminInboxRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRouteWithChildren,
   AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
   AuthenticatedAdminPlacesRoute: AuthenticatedAdminPlacesRoute,

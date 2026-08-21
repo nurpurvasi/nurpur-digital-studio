@@ -210,7 +210,7 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       supa.from("events").select("id, event_date, status"),
       supa.from("places").select("id", { count: "exact", head: true }),
       supa.from("blog_posts").select("id", { count: "exact", head: true }),
-      supa.from("clients").select("id", { count: "exact", head: true }),
+      supa.from("clients").select("id, published"),
       supa.from("leads").select("id, name, status, created_at").order("created_at", { ascending: false }),
     ]);
     const rows = (media.data ?? []) as {
@@ -238,7 +238,10 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       galleries: galleries.count ?? 0,
       places: places.count ?? 0,
       posts: blog.count ?? 0,
-      businesses: businesses.count ?? 0,
+      businesses: (businesses.data ?? []).length,
+      publishedBusinesses: ((businesses.data ?? []) as { published: boolean }[]).filter(
+        (b) => b.published,
+      ).length,
       upcomingEvents: eventRows.filter((e) => !e.event_date || e.event_date >= today).length,
       unreadMessages: leadRows.filter((l) => l.status === "new").length,
       recentMessages: leadRows.slice(0, 6),
