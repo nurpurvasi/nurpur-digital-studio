@@ -491,24 +491,17 @@ export function LatestPhotosMasonry({ limit = 12 }: { limit?: number }) {
 
   return (
     <Section className="!py-16 sm:!py-24">
-      <Reveal>
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <Eyebrow>Latest photos</Eyebrow>
-            <h2
-              className="mt-4 text-3xl tracking-tight sm:text-5xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Freshly published
-            </h2>
-          </div>
-          <Link to="/photos" className="btn-ghost">
+      <SectionHeading
+        label="Captured Moments"
+        title="Freshly published photos"
+        action={
+          <Link to="/photos" className="btn-ghost !px-5 !py-2.5">
             All photos <ArrowRight className="h-4 w-4" />
           </Link>
-        </div>
-      </Reveal>
+        }
+      />
 
-      <div className="mt-10 columns-2 gap-3 sm:gap-4 md:columns-3 lg:columns-4">
+      <div className="mt-10 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
         {photos.map((item, i) => (
           <button
             key={item.id}
