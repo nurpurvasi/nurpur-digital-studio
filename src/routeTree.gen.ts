@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
@@ -66,6 +67,11 @@ import { Route as AuthenticatedAdminFaqsIdRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
   path: '/videos',
@@ -388,6 +394,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
   '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
@@ -443,6 +450,7 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioRouteWithChildren
   '/pricing': typeof PricingRoute
   '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
@@ -490,6 +498,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRouteWithChildren
   '/videos': typeof VideosRoute
+  '/weather': typeof WeatherRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/photos/$id': typeof PhotosIdRoute
@@ -549,6 +558,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/services'
     | '/videos'
+    | '/weather'
     | '/admin'
     | '/blog/$slug'
     | '/photos/$id'
@@ -604,6 +614,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/pricing'
     | '/videos'
+    | '/weather'
     | '/blog/$slug'
     | '/photos/$id'
     | '/portfolio/$slug'
@@ -650,6 +661,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/services'
     | '/videos'
+    | '/weather'
     | '/_authenticated/admin'
     | '/blog/$slug'
     | '/photos/$id'
@@ -709,11 +721,19 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   VideosRoute: typeof VideosRoute
+  WeatherRoute: typeof WeatherRoute
   ApiMediaSplatRoute: typeof ApiMediaSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/videos': {
       id: '/videos'
       path: '/videos'
@@ -1402,6 +1422,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRouteWithChildren,
   VideosRoute: VideosRoute,
+  WeatherRoute: WeatherRoute,
   ApiMediaSplatRoute: ApiMediaSplatRoute,
 }
 export const routeTree = rootRouteImport
