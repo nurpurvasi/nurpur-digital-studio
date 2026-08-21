@@ -164,7 +164,7 @@ export function MediaSpotlight() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:mt-14 lg:grid-cols-[1.55fr_1fr] lg:gap-6">
+        <div className="mt-10 grid gap-4 lg:mt-14 lg:grid-cols-[1.9fr_1fr] lg:gap-6">
           {feature ? (
             <button
               onClick={() => setOpenAt(0)}
