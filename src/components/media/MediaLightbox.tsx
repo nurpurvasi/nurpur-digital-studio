@@ -83,45 +83,74 @@ export function MediaLightbox({
         </div>
       </div>
 
-      <div className="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+      <div className="relative flex min-h-0 flex-1 items-stretch justify-center">
         {items.length > 1 && (
           <>
             <button
               onClick={prev}
               aria-label="Previous"
-              className="absolute left-1 z-10 grid h-11 w-11 place-items-center rounded-full bg-background/15 text-background transition hover:bg-background/30 sm:left-4"
+              className="absolute left-1 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-background/15 text-background transition hover:bg-background/30 sm:left-4"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={next}
               aria-label="Next"
-              className="absolute right-1 z-10 grid h-11 w-11 place-items-center rounded-full bg-background/15 text-background transition hover:bg-background/30 sm:right-4"
+              className="absolute right-1 top-1/2 z-20 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-background/15 text-background transition hover:bg-background/30 sm:right-4"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
           </>
         )}
 
-        {item.media_type === "video" ? (
-          <video
-            key={item.id}
-            src={item.media_url}
-            poster={item.thumbnail || undefined}
-            className="max-h-full w-full max-w-5xl rounded-2xl"
-            controls
-            autoPlay
-            playsInline
-          />
-        ) : (
-          <img
-            key={item.id}
-            src={item.media_url || thumbOf(item)}
-            alt={item.alt_text || displayTitle(item)}
-            className="max-h-full w-auto max-w-full rounded-2xl object-contain animate-fade-up"
-          />
+        {item.media_type !== "video" && (
+          <button
+            onClick={() => setZoomed((z) => !z)}
+            aria-label={zoomed ? "Fit image to screen" : "View image at full size"}
+            className="absolute bottom-3 right-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-background/15 px-3 py-2 text-xs font-semibold text-background transition hover:bg-background/30 sm:bottom-4 sm:right-4"
+          >
+            {zoomed ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+            {zoomed ? "Fit" : "Full size"}
+          </button>
         )}
+
+        <div
+          ref={stageRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          className={`min-h-0 w-full flex-1 overflow-auto overscroll-contain px-2 py-2 sm:px-14 ${
+            zoomed ? "cursor-grab touch-pan-x touch-pan-y" : ""
+          }`}
+        >
+          <div className="flex min-h-full w-full items-center justify-center">
+            {item.media_type === "video" ? (
+              <video
+                key={item.id}
+                src={item.media_url}
+                poster={item.thumbnail || undefined}
+                className="max-h-[70vh] w-full max-w-5xl rounded-2xl"
+                controls
+                autoPlay
+                playsInline
+              />
+            ) : (
+              <img
+                key={item.id}
+                src={item.media_url || thumbOf(item)}
+                alt={item.alt_text || displayTitle(item)}
+                draggable={false}
+                decoding="async"
+                className={`rounded-2xl object-contain select-none ${
+                  zoomed ? "h-auto w-auto max-w-none" : "h-auto max-h-[68vh] w-auto max-w-full sm:max-h-[76vh]"
+                }`}
+              />
+            )}
+          </div>
+        </div>
       </div>
+
 
       <div className="shrink-0 px-4 pb-5 pt-4 sm:px-6">
         <div className="mx-auto max-w-4xl">
