@@ -35,11 +35,11 @@ import { Route as PhotosIdRouteImport } from './routes/photos.$id'
 import { Route as BusinessesSlugRouteImport } from './routes/businesses.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as ApiMediaSplatRouteImport } from './routes/api/media/$'
 import { Route as AuthenticatedAdminTypographyRouteImport } from './routes/_authenticated/admin.typography'
 import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
 import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin.team'
+import { Route as AuthenticatedAdminStudioRouteImport } from './routes/_authenticated/admin.studio'
 import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin.services'
 import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authenticated/admin.pricing'
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
@@ -201,11 +201,6 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
 const ApiMediaSplatRoute = ApiMediaSplatRouteImport.update({
   id: '/api/media/$',
   path: '/api/media/$',
@@ -228,6 +223,12 @@ const AuthenticatedAdminTeamRoute = AuthenticatedAdminTeamRouteImport.update({
   path: '/team',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminStudioRoute =
+  AuthenticatedAdminStudioRouteImport.update({
+    id: '/studio',
+    path: '/studio',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminServicesRoute =
   AuthenticatedAdminServicesRouteImport.update({
     id: '/services',
@@ -446,11 +447,11 @@ export interface FileRoutesByFullPath {
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
+  '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
@@ -487,6 +488,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
   '/weather': typeof WeatherRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$slug': typeof BusinessesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
@@ -497,8 +499,8 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesIndexRoute
   '/videos': typeof VideosIndexRoute
   '/admin/media': typeof AuthenticatedAdminMediaRoute
+  '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/api/media/$': typeof ApiMediaSplatRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
@@ -559,11 +561,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
+  '/_authenticated/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/_authenticated/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
   '/_authenticated/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
@@ -624,11 +626,11 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/pricing'
     | '/admin/services'
+    | '/admin/studio'
     | '/admin/team'
     | '/admin/testimonials'
     | '/admin/typography'
     | '/api/media/$'
-    | '/admin/'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
     | '/admin/faqs/$id'
@@ -665,6 +667,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/reels'
     | '/weather'
+    | '/admin'
     | '/blog/$slug'
     | '/businesses/$slug'
     | '/photos/$id'
@@ -675,8 +678,8 @@ export interface FileRouteTypes {
     | '/services'
     | '/videos'
     | '/admin/media'
+    | '/admin/studio'
     | '/api/media/$'
-    | '/admin'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
     | '/admin/faqs/$id'
@@ -736,11 +739,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/pricing'
     | '/_authenticated/admin/services'
+    | '/_authenticated/admin/studio'
     | '/_authenticated/admin/team'
     | '/_authenticated/admin/testimonials'
     | '/_authenticated/admin/typography'
     | '/api/media/$'
-    | '/_authenticated/admin/'
     | '/_authenticated/admin/blog/$id'
     | '/_authenticated/admin/clients/$id'
     | '/_authenticated/admin/faqs/$id'
@@ -970,13 +973,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/api/media/$': {
       id: '/api/media/$'
       path: '/api/media/$'
@@ -1003,6 +999,13 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/admin/team'
       preLoaderRoute: typeof AuthenticatedAdminTeamRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/studio': {
+      id: '/_authenticated/admin/studio'
+      path: '/studio'
+      fullPath: '/admin/studio'
+      preLoaderRoute: typeof AuthenticatedAdminStudioRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/services': {
@@ -1416,10 +1419,10 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
   AuthenticatedAdminPricingRoute: typeof AuthenticatedAdminPricingRouteWithChildren
   AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRouteWithChildren
+  AuthenticatedAdminStudioRoute: typeof AuthenticatedAdminStudioRoute
   AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRouteWithChildren
   AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
   AuthenticatedAdminTypographyRoute: typeof AuthenticatedAdminTypographyRouteWithChildren
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
@@ -1433,12 +1436,12 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
     AuthenticatedAdminPortfolioRouteWithChildren,
   AuthenticatedAdminPricingRoute: AuthenticatedAdminPricingRouteWithChildren,
   AuthenticatedAdminServicesRoute: AuthenticatedAdminServicesRouteWithChildren,
+  AuthenticatedAdminStudioRoute: AuthenticatedAdminStudioRoute,
   AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRouteWithChildren,
   AuthenticatedAdminTestimonialsRoute:
     AuthenticatedAdminTestimonialsRouteWithChildren,
   AuthenticatedAdminTypographyRoute:
     AuthenticatedAdminTypographyRouteWithChildren,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
