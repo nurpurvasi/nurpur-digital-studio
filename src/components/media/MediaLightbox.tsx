@@ -30,6 +30,33 @@ export function MediaLightbox({
   onClose: () => void;
 }) {
   const item = items[index];
+  const [zoomed, setZoomed] = useState(false);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
+
+  // Reset zoom + scroll position whenever a different item is shown.
+  useEffect(() => {
+    setZoomed(false);
+    stageRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [index]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = stageRef.current;
+    if (!zoomed || !el || e.pointerType === "touch") return;
+    drag.current = { x: e.clientX, y: e.clientY, left: el.scrollLeft, top: el.scrollTop };
+    el.setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = stageRef.current;
+    if (!drag.current || !el) return;
+    el.scrollLeft = drag.current.left - (e.clientX - drag.current.x);
+    el.scrollTop = drag.current.top - (e.clientY - drag.current.y);
+  };
+  const endDrag = () => {
+    drag.current = null;
+  };
+
+
 
   const prev = useCallback(
     () => onIndex((index - 1 + items.length) % items.length),
