@@ -48,22 +48,32 @@ const EMPTY: Draft = {
   canonical_url: "",
 };
 
-/** ISO string → value for <input type="datetime-local"> in the user's local timezone. */
+/** All publish dates are authored and shown in India Standard Time (Asia/Kolkata). */
+const IST_OFFSET_MINUTES = 330; // UTC+05:30
+
+/** ISO string → value for <input type="datetime-local"> rendered as IST wall clock. */
 function toLocalInput(iso: string | null) {
   if (!iso) return "";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "";
+  const ist = new Date(d.getTime() + IST_OFFSET_MINUTES * 60_000);
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${ist.getUTCFullYear()}-${pad(ist.getUTCMonth() + 1)}-${pad(ist.getUTCDate())}T${pad(ist.getUTCHours())}:${pad(ist.getUTCMinutes())}`;
 }
 
-/** datetime-local value (local wall clock) → ISO string for the database. */
+/** datetime-local value (IST wall clock) → ISO string for the database. */
 function fromLocalInput(value: string) {
   if (!value) return null;
-  const d = new Date(value);
+  const d = new Date(`${value.length === 16 ? `${value}:00` : value}+05:30`);
   if (Number.isNaN(d.getTime())) return null;
   return d.toISOString();
 }
+
+/** Current moment, as an IST wall-clock datetime-local value. */
+function nowInIstInput() {
+  return toLocalInput(new Date().toISOString());
+}
+
 
 function slugify(s: string) {
   return s.toLowerCase().trim()
