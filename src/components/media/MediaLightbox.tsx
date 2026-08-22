@@ -13,7 +13,7 @@ import {
   X,
 } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
-import { displayTitle, formatDate, thumbOf } from "./useGallery";
+import { displayTitle, externalReelHref, formatDate, isSocialUrl, thumbOf } from "./useGallery";
 
 
 /**
@@ -35,6 +35,15 @@ export function MediaLightbox({
   const [zoomed, setZoomed] = useState(false);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const drag = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
+
+  // Social reels are never played in-site: send the viewer to the platform.
+  useEffect(() => {
+    if (!item) return;
+    if (!isSocialUrl(item.media_url || "")) return;
+    const href = externalReelHref(item);
+    if (href) window.open(href, "_blank", "noopener,noreferrer");
+    onClose();
+  }, [item, onClose]);
 
   // Reset zoom + scroll position whenever a different item is shown.
   useEffect(() => {

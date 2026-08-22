@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Camera, Play } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { MediaLightbox } from "./MediaLightbox";
-import { displayTitle, formatDate, thumbOf } from "./useGallery";
+import { displayTitle, externalReelHref, formatDate, isSocialUrl, thumbOf } from "./useGallery";
 
 export function MediaCard({
   item,
@@ -75,24 +75,64 @@ export function MediaCard({
   const cls =
     "group relative block w-full overflow-hidden rounded-3xl border border-border bg-card text-left shadow-[0_18px_40px_-32px_color-mix(in_oklab,var(--navy)_45%,transparent)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_color-mix(in_oklab,var(--royal)_45%,transparent)]";
 
+  return (
+    <MediaTrigger item={item} onOpen={onOpen} detail={detail} className={cls}>
+      {shell}
+    </MediaTrigger>
+  );
+}
+
+/**
+ * Click target for any media card. Social reels always open their original
+ * platform URL; self-hosted media keeps the existing lightbox/detail behaviour.
+ */
+export function MediaTrigger({
+  item,
+  onOpen,
+  detail,
+  className,
+  children,
+}: {
+  item: GalleryItem;
+  onOpen?: () => void;
+  detail?: "photos" | "videos";
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const reelHref = externalReelHref(item);
+
+  if (reelHref) {
+    return (
+      <a href={reelHref} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+
+  // Social item with a missing/invalid URL: render non-interactive, never broken.
+  if (isSocialUrl(item.media_url || "")) {
+    return <div className={className}>{children}</div>;
+  }
+
   if (detail) {
     return (
       <Link
         to={detail === "videos" ? "/videos/$id" : "/photos/$id"}
         params={{ id: item.slug || item.id }}
-        className={cls}
+        className={className}
       >
-        {shell}
+        {children}
       </Link>
     );
   }
 
   return (
-    <button onClick={onOpen} className={cls}>
-      {shell}
+    <button type="button" onClick={onOpen} className={className}>
+      {children}
     </button>
   );
 }
+
 
 /** Category-filtered, lightbox-enabled grid used by /photos and /videos. */
 export function MediaGrid({

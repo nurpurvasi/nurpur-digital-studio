@@ -116,3 +116,14 @@ export function displayTitle(item: {
   const cat = (item.category || "").trim();
   return cat ? `${cat} ${kind}` : `Nurpur ${kind}`;
 }
+
+/**
+ * Social reels are external content: return the platform URL to open, or null
+ * when the item is self-hosted media (or the stored URL is unusable).
+ */
+export function externalReelHref(item: { media_url?: string | null }): string | null {
+  const url = (item.media_url || "").trim();
+  if (!url || !isSocialUrl(url)) return null;
+  if (!/^https?:\/\//i.test(url)) return null;
+  return url;
+}
