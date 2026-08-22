@@ -89,9 +89,7 @@ function BlogIndex() {
 
         {/* Featured */}
         {featured && (
-          <Link
-            to="/blog/$slug"
-            params={{ slug: featured.slug }}
+          <div
             className="group mt-12 grid gap-6 rounded-3xl border border-border bg-white p-6 shadow-[0_10px_40px_-20px_rgba(30,40,90,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_60px_-20px_rgba(30,40,90,0.3)] md:grid-cols-2 md:p-8"
           >
             <div className="relative overflow-hidden rounded-2xl aspect-[16/10] bg-accent">
@@ -107,13 +105,17 @@ function BlogIndex() {
                 {featured.publish_date && <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {formatDate(featured.publish_date)}</span>}
                 <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {readingTime(featured.content)} min</span>
               </div>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight">{featured.title}</h2>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight"><Link to="/blog/$slug" params={{ slug: featured.slug }} className="hover:underline">{featured.title}</Link></h2>
               {featured.excerpt && <p className="mt-3 text-muted-foreground">{featured.excerpt}</p>}
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
+              <Link
+                to="/blog/$slug"
+                params={{ slug: featured.slug }}
+                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90"
+              >
                 Read article <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-              </span>
+              </Link>
             </div>
-          </Link>
+          </div>
         )}
 
         {/* Filters */}
@@ -173,6 +175,9 @@ function BlogIndex() {
                 </div>
                 <h3 className="mt-3 text-lg font-semibold tracking-tight leading-snug">{p.title}</h3>
                 {p.excerpt && <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{p.excerpt}</p>}
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium">
+                  Read article <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                </span>
               </div>
             </Link>
           ))}

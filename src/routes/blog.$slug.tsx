@@ -174,7 +174,7 @@ function BlogPostPage() {
           )}
 
           <div
-            className="prose prose-neutral mx-auto mt-10 max-w-3xl prose-headings:tracking-tight prose-a:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground"
+            className="article-body mx-auto mt-10 max-w-3xl"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
           />
 
