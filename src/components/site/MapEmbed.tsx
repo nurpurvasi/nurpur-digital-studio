@@ -39,7 +39,8 @@ export function toMapEmbedSrc(raw: string): string {
 
   // Normal maps link → embeddable query form.
   const place = url.pathname.match(/\/maps\/place\/([^/]+)/);
-  const q = url.searchParams.get("q") || (place ? decodeURIComponent(place[1]) : "");
+  const q =
+    url.searchParams.get("q") || (place ? decodeURIComponent(place[1]).replace(/\+/g, " ") : "");
   const coords = url.pathname.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
   const query = q || (coords ? `${coords[1]},${coords[2]}` : "");
   if (!query) return "";
