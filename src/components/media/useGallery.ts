@@ -10,7 +10,9 @@ export function useGallery() {
   const { data, isLoading } = useQuery({
     queryKey: ["gallery-public", "all"],
     queryFn: () => load(),
-    staleTime: 60_000,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
   const items = data?.items ?? [];
   return { items, isLoading };

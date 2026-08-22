@@ -121,7 +121,10 @@ export function MediaSpotlight() {
   const [openAt, setOpenAt] = useState<number | null>(null);
 
   const ordered = useMemo(() => {
-    const feature = items.find((i) => i.featured) ?? items[0];
+    // Strictly honour the persisted Featured flag; when nothing is featured fall
+    // back to the newest item so the hero is never empty.
+    const featured = items.filter((i) => i.featured);
+    const feature = featured[0] ?? items[0];
     if (!feature) return [];
     return [feature, ...items.filter((i) => i.id !== feature.id)];
   }, [items]);
@@ -196,7 +199,7 @@ export function MediaSpotlight() {
                 className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-background shadow-lg backdrop-blur sm:left-7 sm:top-7"
                 style={{ background: "var(--gradient-warm)" }}
               >
-                <Sparkles className="h-3 w-3" /> Featured
+                <Sparkles className="h-3 w-3" /> {feature.featured ? "Featured" : "Latest"}
               </span>
 
               {feature.media_type === "video" && (

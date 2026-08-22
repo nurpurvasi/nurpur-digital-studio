@@ -22,7 +22,7 @@ import {
 export function MediaHero() {
   const { items } = useGallery();
   const photos = usePhotos(items);
-  const feature = items.find((i) => i.featured) ?? items[0];
+  const feature = items.filter((i) => i.featured)[0] ?? items[0];
   const strip = photos.slice(0, 8);
   const [openAt, setOpenAt] = useState<number | null>(null);
 
