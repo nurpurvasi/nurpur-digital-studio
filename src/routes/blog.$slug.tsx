@@ -68,60 +68,93 @@ function formatDate(iso: string | null) {
   } catch { return ""; }
 }
 
-// Very light markdown -> HTML: paragraphs, headings, bold, italic, links, code, lists.
+// Light markdown -> HTML: paragraphs, headings, bold, italic, links, code,
+// bullet + numbered lists, blockquotes and fenced code blocks.
 function renderMarkdown(md: string): string {
   const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const lines = md.split(/\r?\n/);
+  const inline = (raw: string) => {
+    let text = esc(raw);
+    text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    text = text.replace(/(^|[^*])\*(?!\s)([^*]+?)\*/g, "$1<em>$2</em>");
+    text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
+    text = text.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+    );
+    return text;
+  };
+
+  const lines = (md ?? "").split(/\r?\n/);
   let html = "";
-  let inList = false;
+  let list: "ul" | "ol" | null = null;
   let inCode = false;
   let paraBuf: string[] = [];
+
+  const closeList = () => {
+    if (list) {
+      html += `</${list}>`;
+      list = null;
+    }
+  };
   const flushPara = () => {
     if (paraBuf.length) {
-      let text = esc(paraBuf.join(" "));
-      text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-      text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
-      text = text.replace(/`([^`]+)`/g, "<code>$1</code>");
-      text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-      html += `<p>${text}</p>`;
+      html += `<p>${inline(paraBuf.join(" "))}</p>`;
       paraBuf = [];
     }
   };
-  for (const raw of lines) {
-    const line = raw;
+
+  for (const line of lines) {
     if (line.trim().startsWith("```")) {
       flushPara();
-      if (inList) { html += "</ul>"; inList = false; }
-      if (!inCode) { html += "<pre><code>"; inCode = true; } else { html += "</code></pre>"; inCode = false; }
+      closeList();
+      html += inCode ? "</code></pre>" : "<pre><code>";
+      inCode = !inCode;
       continue;
     }
-    if (inCode) { html += esc(line) + "\n"; continue; }
-    if (/^#{1,3}\s/.test(line)) {
-      flushPara();
-      if (inList) { html += "</ul>"; inList = false; }
-      const level = line.match(/^#+/)![0].length;
-      const text = esc(line.replace(/^#+\s*/, ""));
-      html += `<h${level}>${text}</h${level}>`;
+    if (inCode) {
+      html += esc(line) + "\n";
       continue;
     }
-    if (/^\s*[-*]\s+/.test(line)) {
+    const heading = line.match(/^(#{1,6})\s+(.*)$/);
+    if (heading) {
       flushPara();
-      if (!inList) { html += "<ul>"; inList = true; }
-      html += `<li>${esc(line.replace(/^\s*[-*]\s+/, ""))}</li>`;
+      closeList();
+      const level = heading[1].length;
+      html += `<h${level}>${inline(heading[2])}</h${level}>`;
+      continue;
+    }
+    if (/^\s*>\s?/.test(line)) {
+      flushPara();
+      closeList();
+      html += `<blockquote>${inline(line.replace(/^\s*>\s?/, ""))}</blockquote>`;
+      continue;
+    }
+    const bullet = line.match(/^\s*[-*+]\s+(.*)$/);
+    const ordered = line.match(/^\s*\d+[.)]\s+(.*)$/);
+    if (bullet || ordered) {
+      flushPara();
+      const want = bullet ? "ul" : "ol";
+      if (list !== want) {
+        closeList();
+        html += `<${want}>`;
+        list = want;
+      }
+      html += `<li>${inline((bullet ?? ordered)![1])}</li>`;
       continue;
     }
     if (line.trim() === "") {
       flushPara();
-      if (inList) { html += "</ul>"; inList = false; }
+      closeList();
       continue;
     }
     paraBuf.push(line);
   }
   flushPara();
-  if (inList) html += "</ul>";
+  closeList();
   if (inCode) html += "</code></pre>";
   return html;
 }
+
 
 function BlogPostPage() {
   const { post, related } = Route.useLoaderData();
