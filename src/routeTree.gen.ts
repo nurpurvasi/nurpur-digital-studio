@@ -25,6 +25,7 @@ import { Route as VideosIndexRouteImport } from './routes/videos.index'
 import { Route as PlacesIndexRouteImport } from './routes/places.index'
 import { Route as PhotosIndexRouteImport } from './routes/photos.index'
 import { Route as BusinessesIndexRouteImport } from './routes/businesses.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as VideosIdRouteImport } from './routes/videos.$id'
 import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
 import { Route as PhotosIdRouteImport } from './routes/photos.$id'
@@ -135,6 +136,11 @@ const BusinessesIndexRoute = BusinessesIndexRouteImport.update({
   id: '/businesses/',
   path: '/businesses/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
 } as any)
 const VideosIdRoute = VideosIdRouteImport.update({
   id: '/$id',
@@ -329,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
   '/photos/': typeof PhotosIndexRoute
   '/places/': typeof PlacesIndexRoute
@@ -362,7 +369,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/business': typeof BusinessRoute
   '/contact': typeof ContactRoute
   '/reels': typeof ReelsRoute
@@ -374,6 +380,7 @@ export interface FileRoutesByTo {
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog': typeof BlogIndexRoute
   '/businesses': typeof BusinessesIndexRoute
   '/photos': typeof PhotosIndexRoute
   '/places': typeof PlacesIndexRoute
@@ -419,6 +426,7 @@ export interface FileRoutesById {
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
   '/photos/': typeof PhotosIndexRoute
   '/places/': typeof PlacesIndexRoute
@@ -469,6 +477,7 @@ export interface FileRouteTypes {
     | '/photos/$id'
     | '/places/$slug'
     | '/videos/$id'
+    | '/blog/'
     | '/businesses/'
     | '/photos/'
     | '/places/'
@@ -502,7 +511,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/auth'
-    | '/blog'
     | '/business'
     | '/contact'
     | '/reels'
@@ -514,6 +522,7 @@ export interface FileRouteTypes {
     | '/photos/$id'
     | '/places/$slug'
     | '/videos/$id'
+    | '/blog'
     | '/businesses'
     | '/photos'
     | '/places'
@@ -558,6 +567,7 @@ export interface FileRouteTypes {
     | '/photos/$id'
     | '/places/$slug'
     | '/videos/$id'
+    | '/blog/'
     | '/businesses/'
     | '/photos/'
     | '/places/'
@@ -722,6 +732,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/businesses/'
       preLoaderRoute: typeof BusinessesIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/videos/$id': {
       id: '/videos/$id'
@@ -1074,10 +1091,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
