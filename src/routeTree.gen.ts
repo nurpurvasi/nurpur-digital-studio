@@ -12,14 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as VideosRouteImport } from './routes/videos'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ReelsRouteImport } from './routes/reels'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as PhotosRouteImport } from './routes/photos'
-import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as BusinessRouteImport } from './routes/business'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -27,13 +22,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VideosIndexRouteImport } from './routes/videos.index'
-import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as PlacesIndexRouteImport } from './routes/places.index'
 import { Route as PhotosIndexRouteImport } from './routes/photos.index'
 import { Route as BusinessesIndexRouteImport } from './routes/businesses.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as VideosIdRouteImport } from './routes/videos.$id'
-import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
-import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as PlacesSlugRouteImport } from './routes/places.$slug'
 import { Route as PhotosIdRouteImport } from './routes/photos.$id'
 import { Route as GalleriesSlugRouteImport } from './routes/galleries.$slug'
@@ -44,43 +37,24 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as ApiMediaSplatRouteImport } from './routes/api/media/$'
 import { Route as AuthenticatedAdminTypographyRouteImport } from './routes/_authenticated/admin.typography'
 import { Route as AuthenticatedAdminTickerRouteImport } from './routes/_authenticated/admin.ticker'
-import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
-import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin.team'
 import { Route as AuthenticatedAdminStudioRouteImport } from './routes/_authenticated/admin.studio'
-import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin.services'
 import { Route as AuthenticatedAdminReelsRouteImport } from './routes/_authenticated/admin.reels'
-import { Route as AuthenticatedAdminPricingRouteImport } from './routes/_authenticated/admin.pricing'
-import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
 import { Route as AuthenticatedAdminPlacesRouteImport } from './routes/_authenticated/admin.places'
-import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminInboxRouteImport } from './routes/_authenticated/admin.inbox'
 import { Route as AuthenticatedAdminGalleryRouteImport } from './routes/_authenticated/admin.gallery'
 import { Route as AuthenticatedAdminGalleriesRouteImport } from './routes/_authenticated/admin.galleries'
-import { Route as AuthenticatedAdminFaqsRouteImport } from './routes/_authenticated/admin.faqs'
 import { Route as AuthenticatedAdminEventsRouteImport } from './routes/_authenticated/admin.events'
 import { Route as AuthenticatedAdminClientsRouteImport } from './routes/_authenticated/admin.clients'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 import { Route as AuthenticatedAdminTypographyIndexRouteImport } from './routes/_authenticated/admin.typography.index'
-import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
-import { Route as AuthenticatedAdminTeamIndexRouteImport } from './routes/_authenticated/admin.team.index'
-import { Route as AuthenticatedAdminServicesIndexRouteImport } from './routes/_authenticated/admin.services.index'
-import { Route as AuthenticatedAdminPricingIndexRouteImport } from './routes/_authenticated/admin.pricing.index'
-import { Route as AuthenticatedAdminPortfolioIndexRouteImport } from './routes/_authenticated/admin.portfolio.index'
 import { Route as AuthenticatedAdminLeadsIndexRouteImport } from './routes/_authenticated/admin.leads.index'
 import { Route as AuthenticatedAdminGalleryIndexRouteImport } from './routes/_authenticated/admin.gallery.index'
-import { Route as AuthenticatedAdminFaqsIndexRouteImport } from './routes/_authenticated/admin.faqs.index'
 import { Route as AuthenticatedAdminClientsIndexRouteImport } from './routes/_authenticated/admin.clients.index'
 import { Route as AuthenticatedAdminBlogIndexRouteImport } from './routes/_authenticated/admin.blog.index'
 import { Route as AuthenticatedAdminTypographySettingsRouteImport } from './routes/_authenticated/admin.typography.settings'
-import { Route as AuthenticatedAdminTestimonialsIdRouteImport } from './routes/_authenticated/admin.testimonials.$id'
-import { Route as AuthenticatedAdminTeamIdRouteImport } from './routes/_authenticated/admin.team.$id'
-import { Route as AuthenticatedAdminServicesIdRouteImport } from './routes/_authenticated/admin.services.$id'
-import { Route as AuthenticatedAdminPricingIdRouteImport } from './routes/_authenticated/admin.pricing.$id'
-import { Route as AuthenticatedAdminPortfolioIdRouteImport } from './routes/_authenticated/admin.portfolio.$id'
 import { Route as AuthenticatedAdminLeadsIdRouteImport } from './routes/_authenticated/admin.leads.$id'
 import { Route as AuthenticatedAdminGalleryIdRouteImport } from './routes/_authenticated/admin.gallery.$id'
-import { Route as AuthenticatedAdminFaqsIdRouteImport } from './routes/_authenticated/admin.faqs.$id'
 import { Route as AuthenticatedAdminClientsIdRouteImport } from './routes/_authenticated/admin.clients.$id'
 import { Route as AuthenticatedAdminBlogIdRouteImport } from './routes/_authenticated/admin.blog.$id'
 
@@ -99,24 +73,9 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ReelsRoute = ReelsRouteImport.update({
   id: '/reels',
   path: '/reels',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PhotosRoute = PhotosRouteImport.update({
@@ -124,19 +83,9 @@ const PhotosRoute = PhotosRouteImport.update({
   path: '/photos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClientsRoute = ClientsRouteImport.update({
-  id: '/clients',
-  path: '/clients',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessRoute = BusinessRouteImport.update({
@@ -173,11 +122,6 @@ const VideosIndexRoute = VideosIndexRouteImport.update({
   path: '/',
   getParentRoute: () => VideosRoute,
 } as any)
-const ServicesIndexRoute = ServicesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ServicesRoute,
-} as any)
 const PlacesIndexRoute = PlacesIndexRouteImport.update({
   id: '/places/',
   path: '/places/',
@@ -193,20 +137,15 @@ const BusinessesIndexRoute = BusinessesIndexRouteImport.update({
   path: '/businesses/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
 const VideosIdRoute = VideosIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => VideosRoute,
-} as any)
-const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ServicesRoute,
-} as any)
-const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PortfolioRoute,
 } as any)
 const PlacesSlugRoute = PlacesSlugRouteImport.update({
   id: '/places/$slug',
@@ -260,27 +199,10 @@ const AuthenticatedAdminTickerRoute =
     path: '/ticker',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminTestimonialsRoute =
-  AuthenticatedAdminTestimonialsRouteImport.update({
-    id: '/testimonials',
-    path: '/testimonials',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminTeamRoute = AuthenticatedAdminTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
 const AuthenticatedAdminStudioRoute =
   AuthenticatedAdminStudioRouteImport.update({
     id: '/studio',
     path: '/studio',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminServicesRoute =
-  AuthenticatedAdminServicesRouteImport.update({
-    id: '/services',
-    path: '/services',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminReelsRoute = AuthenticatedAdminReelsRouteImport.update({
@@ -288,29 +210,12 @@ const AuthenticatedAdminReelsRoute = AuthenticatedAdminReelsRouteImport.update({
   path: '/reels',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const AuthenticatedAdminPricingRoute =
-  AuthenticatedAdminPricingRouteImport.update({
-    id: '/pricing',
-    path: '/pricing',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminPortfolioRoute =
-  AuthenticatedAdminPortfolioRouteImport.update({
-    id: '/portfolio',
-    path: '/portfolio',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedAdminPlacesRoute =
   AuthenticatedAdminPlacesRouteImport.update({
     id: '/places',
     path: '/places',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminMediaRoute = AuthenticatedAdminMediaRouteImport.update({
-  id: '/media',
-  path: '/media',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
 const AuthenticatedAdminLeadsRoute = AuthenticatedAdminLeadsRouteImport.update({
   id: '/leads',
   path: '/leads',
@@ -333,11 +238,6 @@ const AuthenticatedAdminGalleriesRoute =
     path: '/galleries',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminFaqsRoute = AuthenticatedAdminFaqsRouteImport.update({
-  id: '/faqs',
-  path: '/faqs',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
 const AuthenticatedAdminEventsRoute =
   AuthenticatedAdminEventsRouteImport.update({
     id: '/events',
@@ -361,36 +261,6 @@ const AuthenticatedAdminTypographyIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedAdminTypographyRoute,
   } as any)
-const AuthenticatedAdminTestimonialsIndexRoute =
-  AuthenticatedAdminTestimonialsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
-  } as any)
-const AuthenticatedAdminTeamIndexRoute =
-  AuthenticatedAdminTeamIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminTeamRoute,
-  } as any)
-const AuthenticatedAdminServicesIndexRoute =
-  AuthenticatedAdminServicesIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminServicesRoute,
-  } as any)
-const AuthenticatedAdminPricingIndexRoute =
-  AuthenticatedAdminPricingIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminPricingRoute,
-  } as any)
-const AuthenticatedAdminPortfolioIndexRoute =
-  AuthenticatedAdminPortfolioIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
-  } as any)
 const AuthenticatedAdminLeadsIndexRoute =
   AuthenticatedAdminLeadsIndexRouteImport.update({
     id: '/',
@@ -402,12 +272,6 @@ const AuthenticatedAdminGalleryIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
-  } as any)
-const AuthenticatedAdminFaqsIndexRoute =
-  AuthenticatedAdminFaqsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedAdminFaqsRoute,
   } as any)
 const AuthenticatedAdminClientsIndexRoute =
   AuthenticatedAdminClientsIndexRouteImport.update({
@@ -427,36 +291,6 @@ const AuthenticatedAdminTypographySettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedAdminTypographyRoute,
   } as any)
-const AuthenticatedAdminTestimonialsIdRoute =
-  AuthenticatedAdminTestimonialsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
-  } as any)
-const AuthenticatedAdminTeamIdRoute =
-  AuthenticatedAdminTeamIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminTeamRoute,
-  } as any)
-const AuthenticatedAdminServicesIdRoute =
-  AuthenticatedAdminServicesIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminServicesRoute,
-  } as any)
-const AuthenticatedAdminPricingIdRoute =
-  AuthenticatedAdminPricingIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminPricingRoute,
-  } as any)
-const AuthenticatedAdminPortfolioIdRoute =
-  AuthenticatedAdminPortfolioIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
-  } as any)
 const AuthenticatedAdminLeadsIdRoute =
   AuthenticatedAdminLeadsIdRouteImport.update({
     id: '/$id',
@@ -468,12 +302,6 @@ const AuthenticatedAdminGalleryIdRoute =
     id: '/$id',
     path: '/$id',
     getParentRoute: () => AuthenticatedAdminGalleryRoute,
-  } as any)
-const AuthenticatedAdminFaqsIdRoute =
-  AuthenticatedAdminFaqsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminFaqsRoute,
   } as any)
 const AuthenticatedAdminClientsIdRoute =
   AuthenticatedAdminClientsIdRouteImport.update({
@@ -494,14 +322,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/business': typeof BusinessRoute
-  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
   '/photos': typeof PhotosRouteWithChildren
-  '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
-  '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
@@ -511,69 +334,43 @@ export interface FileRoutesByFullPath {
   '/galleries/$slug': typeof GalleriesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
   '/photos/': typeof PhotosIndexRoute
   '/places/': typeof PlacesIndexRoute
-  '/services/': typeof ServicesIndexRoute
   '/videos/': typeof VideosIndexRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/admin/events': typeof AuthenticatedAdminEventsRoute
-  '/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
   '/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
-  '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
-  '/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/admin/reels': typeof AuthenticatedAdminReelsRoute
-  '/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
   '/admin/studio': typeof AuthenticatedAdminStudioRoute
-  '/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/admin/ticker': typeof AuthenticatedAdminTickerRoute
   '/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
-  '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
-  '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
-  '/admin/pricing/$id': typeof AuthenticatedAdminPricingIdRoute
-  '/admin/services/$id': typeof AuthenticatedAdminServicesIdRoute
-  '/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
-  '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/clients/': typeof AuthenticatedAdminClientsIndexRoute
-  '/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
   '/admin/leads/': typeof AuthenticatedAdminLeadsIndexRoute
-  '/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
-  '/admin/pricing/': typeof AuthenticatedAdminPricingIndexRoute
-  '/admin/services/': typeof AuthenticatedAdminServicesIndexRoute
-  '/admin/team/': typeof AuthenticatedAdminTeamIndexRoute
-  '/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/admin/typography/': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/business': typeof BusinessRoute
-  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
-  '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/weather': typeof WeatherRoute
@@ -582,18 +379,15 @@ export interface FileRoutesByTo {
   '/galleries/$slug': typeof GalleriesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog': typeof BlogIndexRoute
   '/businesses': typeof BusinessesIndexRoute
   '/photos': typeof PhotosIndexRoute
   '/places': typeof PlacesIndexRoute
-  '/services': typeof ServicesIndexRoute
   '/videos': typeof VideosIndexRoute
   '/admin/events': typeof AuthenticatedAdminEventsRoute
   '/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/admin/inbox': typeof AuthenticatedAdminInboxRoute
-  '/admin/media': typeof AuthenticatedAdminMediaRoute
   '/admin/places': typeof AuthenticatedAdminPlacesRoute
   '/admin/reels': typeof AuthenticatedAdminReelsRoute
   '/admin/studio': typeof AuthenticatedAdminStudioRoute
@@ -602,25 +396,13 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
-  '/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
-  '/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
-  '/admin/pricing/$id': typeof AuthenticatedAdminPricingIdRoute
-  '/admin/services/$id': typeof AuthenticatedAdminServicesIdRoute
-  '/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
-  '/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/admin/blog': typeof AuthenticatedAdminBlogIndexRoute
   '/admin/clients': typeof AuthenticatedAdminClientsIndexRoute
-  '/admin/faqs': typeof AuthenticatedAdminFaqsIndexRoute
   '/admin/gallery': typeof AuthenticatedAdminGalleryIndexRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsIndexRoute
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioIndexRoute
-  '/admin/pricing': typeof AuthenticatedAdminPricingIndexRoute
-  '/admin/services': typeof AuthenticatedAdminServicesIndexRoute
-  '/admin/team': typeof AuthenticatedAdminTeamIndexRoute
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/admin/typography': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRoutesById {
@@ -631,14 +413,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/business': typeof BusinessRoute
-  '/clients': typeof ClientsRoute
   '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
   '/photos': typeof PhotosRouteWithChildren
-  '/portfolio': typeof PortfolioRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/reels': typeof ReelsRoute
-  '/services': typeof ServicesRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/videos': typeof VideosRouteWithChildren
   '/weather': typeof WeatherRoute
@@ -648,56 +425,35 @@ export interface FileRoutesById {
   '/galleries/$slug': typeof GalleriesSlugRoute
   '/photos/$id': typeof PhotosIdRoute
   '/places/$slug': typeof PlacesSlugRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
   '/videos/$id': typeof VideosIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
   '/photos/': typeof PhotosIndexRoute
   '/places/': typeof PlacesIndexRoute
-  '/services/': typeof ServicesIndexRoute
   '/videos/': typeof VideosIndexRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/clients': typeof AuthenticatedAdminClientsRouteWithChildren
   '/_authenticated/admin/events': typeof AuthenticatedAdminEventsRoute
-  '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRouteWithChildren
   '/_authenticated/admin/galleries': typeof AuthenticatedAdminGalleriesRoute
   '/_authenticated/admin/gallery': typeof AuthenticatedAdminGalleryRouteWithChildren
   '/_authenticated/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRouteWithChildren
-  '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
   '/_authenticated/admin/places': typeof AuthenticatedAdminPlacesRoute
-  '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
-  '/_authenticated/admin/pricing': typeof AuthenticatedAdminPricingRouteWithChildren
   '/_authenticated/admin/reels': typeof AuthenticatedAdminReelsRoute
-  '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRouteWithChildren
   '/_authenticated/admin/studio': typeof AuthenticatedAdminStudioRoute
-  '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRouteWithChildren
-  '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/_authenticated/admin/ticker': typeof AuthenticatedAdminTickerRoute
   '/_authenticated/admin/typography': typeof AuthenticatedAdminTypographyRouteWithChildren
   '/api/media/$': typeof ApiMediaSplatRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/blog/$id': typeof AuthenticatedAdminBlogIdRoute
   '/_authenticated/admin/clients/$id': typeof AuthenticatedAdminClientsIdRoute
-  '/_authenticated/admin/faqs/$id': typeof AuthenticatedAdminFaqsIdRoute
   '/_authenticated/admin/gallery/$id': typeof AuthenticatedAdminGalleryIdRoute
   '/_authenticated/admin/leads/$id': typeof AuthenticatedAdminLeadsIdRoute
-  '/_authenticated/admin/portfolio/$id': typeof AuthenticatedAdminPortfolioIdRoute
-  '/_authenticated/admin/pricing/$id': typeof AuthenticatedAdminPricingIdRoute
-  '/_authenticated/admin/services/$id': typeof AuthenticatedAdminServicesIdRoute
-  '/_authenticated/admin/team/$id': typeof AuthenticatedAdminTeamIdRoute
-  '/_authenticated/admin/testimonials/$id': typeof AuthenticatedAdminTestimonialsIdRoute
   '/_authenticated/admin/typography/settings': typeof AuthenticatedAdminTypographySettingsRoute
   '/_authenticated/admin/blog/': typeof AuthenticatedAdminBlogIndexRoute
   '/_authenticated/admin/clients/': typeof AuthenticatedAdminClientsIndexRoute
-  '/_authenticated/admin/faqs/': typeof AuthenticatedAdminFaqsIndexRoute
   '/_authenticated/admin/gallery/': typeof AuthenticatedAdminGalleryIndexRoute
   '/_authenticated/admin/leads/': typeof AuthenticatedAdminLeadsIndexRoute
-  '/_authenticated/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
-  '/_authenticated/admin/pricing/': typeof AuthenticatedAdminPricingIndexRoute
-  '/_authenticated/admin/services/': typeof AuthenticatedAdminServicesIndexRoute
-  '/_authenticated/admin/team/': typeof AuthenticatedAdminTeamIndexRoute
-  '/_authenticated/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/_authenticated/admin/typography/': typeof AuthenticatedAdminTypographyIndexRoute
 }
 export interface FileRouteTypes {
@@ -708,14 +464,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/business'
-    | '/clients'
     | '/contact'
-    | '/faq'
     | '/photos'
-    | '/portfolio'
-    | '/pricing'
     | '/reels'
-    | '/services'
     | '/sitemap.xml'
     | '/videos'
     | '/weather'
@@ -725,69 +476,43 @@ export interface FileRouteTypes {
     | '/galleries/$slug'
     | '/photos/$id'
     | '/places/$slug'
-    | '/portfolio/$slug'
-    | '/services/$slug'
     | '/videos/$id'
+    | '/blog/'
     | '/businesses/'
     | '/photos/'
     | '/places/'
-    | '/services/'
     | '/videos/'
     | '/admin/blog'
     | '/admin/clients'
     | '/admin/events'
-    | '/admin/faqs'
     | '/admin/galleries'
     | '/admin/gallery'
     | '/admin/inbox'
     | '/admin/leads'
-    | '/admin/media'
     | '/admin/places'
-    | '/admin/portfolio'
-    | '/admin/pricing'
     | '/admin/reels'
-    | '/admin/services'
     | '/admin/studio'
-    | '/admin/team'
-    | '/admin/testimonials'
     | '/admin/ticker'
     | '/admin/typography'
     | '/api/media/$'
     | '/admin/'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
-    | '/admin/faqs/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
-    | '/admin/portfolio/$id'
-    | '/admin/pricing/$id'
-    | '/admin/services/$id'
-    | '/admin/team/$id'
-    | '/admin/testimonials/$id'
     | '/admin/typography/settings'
     | '/admin/blog/'
     | '/admin/clients/'
-    | '/admin/faqs/'
     | '/admin/gallery/'
     | '/admin/leads/'
-    | '/admin/portfolio/'
-    | '/admin/pricing/'
-    | '/admin/services/'
-    | '/admin/team/'
-    | '/admin/testimonials/'
     | '/admin/typography/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/auth'
-    | '/blog'
     | '/business'
-    | '/clients'
     | '/contact'
-    | '/faq'
-    | '/portfolio'
-    | '/pricing'
     | '/reels'
     | '/sitemap.xml'
     | '/weather'
@@ -796,18 +521,15 @@ export interface FileRouteTypes {
     | '/galleries/$slug'
     | '/photos/$id'
     | '/places/$slug'
-    | '/portfolio/$slug'
-    | '/services/$slug'
     | '/videos/$id'
+    | '/blog'
     | '/businesses'
     | '/photos'
     | '/places'
-    | '/services'
     | '/videos'
     | '/admin/events'
     | '/admin/galleries'
     | '/admin/inbox'
-    | '/admin/media'
     | '/admin/places'
     | '/admin/reels'
     | '/admin/studio'
@@ -816,25 +538,13 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/blog/$id'
     | '/admin/clients/$id'
-    | '/admin/faqs/$id'
     | '/admin/gallery/$id'
     | '/admin/leads/$id'
-    | '/admin/portfolio/$id'
-    | '/admin/pricing/$id'
-    | '/admin/services/$id'
-    | '/admin/team/$id'
-    | '/admin/testimonials/$id'
     | '/admin/typography/settings'
     | '/admin/blog'
     | '/admin/clients'
-    | '/admin/faqs'
     | '/admin/gallery'
     | '/admin/leads'
-    | '/admin/portfolio'
-    | '/admin/pricing'
-    | '/admin/services'
-    | '/admin/team'
-    | '/admin/testimonials'
     | '/admin/typography'
   id:
     | '__root__'
@@ -844,14 +554,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/business'
-    | '/clients'
     | '/contact'
-    | '/faq'
     | '/photos'
-    | '/portfolio'
-    | '/pricing'
     | '/reels'
-    | '/services'
     | '/sitemap.xml'
     | '/videos'
     | '/weather'
@@ -861,56 +566,35 @@ export interface FileRouteTypes {
     | '/galleries/$slug'
     | '/photos/$id'
     | '/places/$slug'
-    | '/portfolio/$slug'
-    | '/services/$slug'
     | '/videos/$id'
+    | '/blog/'
     | '/businesses/'
     | '/photos/'
     | '/places/'
-    | '/services/'
     | '/videos/'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/clients'
     | '/_authenticated/admin/events'
-    | '/_authenticated/admin/faqs'
     | '/_authenticated/admin/galleries'
     | '/_authenticated/admin/gallery'
     | '/_authenticated/admin/inbox'
     | '/_authenticated/admin/leads'
-    | '/_authenticated/admin/media'
     | '/_authenticated/admin/places'
-    | '/_authenticated/admin/portfolio'
-    | '/_authenticated/admin/pricing'
     | '/_authenticated/admin/reels'
-    | '/_authenticated/admin/services'
     | '/_authenticated/admin/studio'
-    | '/_authenticated/admin/team'
-    | '/_authenticated/admin/testimonials'
     | '/_authenticated/admin/ticker'
     | '/_authenticated/admin/typography'
     | '/api/media/$'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/blog/$id'
     | '/_authenticated/admin/clients/$id'
-    | '/_authenticated/admin/faqs/$id'
     | '/_authenticated/admin/gallery/$id'
     | '/_authenticated/admin/leads/$id'
-    | '/_authenticated/admin/portfolio/$id'
-    | '/_authenticated/admin/pricing/$id'
-    | '/_authenticated/admin/services/$id'
-    | '/_authenticated/admin/team/$id'
-    | '/_authenticated/admin/testimonials/$id'
     | '/_authenticated/admin/typography/settings'
     | '/_authenticated/admin/blog/'
     | '/_authenticated/admin/clients/'
-    | '/_authenticated/admin/faqs/'
     | '/_authenticated/admin/gallery/'
     | '/_authenticated/admin/leads/'
-    | '/_authenticated/admin/portfolio/'
-    | '/_authenticated/admin/pricing/'
-    | '/_authenticated/admin/services/'
-    | '/_authenticated/admin/team/'
-    | '/_authenticated/admin/testimonials/'
     | '/_authenticated/admin/typography/'
   fileRoutesById: FileRoutesById
 }
@@ -921,14 +605,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   BusinessRoute: typeof BusinessRoute
-  ClientsRoute: typeof ClientsRoute
   ContactRoute: typeof ContactRoute
-  FaqRoute: typeof FaqRoute
   PhotosRoute: typeof PhotosRouteWithChildren
-  PortfolioRoute: typeof PortfolioRouteWithChildren
-  PricingRoute: typeof PricingRoute
   ReelsRoute: typeof ReelsRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VideosRoute: typeof VideosRouteWithChildren
   WeatherRoute: typeof WeatherRoute
@@ -963,32 +642,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reels': {
       id: '/reels'
       path: '/reels'
       fullPath: '/reels'
       preLoaderRoute: typeof ReelsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/photos': {
@@ -998,25 +656,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PhotosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clients': {
-      id: '/clients'
-      path: '/clients'
-      fullPath: '/clients'
-      preLoaderRoute: typeof ClientsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business': {
@@ -1068,13 +712,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VideosIndexRouteImport
       parentRoute: typeof VideosRoute
     }
-    '/services/': {
-      id: '/services/'
-      path: '/'
-      fullPath: '/services/'
-      preLoaderRoute: typeof ServicesIndexRouteImport
-      parentRoute: typeof ServicesRoute
-    }
     '/places/': {
       id: '/places/'
       path: '/places'
@@ -1096,26 +733,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/videos/$id': {
       id: '/videos/$id'
       path: '/$id'
       fullPath: '/videos/$id'
       preLoaderRoute: typeof VideosIdRouteImport
       parentRoute: typeof VideosRoute
-    }
-    '/services/$slug': {
-      id: '/services/$slug'
-      path: '/$slug'
-      fullPath: '/services/$slug'
-      preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof ServicesRoute
-    }
-    '/portfolio/$slug': {
-      id: '/portfolio/$slug'
-      path: '/$slug'
-      fullPath: '/portfolio/$slug'
-      preLoaderRoute: typeof PortfolioSlugRouteImport
-      parentRoute: typeof PortfolioRoute
     }
     '/places/$slug': {
       id: '/places/$slug'
@@ -1187,32 +817,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTickerRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/testimonials': {
-      id: '/_authenticated/admin/testimonials'
-      path: '/testimonials'
-      fullPath: '/admin/testimonials'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/team': {
-      id: '/_authenticated/admin/team'
-      path: '/team'
-      fullPath: '/admin/team'
-      preLoaderRoute: typeof AuthenticatedAdminTeamRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/studio': {
       id: '/_authenticated/admin/studio'
       path: '/studio'
       fullPath: '/admin/studio'
       preLoaderRoute: typeof AuthenticatedAdminStudioRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/services': {
-      id: '/_authenticated/admin/services'
-      path: '/services'
-      fullPath: '/admin/services'
-      preLoaderRoute: typeof AuthenticatedAdminServicesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/reels': {
@@ -1222,32 +831,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReelsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/pricing': {
-      id: '/_authenticated/admin/pricing'
-      path: '/pricing'
-      fullPath: '/admin/pricing'
-      preLoaderRoute: typeof AuthenticatedAdminPricingRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/portfolio': {
-      id: '/_authenticated/admin/portfolio'
-      path: '/portfolio'
-      fullPath: '/admin/portfolio'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/places': {
       id: '/_authenticated/admin/places'
       path: '/places'
       fullPath: '/admin/places'
       preLoaderRoute: typeof AuthenticatedAdminPlacesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/media': {
-      id: '/_authenticated/admin/media'
-      path: '/media'
-      fullPath: '/admin/media'
-      preLoaderRoute: typeof AuthenticatedAdminMediaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/leads': {
@@ -1278,13 +866,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGalleriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/faqs': {
-      id: '/_authenticated/admin/faqs'
-      path: '/faqs'
-      fullPath: '/admin/faqs'
-      preLoaderRoute: typeof AuthenticatedAdminFaqsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/events': {
       id: '/_authenticated/admin/events'
       path: '/events'
@@ -1313,41 +894,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTypographyIndexRouteImport
       parentRoute: typeof AuthenticatedAdminTypographyRoute
     }
-    '/_authenticated/admin/testimonials/': {
-      id: '/_authenticated/admin/testimonials/'
-      path: '/'
-      fullPath: '/admin/testimonials/'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminTestimonialsRoute
-    }
-    '/_authenticated/admin/team/': {
-      id: '/_authenticated/admin/team/'
-      path: '/'
-      fullPath: '/admin/team/'
-      preLoaderRoute: typeof AuthenticatedAdminTeamIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminTeamRoute
-    }
-    '/_authenticated/admin/services/': {
-      id: '/_authenticated/admin/services/'
-      path: '/'
-      fullPath: '/admin/services/'
-      preLoaderRoute: typeof AuthenticatedAdminServicesIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminServicesRoute
-    }
-    '/_authenticated/admin/pricing/': {
-      id: '/_authenticated/admin/pricing/'
-      path: '/'
-      fullPath: '/admin/pricing/'
-      preLoaderRoute: typeof AuthenticatedAdminPricingIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminPricingRoute
-    }
-    '/_authenticated/admin/portfolio/': {
-      id: '/_authenticated/admin/portfolio/'
-      path: '/'
-      fullPath: '/admin/portfolio/'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminPortfolioRoute
-    }
     '/_authenticated/admin/leads/': {
       id: '/_authenticated/admin/leads/'
       path: '/'
@@ -1361,13 +907,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/gallery/'
       preLoaderRoute: typeof AuthenticatedAdminGalleryIndexRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
-    }
-    '/_authenticated/admin/faqs/': {
-      id: '/_authenticated/admin/faqs/'
-      path: '/'
-      fullPath: '/admin/faqs/'
-      preLoaderRoute: typeof AuthenticatedAdminFaqsIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminFaqsRoute
     }
     '/_authenticated/admin/clients/': {
       id: '/_authenticated/admin/clients/'
@@ -1390,41 +929,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTypographySettingsRouteImport
       parentRoute: typeof AuthenticatedAdminTypographyRoute
     }
-    '/_authenticated/admin/testimonials/$id': {
-      id: '/_authenticated/admin/testimonials/$id'
-      path: '/$id'
-      fullPath: '/admin/testimonials/$id'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsIdRouteImport
-      parentRoute: typeof AuthenticatedAdminTestimonialsRoute
-    }
-    '/_authenticated/admin/team/$id': {
-      id: '/_authenticated/admin/team/$id'
-      path: '/$id'
-      fullPath: '/admin/team/$id'
-      preLoaderRoute: typeof AuthenticatedAdminTeamIdRouteImport
-      parentRoute: typeof AuthenticatedAdminTeamRoute
-    }
-    '/_authenticated/admin/services/$id': {
-      id: '/_authenticated/admin/services/$id'
-      path: '/$id'
-      fullPath: '/admin/services/$id'
-      preLoaderRoute: typeof AuthenticatedAdminServicesIdRouteImport
-      parentRoute: typeof AuthenticatedAdminServicesRoute
-    }
-    '/_authenticated/admin/pricing/$id': {
-      id: '/_authenticated/admin/pricing/$id'
-      path: '/$id'
-      fullPath: '/admin/pricing/$id'
-      preLoaderRoute: typeof AuthenticatedAdminPricingIdRouteImport
-      parentRoute: typeof AuthenticatedAdminPricingRoute
-    }
-    '/_authenticated/admin/portfolio/$id': {
-      id: '/_authenticated/admin/portfolio/$id'
-      path: '/$id'
-      fullPath: '/admin/portfolio/$id'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioIdRouteImport
-      parentRoute: typeof AuthenticatedAdminPortfolioRoute
-    }
     '/_authenticated/admin/leads/$id': {
       id: '/_authenticated/admin/leads/$id'
       path: '/$id'
@@ -1438,13 +942,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/gallery/$id'
       preLoaderRoute: typeof AuthenticatedAdminGalleryIdRouteImport
       parentRoute: typeof AuthenticatedAdminGalleryRoute
-    }
-    '/_authenticated/admin/faqs/$id': {
-      id: '/_authenticated/admin/faqs/$id'
-      path: '/$id'
-      fullPath: '/admin/faqs/$id'
-      preLoaderRoute: typeof AuthenticatedAdminFaqsIdRouteImport
-      parentRoute: typeof AuthenticatedAdminFaqsRoute
     }
     '/_authenticated/admin/clients/$id': {
       id: '/_authenticated/admin/clients/$id'
@@ -1495,22 +992,6 @@ const AuthenticatedAdminClientsRouteWithChildren =
     AuthenticatedAdminClientsRouteChildren,
   )
 
-interface AuthenticatedAdminFaqsRouteChildren {
-  AuthenticatedAdminFaqsIdRoute: typeof AuthenticatedAdminFaqsIdRoute
-  AuthenticatedAdminFaqsIndexRoute: typeof AuthenticatedAdminFaqsIndexRoute
-}
-
-const AuthenticatedAdminFaqsRouteChildren: AuthenticatedAdminFaqsRouteChildren =
-  {
-    AuthenticatedAdminFaqsIdRoute: AuthenticatedAdminFaqsIdRoute,
-    AuthenticatedAdminFaqsIndexRoute: AuthenticatedAdminFaqsIndexRoute,
-  }
-
-const AuthenticatedAdminFaqsRouteWithChildren =
-  AuthenticatedAdminFaqsRoute._addFileChildren(
-    AuthenticatedAdminFaqsRouteChildren,
-  )
-
 interface AuthenticatedAdminGalleryRouteChildren {
   AuthenticatedAdminGalleryIdRoute: typeof AuthenticatedAdminGalleryIdRoute
   AuthenticatedAdminGalleryIndexRoute: typeof AuthenticatedAdminGalleryIndexRoute
@@ -1543,89 +1024,6 @@ const AuthenticatedAdminLeadsRouteWithChildren =
     AuthenticatedAdminLeadsRouteChildren,
   )
 
-interface AuthenticatedAdminPortfolioRouteChildren {
-  AuthenticatedAdminPortfolioIdRoute: typeof AuthenticatedAdminPortfolioIdRoute
-  AuthenticatedAdminPortfolioIndexRoute: typeof AuthenticatedAdminPortfolioIndexRoute
-}
-
-const AuthenticatedAdminPortfolioRouteChildren: AuthenticatedAdminPortfolioRouteChildren =
-  {
-    AuthenticatedAdminPortfolioIdRoute: AuthenticatedAdminPortfolioIdRoute,
-    AuthenticatedAdminPortfolioIndexRoute:
-      AuthenticatedAdminPortfolioIndexRoute,
-  }
-
-const AuthenticatedAdminPortfolioRouteWithChildren =
-  AuthenticatedAdminPortfolioRoute._addFileChildren(
-    AuthenticatedAdminPortfolioRouteChildren,
-  )
-
-interface AuthenticatedAdminPricingRouteChildren {
-  AuthenticatedAdminPricingIdRoute: typeof AuthenticatedAdminPricingIdRoute
-  AuthenticatedAdminPricingIndexRoute: typeof AuthenticatedAdminPricingIndexRoute
-}
-
-const AuthenticatedAdminPricingRouteChildren: AuthenticatedAdminPricingRouteChildren =
-  {
-    AuthenticatedAdminPricingIdRoute: AuthenticatedAdminPricingIdRoute,
-    AuthenticatedAdminPricingIndexRoute: AuthenticatedAdminPricingIndexRoute,
-  }
-
-const AuthenticatedAdminPricingRouteWithChildren =
-  AuthenticatedAdminPricingRoute._addFileChildren(
-    AuthenticatedAdminPricingRouteChildren,
-  )
-
-interface AuthenticatedAdminServicesRouteChildren {
-  AuthenticatedAdminServicesIdRoute: typeof AuthenticatedAdminServicesIdRoute
-  AuthenticatedAdminServicesIndexRoute: typeof AuthenticatedAdminServicesIndexRoute
-}
-
-const AuthenticatedAdminServicesRouteChildren: AuthenticatedAdminServicesRouteChildren =
-  {
-    AuthenticatedAdminServicesIdRoute: AuthenticatedAdminServicesIdRoute,
-    AuthenticatedAdminServicesIndexRoute: AuthenticatedAdminServicesIndexRoute,
-  }
-
-const AuthenticatedAdminServicesRouteWithChildren =
-  AuthenticatedAdminServicesRoute._addFileChildren(
-    AuthenticatedAdminServicesRouteChildren,
-  )
-
-interface AuthenticatedAdminTeamRouteChildren {
-  AuthenticatedAdminTeamIdRoute: typeof AuthenticatedAdminTeamIdRoute
-  AuthenticatedAdminTeamIndexRoute: typeof AuthenticatedAdminTeamIndexRoute
-}
-
-const AuthenticatedAdminTeamRouteChildren: AuthenticatedAdminTeamRouteChildren =
-  {
-    AuthenticatedAdminTeamIdRoute: AuthenticatedAdminTeamIdRoute,
-    AuthenticatedAdminTeamIndexRoute: AuthenticatedAdminTeamIndexRoute,
-  }
-
-const AuthenticatedAdminTeamRouteWithChildren =
-  AuthenticatedAdminTeamRoute._addFileChildren(
-    AuthenticatedAdminTeamRouteChildren,
-  )
-
-interface AuthenticatedAdminTestimonialsRouteChildren {
-  AuthenticatedAdminTestimonialsIdRoute: typeof AuthenticatedAdminTestimonialsIdRoute
-  AuthenticatedAdminTestimonialsIndexRoute: typeof AuthenticatedAdminTestimonialsIndexRoute
-}
-
-const AuthenticatedAdminTestimonialsRouteChildren: AuthenticatedAdminTestimonialsRouteChildren =
-  {
-    AuthenticatedAdminTestimonialsIdRoute:
-      AuthenticatedAdminTestimonialsIdRoute,
-    AuthenticatedAdminTestimonialsIndexRoute:
-      AuthenticatedAdminTestimonialsIndexRoute,
-  }
-
-const AuthenticatedAdminTestimonialsRouteWithChildren =
-  AuthenticatedAdminTestimonialsRoute._addFileChildren(
-    AuthenticatedAdminTestimonialsRouteChildren,
-  )
-
 interface AuthenticatedAdminTypographyRouteChildren {
   AuthenticatedAdminTypographySettingsRoute: typeof AuthenticatedAdminTypographySettingsRoute
   AuthenticatedAdminTypographyIndexRoute: typeof AuthenticatedAdminTypographyIndexRoute
@@ -1648,20 +1046,13 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminClientsRoute: typeof AuthenticatedAdminClientsRouteWithChildren
   AuthenticatedAdminEventsRoute: typeof AuthenticatedAdminEventsRoute
-  AuthenticatedAdminFaqsRoute: typeof AuthenticatedAdminFaqsRouteWithChildren
   AuthenticatedAdminGalleriesRoute: typeof AuthenticatedAdminGalleriesRoute
   AuthenticatedAdminGalleryRoute: typeof AuthenticatedAdminGalleryRouteWithChildren
   AuthenticatedAdminInboxRoute: typeof AuthenticatedAdminInboxRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRouteWithChildren
-  AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
   AuthenticatedAdminPlacesRoute: typeof AuthenticatedAdminPlacesRoute
-  AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
-  AuthenticatedAdminPricingRoute: typeof AuthenticatedAdminPricingRouteWithChildren
   AuthenticatedAdminReelsRoute: typeof AuthenticatedAdminReelsRoute
-  AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRouteWithChildren
   AuthenticatedAdminStudioRoute: typeof AuthenticatedAdminStudioRoute
-  AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRouteWithChildren
-  AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
   AuthenticatedAdminTickerRoute: typeof AuthenticatedAdminTickerRoute
   AuthenticatedAdminTypographyRoute: typeof AuthenticatedAdminTypographyRouteWithChildren
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -1671,22 +1062,13 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
   AuthenticatedAdminClientsRoute: AuthenticatedAdminClientsRouteWithChildren,
   AuthenticatedAdminEventsRoute: AuthenticatedAdminEventsRoute,
-  AuthenticatedAdminFaqsRoute: AuthenticatedAdminFaqsRouteWithChildren,
   AuthenticatedAdminGalleriesRoute: AuthenticatedAdminGalleriesRoute,
   AuthenticatedAdminGalleryRoute: AuthenticatedAdminGalleryRouteWithChildren,
   AuthenticatedAdminInboxRoute: AuthenticatedAdminInboxRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRouteWithChildren,
-  AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
   AuthenticatedAdminPlacesRoute: AuthenticatedAdminPlacesRoute,
-  AuthenticatedAdminPortfolioRoute:
-    AuthenticatedAdminPortfolioRouteWithChildren,
-  AuthenticatedAdminPricingRoute: AuthenticatedAdminPricingRouteWithChildren,
   AuthenticatedAdminReelsRoute: AuthenticatedAdminReelsRoute,
-  AuthenticatedAdminServicesRoute: AuthenticatedAdminServicesRouteWithChildren,
   AuthenticatedAdminStudioRoute: AuthenticatedAdminStudioRoute,
-  AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRouteWithChildren,
-  AuthenticatedAdminTestimonialsRoute:
-    AuthenticatedAdminTestimonialsRouteWithChildren,
   AuthenticatedAdminTickerRoute: AuthenticatedAdminTickerRoute,
   AuthenticatedAdminTypographyRoute:
     AuthenticatedAdminTypographyRouteWithChildren,
@@ -1709,10 +1091,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
@@ -1729,32 +1113,6 @@ const PhotosRouteChildren: PhotosRouteChildren = {
 
 const PhotosRouteWithChildren =
   PhotosRoute._addFileChildren(PhotosRouteChildren)
-
-interface PortfolioRouteChildren {
-  PortfolioSlugRoute: typeof PortfolioSlugRoute
-}
-
-const PortfolioRouteChildren: PortfolioRouteChildren = {
-  PortfolioSlugRoute: PortfolioSlugRoute,
-}
-
-const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
-  PortfolioRouteChildren,
-)
-
-interface ServicesRouteChildren {
-  ServicesSlugRoute: typeof ServicesSlugRoute
-  ServicesIndexRoute: typeof ServicesIndexRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesSlugRoute: ServicesSlugRoute,
-  ServicesIndexRoute: ServicesIndexRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
 
 interface VideosRouteChildren {
   VideosIdRoute: typeof VideosIdRoute
@@ -1776,14 +1134,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   BusinessRoute: BusinessRoute,
-  ClientsRoute: ClientsRoute,
   ContactRoute: ContactRoute,
-  FaqRoute: FaqRoute,
   PhotosRoute: PhotosRouteWithChildren,
-  PortfolioRoute: PortfolioRouteWithChildren,
-  PricingRoute: PricingRoute,
   ReelsRoute: ReelsRoute,
-  ServicesRoute: ServicesRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VideosRoute: VideosRouteWithChildren,
   WeatherRoute: WeatherRoute,

@@ -8,6 +8,7 @@ import {
   LatestPhotosMasonry,
   VideoWallPremium,
   LatestReels,
+  FeaturedPlaces,
   LocalBusinessRow,
   DiscoverCTA,
 } from "@/components/media/HomeMedia";
@@ -48,6 +49,7 @@ function Index() {
       <LatestPhotosMasonry />
       <VideoWallPremium />
       <LatestReels />
+      <FeaturedPlaces />
 
       <Section className="!py-14 sm:!py-16">
         <div className="mx-auto max-w-3xl">

@@ -30,12 +30,12 @@ export function Footer() {
       <div className="container-x relative py-20">
         <div className="grid gap-8 rounded-[28px] border border-border bg-white/70 p-8 backdrop-blur-xl sm:p-10 md:grid-cols-[1.3fr_1fr] md:items-center">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">Studio letters</p>
+            <p className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">Nurpur updates</p>
             <h3
               className="mt-3 text-3xl font-normal tracking-tight sm:text-4xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Quiet insights on <span className="text-gradient italic">craft & motion</span>.
+              Stories & photos from <span className="text-gradient italic">Nurpur</span>.
             </h3>
           </div>
           <form
@@ -72,8 +72,8 @@ export function Footer() {
               <span className="text-base font-semibold tracking-tight">{siteContent.brand.name}</span>
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              A premium digital studio crafting websites, brands and products for ambitious teams
-              that refuse to look ordinary.
+              A local media portal for Nurpur, Kangra — photos, videos, reels, places, local news,
+              events and live weather.
             </p>
             <div className="mt-6 space-y-2 text-sm text-muted-foreground">
               <p className="flex items-center gap-2">
@@ -88,22 +88,22 @@ export function Footer() {
           </div>
 
           <FooterCol
-            title="Studio"
+            title="Explore"
             items={[
-              { label: "Services", to: "/services" },
-              { label: "Pricing", to: "/pricing" },
-              { label: "Portfolio", to: "/portfolio" },
-              { label: "About", to: "/about" },
-              { label: "Contact", to: "/contact" },
+              { label: "Photos", to: "/photos" },
+              { label: "Videos", to: "/videos" },
+              { label: "Reels", to: "/reels" },
+              { label: "Places", to: "/places" },
             ]}
           />
           <FooterCol
-            title="Company"
+            title="Portal"
             items={[
-              { label: "Process", to: "/" },
-              { label: "Careers", to: "/" },
-              { label: "Journal", to: "/" },
-              { label: "Press", to: "/" },
+              { label: "News", to: "/blog" },
+              { label: "Business", to: "/business" },
+              { label: "Weather", to: "/weather" },
+              { label: "About", to: "/about" },
+              { label: "Contact", to: "/contact" },
             ]}
           />
 
@@ -126,7 +126,7 @@ export function Footer() {
               ))}
             </div>
             <p className="mt-6 text-xs text-muted-foreground">
-              {socials.every((s) => !s.href) ? "Add social handles in site.ts" : "Follow the studio across platforms."}
+              {socials.every((s) => !s.href) ? "Add social handles in Home page & branding." : "Follow NurpurVasi Media across platforms."}
             </p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function Footer() {
             {termsUrl && <a href={termsUrl} className="hover:text-foreground">Terms</a>}
             <p className="flex items-center gap-2">
               <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
-              {siteContent.footer.tagline || "Premium digital studio"}
+              {siteContent.footer.tagline || "Nurpur\u2019s local media portal"}
             </p>
           </div>
         </div>
