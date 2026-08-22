@@ -81,10 +81,10 @@ function BlogIndex() {
           <span className="mx-2">/</span>
           <span className="text-foreground">Blog</span>
         </nav>
-        <Eyebrow>Journal</Eyebrow>
-        <h1 className="mt-4 text-4xl sm:text-6xl font-semibold tracking-tight">Blog & Insights</h1>
+        <Eyebrow>News & stories</Eyebrow>
+        <h1 className="mt-4 text-4xl sm:text-6xl font-semibold tracking-tight">Nurpur News &amp; Stories</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-          Ideas, case studies and craft notes on premium digital work.
+          Local news, event reports, culture and community stories from Nurpur, Himachal Pradesh.
         </p>
 
         {/* Featured */}
