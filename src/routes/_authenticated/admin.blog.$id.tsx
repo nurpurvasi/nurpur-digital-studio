@@ -48,6 +48,23 @@ const EMPTY: Draft = {
   canonical_url: "",
 };
 
+/** ISO string → value for <input type="datetime-local"> in the user's local timezone. */
+function toLocalInput(iso: string | null) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** datetime-local value (local wall clock) → ISO string for the database. */
+function fromLocalInput(value: string) {
+  if (!value) return null;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString();
+}
+
 function slugify(s: string) {
   return s.toLowerCase().trim()
     .replace(/[^a-z0-9\s-]/g, "")
@@ -102,7 +119,7 @@ function AdminBlogEditor() {
 
   useEffect(() => {
     if (isNew && !initialized.current) {
-      setDraft(EMPTY);
+      setDraft({ ...EMPTY, publish_date: new Date().toISOString() });
       initialized.current = true;
       return;
     }
@@ -202,7 +219,13 @@ function AdminBlogEditor() {
               Save draft
             </button>
             <button
-              onClick={() => handleSave({ status: "published", publish_date: draft.publish_date || new Date().toISOString() })}
+              onClick={() =>
+                handleSave({
+                  status: "published",
+                  // never overwrite a date the user picked
+                  publish_date: draft.publish_date ?? new Date().toISOString(),
+                })
+              }
               disabled={saveMut.isPending}
               className="btn-primary !px-4 !py-2 text-xs"
             >
@@ -301,8 +324,8 @@ function AdminBlogEditor() {
               <label className="block text-xs text-muted-foreground">Publish date
                 <input
                   type="datetime-local"
-                  value={draft.publish_date ? new Date(draft.publish_date).toISOString().slice(0, 16) : ""}
-                  onChange={(e) => patch("publish_date", e.target.value ? new Date(e.target.value).toISOString() : null)}
+                  value={toLocalInput(draft.publish_date)}
+                  onChange={(e) => patch("publish_date", fromLocalInput(e.target.value))}
                   className="mt-1 block w-full rounded-lg border border-border bg-white px-3 py-2 text-sm"
                 />
               </label>
