@@ -182,9 +182,6 @@ function AdminPage() {
             <Link to="/admin/typography" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
               <Type className="h-3 w-3" /> Typography
             </Link>
-            <Link to="/admin/media" className="hidden items-center gap-1 rounded-full border border-border bg-white px-3 py-2 text-xs font-medium hover:-translate-y-0.5 hover:shadow-md sm:inline-flex">
-              <ImageIcon className="h-3 w-3" /> Media
-            </Link>
 
 
             <button
@@ -738,16 +735,6 @@ function ThemeEditor({ content, patch }: EditorProps) {
                   <option value="pill">Pill (rounded-full)</option>
                   <option value="rounded">Rounded</option>
                   <option value="square">Square</option>
-                </select>
-              </Field>
-              <Field label="Theme mode" hint="Dark mode is future-ready">
-                <select
-                  value={theme.mode}
-                  onChange={(e) => updateTheme({ mode: e.target.value as ThemeSettings["mode"] })}
-                  className="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
-                >
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
                 </select>
               </Field>
             </div>
