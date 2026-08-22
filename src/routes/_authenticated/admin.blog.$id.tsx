@@ -129,7 +129,7 @@ function AdminBlogEditor() {
 
   useEffect(() => {
     if (isNew && !initialized.current) {
-      setDraft({ ...EMPTY, publish_date: new Date().toISOString() });
+      setDraft({ ...EMPTY, publish_date: fromLocalInput(nowInIstInput()) });
       initialized.current = true;
       return;
     }
@@ -233,7 +233,7 @@ function AdminBlogEditor() {
                 handleSave({
                   status: "published",
                   // never overwrite a date the user picked
-                  publish_date: draft.publish_date ?? new Date().toISOString(),
+                  publish_date: draft.publish_date ?? fromLocalInput(nowInIstInput()),
                 })
               }
               disabled={saveMut.isPending}
@@ -331,7 +331,7 @@ function AdminBlogEditor() {
                   <option value="published">Published</option>
                 </select>
               </label>
-              <label className="block text-xs text-muted-foreground">Publish date
+              <label className="block text-xs text-muted-foreground">Publish date &amp; time (IST)
                 <input
                   type="datetime-local"
                   value={toLocalInput(draft.publish_date)}
