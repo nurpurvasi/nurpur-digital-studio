@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { listPublicClients } from "@/lib/clients.functions";
+import { listPublicPlaces } from "@/lib/portal.functions";
 import { Section, Eyebrow } from "@/components/site/Layout";
 import { Reveal } from "@/components/site/Reveal";
 import { MediaCard, MediaTrigger } from "./MediaGrid";
@@ -732,6 +733,84 @@ export function LatestReels() {
               </span>
             </span>
           </a>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 9b. Featured places                                                 */
+/* ------------------------------------------------------------------ */
+
+export function FeaturedPlaces({ limit = 3 }: { limit?: number }) {
+  const load = useServerFn(listPublicPlaces);
+  const { data } = useQuery({
+    queryKey: ["places-public", "home-featured"],
+    queryFn: () => load(),
+    staleTime: 0,
+    refetchOnMount: "always",
+  });
+  const places = (data?.items ?? []).filter((p) => p.featured === true).slice(0, limit);
+  if (places.length === 0) return null;
+
+  return (
+    <Section className="!py-16 sm:!py-24">
+      <SectionHeading
+        label="Featured places"
+        title="Must-see spots in Nurpur"
+        action={
+          <Link to="/places" className="btn-ghost !px-5 !py-2.5">
+            All places <ArrowRight className="h-4 w-4" />
+          </Link>
+        }
+      />
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {places.map((p, i) => (
+          <Reveal key={p.id} delay={i * 60}>
+            <Link
+              to="/places/$slug"
+              params={{ slug: p.slug }}
+              className="group block h-full overflow-hidden rounded-[26px] border border-border bg-card transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_45%,transparent)]"
+            >
+              <span className="relative block aspect-[16/11] w-full overflow-hidden bg-muted">
+                {p.cover_image ? (
+                  <img
+                    src={p.cover_image}
+                    alt={p.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.06]"
+                  />
+                ) : (
+                  <span
+                    className="grid h-full w-full place-items-center text-background/80"
+                    style={{ background: "var(--gradient-vivid)" }}
+                  >
+                    <MapPin className="h-7 w-7" />
+                  </span>
+                )}
+                <span
+                  className="absolute left-4 top-4 inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-background"
+                  style={{ background: "var(--gradient-vivid)" }}
+                >
+                  Featured
+                </span>
+              </span>
+              <span className="block p-5">
+                {p.category && (
+                  <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                    {p.category}
+                  </span>
+                )}
+                <span className="mt-1 block text-lg font-semibold tracking-tight">{p.name}</span>
+                {p.description && (
+                  <span className="mt-2 line-clamp-2 block text-sm leading-relaxed text-muted-foreground">
+                    {p.description}
+                  </span>
+                )}
+              </span>
+            </Link>
+          </Reveal>
         ))}
       </div>
     </Section>
