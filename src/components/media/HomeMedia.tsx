@@ -17,7 +17,7 @@ import type { GalleryItem } from "@/lib/gallery.functions";
 import { listPublicClients } from "@/lib/clients.functions";
 import { Section, Eyebrow } from "@/components/site/Layout";
 import { Reveal } from "@/components/site/Reveal";
-import { MediaCard } from "./MediaGrid";
+import { MediaCard, MediaTrigger } from "./MediaGrid";
 import { MediaLightbox } from "./MediaLightbox";
 import {
   formatDate,
@@ -167,8 +167,9 @@ export function MediaSpotlight() {
 
         <div className="mt-10 grid gap-4 lg:mt-14 lg:grid-cols-[1.9fr_1fr] lg:gap-6">
           {feature ? (
-            <button
-              onClick={() => setOpenAt(0)}
+            <MediaTrigger
+              item={feature}
+              onOpen={() => setOpenAt(0)}
               className="group relative block w-full overflow-hidden rounded-[30px] border border-border text-left shadow-[0_50px_100px_-60px_color-mix(in_oklab,var(--navy)_70%,transparent)]"
             >
               <div className="aspect-[3/4] w-full bg-muted sm:aspect-[16/10] lg:aspect-[4/3]">
@@ -238,7 +239,7 @@ export function MediaSpotlight() {
                   </span>
                 </span>
               </span>
-            </button>
+            </MediaTrigger>
           ) : (
             <div className="grid aspect-[16/10] w-full place-items-center rounded-[30px] border border-dashed border-border bg-card text-sm text-muted-foreground">
               <span className="flex flex-col items-center gap-2 text-center">
@@ -251,9 +252,10 @@ export function MediaSpotlight() {
           {side.length > 0 && (
             <div className="no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:px-0 lg:grid lg:grid-rows-3 lg:gap-4 lg:overflow-visible lg:pb-0">
               {side.map((item, i) => (
-                <button
+                <MediaTrigger
                   key={item.id}
-                  onClick={() => setOpenAt(i + 1)}
+                  item={item}
+                  onOpen={() => setOpenAt(i + 1)}
                   className="group relative flex w-[260px] shrink-0 snap-start gap-3 overflow-hidden rounded-3xl border border-border bg-card/80 p-2 text-left backdrop-blur transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-40px_color-mix(in_oklab,var(--royal)_55%,transparent)] lg:w-auto"
                 >
                   <span className="relative h-20 w-24 shrink-0 overflow-hidden rounded-2xl bg-muted lg:h-full lg:w-28">
@@ -288,7 +290,7 @@ export function MediaSpotlight() {
                       {formatDate(item.publish_date || item.created_at)}
                     </span>
                   </span>
-                </button>
+                </MediaTrigger>
               ))}
             </div>
           )}
