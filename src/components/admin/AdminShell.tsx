@@ -66,7 +66,6 @@ const GROUPS: Group[] = [
   {
     title: "Site settings",
     items: [
-      { to: "/admin/media", label: "Media library", icon: Film },
       { to: "/admin/typography", label: "Fonts & typography", icon: TypeIcon },
       { to: "/weather", label: "Weather page", icon: CloudSun },
     ],
