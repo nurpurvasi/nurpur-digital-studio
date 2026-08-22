@@ -86,9 +86,25 @@ export function MediaField({
           }}
         />
         <input
-          type="url"
+          type="text"
+          inputMode="url"
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onBlur={(e) => {
+            const v = e.target.value.trim();
+            // Uploaded media is stored as an internal path (/api/media/...) — always valid.
+            // Only manually typed absolute values are checked for being a real URL.
+            if (!v || v.startsWith("/")) {
+              setErr(null);
+              return;
+            }
+            try {
+              new URL(v);
+              setErr(null);
+            } catch {
+              setErr("Enter a valid URL (https://…) or upload a file instead.");
+            }
+          }}
           placeholder="…or paste a URL"
           className="min-w-0 flex-1 rounded-full border border-border bg-background px-3 py-1.5 text-xs outline-none focus:border-[color:var(--royal)]"
         />
