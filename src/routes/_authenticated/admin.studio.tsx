@@ -520,7 +520,7 @@ function ContactEditor({ content, patch }: EditorProps) {
         <Field label="WhatsApp (dial format)"><TextInput value={content.contact.whatsapp} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, whatsapp: e.target.value } }))} /></Field>
         <div className="md:col-span-2"><Field label="Location"><TextInput value={content.contact.location} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, location: e.target.value } }))} /></Field></div>
         <Field label="Response time"><TextInput value={content.contact.responseTime} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, responseTime: e.target.value } }))} /></Field>
-        <Field label="Google Maps embed URL"><TextInput value={content.contact.mapEmbed} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, mapEmbed: e.target.value } }))} placeholder="https://www.google.com/maps/embed?…" /></Field>
+        <Field label="Google Maps embed URL"><TextInput value={content.contact.mapEmbed} onChange={(e) => patch((c) => ({ ...c, contact: { ...c.contact, mapEmbed: e.target.value } }))} placeholder="Paste any Google Maps link or embed code" /></Field>
         <div className="md:col-span-2 mt-2 border-t border-border pt-5">
           <h3 className="mb-4 text-sm font-semibold">Social links</h3>
           <div className="grid gap-5 md:grid-cols-2">

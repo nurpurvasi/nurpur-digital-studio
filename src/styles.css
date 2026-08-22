@@ -158,6 +158,11 @@
 }
 
 @utility text-gradient {
+  /* inline-block + trailing space keeps the last glyph (esp. italics) from being
+     clipped by background-clip: text at any viewport width */
+  display: inline-block;
+  padding-inline-end: 0.12em;
+  margin-inline-end: -0.04em;
   background: var(--gradient-text);
   -webkit-background-clip: text;
   background-clip: text;

@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone, Plus } from "lucide-react";
 import { Eyebrow, Section, SiteLayout } from "@/components/site/Layout";
 import { useSiteContent } from "@/content/SiteContentContext";
 import { ContactForm } from "@/components/site/ContactForm";
+import { MapEmbed } from "@/components/site/MapEmbed";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -67,6 +68,12 @@ function ContactPage() {
                 </li>
               ))}
             </ul>
+
+            <MapEmbed
+              value={siteContent.contact.mapEmbed}
+              title="NurpurVasi Media location on Google Maps"
+              className="mt-10"
+            />
           </div>
 
           <ContactForm template="media-portal" showCompany={false} showSubject={false} />
