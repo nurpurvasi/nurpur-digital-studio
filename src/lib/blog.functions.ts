@@ -63,7 +63,6 @@ export const listPublicPosts = createServerFn({ method: "GET" }).handler(async (
     .from("blog_posts")
     .select(SELECT_COLS)
     .eq("status", "published")
-    .or(`publish_date.is.null,publish_date.lte.${new Date().toISOString()}`)
     .order("publish_date", { ascending: false, nullsFirst: false });
   if (error) return { posts: [] as BlogPost[] };
   return { posts: (data ?? []).map(normalize) };
@@ -79,7 +78,6 @@ export const getPublicPost = createServerFn({ method: "GET" })
       .select(SELECT_COLS)
       .eq("slug", data.slug)
       .eq("status", "published")
-      .or(`publish_date.is.null,publish_date.lte.${new Date().toISOString()}`)
       .maybeSingle();
     if (!row) return { post: null as BlogPost | null };
     return { post: normalize(row) };
