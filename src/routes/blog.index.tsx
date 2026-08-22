@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { SiteLayout, Section, Eyebrow } from "@/components/site/Layout";
 import { listPublicPosts, type BlogPost } from "@/lib/blog.functions";
+import { readingTime } from "@/lib/blog-format";
 import { Search, Calendar, ArrowRight, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/blog/")({
@@ -24,10 +25,6 @@ export const Route = createFileRoute("/blog/")({
 
 const PAGE_SIZE = 9;
 
-export function readingTime(text: string): number {
-  const words = (text || "").trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 220));
-}
 
 function formatDate(iso: string | null) {
   if (!iso) return "";

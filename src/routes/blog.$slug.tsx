@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout, Section } from "@/components/site/Layout";
 import { getPublicPost, listPublicPosts, type BlogPost } from "@/lib/blog.functions";
-import { readingTime } from "./blog";
+import { readingTime } from "@/lib/blog-format";
 import { Calendar, Clock, ArrowLeft, Facebook, Linkedin, Twitter, Link as LinkIcon } from "lucide-react";
 import { useState } from "react";
 
