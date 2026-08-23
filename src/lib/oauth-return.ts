@@ -29,7 +29,21 @@ export async function consumeOAuthReturn(): Promise<{
   const refreshToken = pick("refresh_token");
   const code = pick("code");
 
+  const staleState = pick("state");
+
   if (!errorDescription && !accessToken && !code) {
+    // A leftover `state` (or other OAuth leftovers) from an aborted/failed
+    // attempt must be stripped before a new sign-in starts, otherwise the next
+    // attempt is launched from a URL carrying a stale state and the broker
+    // rejects it with "State verification failed" / invalid_request.
+    if (staleState) {
+      const url = new URL(window.location.href);
+      for (const key of ["state", "provider", "redirect_uri", "response_mode"]) {
+        url.searchParams.delete(key);
+      }
+      url.hash = "";
+      window.history.replaceState({}, "", url.pathname + url.search);
+    }
     return { handled: false, error: null };
   }
 

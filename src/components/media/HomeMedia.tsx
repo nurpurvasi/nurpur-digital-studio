@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { listPublicClients } from "@/lib/clients.functions";
-import { listPublicPlaces } from "@/lib/portal.functions";
+import { listPublicPlaces, listPublicTicker } from "@/lib/portal.functions";
 import { Section, Eyebrow } from "@/components/site/Layout";
 import { Reveal } from "@/components/site/Reveal";
 import { MediaCard, MediaTrigger } from "./MediaGrid";
@@ -83,12 +83,40 @@ export function SectionHeading({
 
 export function MediaTicker() {
   const { items } = useGallery();
+  const loadTicker = useServerFn(listPublicTicker);
+  const { data: tickerData } = useQuery({
+    queryKey: ["public-ticker"],
+    queryFn: () => loadTicker(),
+    staleTime: 0,
+    refetchOnMount: "always",
+  });
+
   const cats = useMemo(
     () => Array.from(new Set(items.map((i) => (i.category || "").trim()).filter(Boolean))).slice(0, 8),
     [items],
   );
-  const labels = ["Nurpur", "Photos", "Videos", "Local Stories", "Events", "Weather", "Business", ...cats];
+
+  const headlines = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    return (tickerData?.items ?? [])
+      .filter(
+        (t) =>
+          t.active &&
+          (!t.start_date || t.start_date <= today) &&
+          (!t.end_date || t.end_date >= today),
+      )
+      .map((t) => ({ text: t.text.trim(), link: t.link?.trim() || "" }))
+      .filter((t) => t.text.length > 0);
+  }, [tickerData]);
+
+  const labels =
+    headlines.length > 0
+      ? headlines
+      : ["Nurpur", "Photos", "Videos", "Local Stories", "Events", "Weather", "Business", ...cats].map(
+          (text) => ({ text, link: "" }),
+        );
   const row = [...labels, ...labels];
+
 
   return (
     <div
@@ -101,10 +129,16 @@ export function MediaTicker() {
       >
         {row.map((label, i) => (
           <span
-            key={`${label}-${i}`}
+            key={`${label.text}-${i}`}
             className="flex shrink-0 items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-background"
           >
-            {label}
+            {label.link ? (
+              <a href={label.link} className="hover:underline">
+                {label.text}
+              </a>
+            ) : (
+              label.text
+            )}
             <span className="h-1.5 w-1.5 rounded-full bg-background/60" />
           </span>
         ))}
