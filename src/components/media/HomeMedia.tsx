@@ -129,10 +129,16 @@ export function MediaTicker() {
       >
         {row.map((label, i) => (
           <span
-            key={`${label}-${i}`}
+            key={`${label.text}-${i}`}
             className="flex shrink-0 items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.28em] text-background"
           >
-            {label}
+            {label.link ? (
+              <a href={label.link} className="hover:underline">
+                {label.text}
+              </a>
+            ) : (
+              label.text
+            )}
             <span className="h-1.5 w-1.5 rounded-full bg-background/60" />
           </span>
         ))}
