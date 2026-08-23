@@ -83,12 +83,40 @@ export function SectionHeading({
 
 export function MediaTicker() {
   const { items } = useGallery();
+  const loadTicker = useServerFn(listPublicTicker);
+  const { data: tickerData } = useQuery({
+    queryKey: ["public-ticker"],
+    queryFn: () => loadTicker(),
+    staleTime: 0,
+    refetchOnMount: "always",
+  });
+
   const cats = useMemo(
     () => Array.from(new Set(items.map((i) => (i.category || "").trim()).filter(Boolean))).slice(0, 8),
     [items],
   );
-  const labels = ["Nurpur", "Photos", "Videos", "Local Stories", "Events", "Weather", "Business", ...cats];
+
+  const headlines = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    return (tickerData?.items ?? [])
+      .filter(
+        (t) =>
+          t.active &&
+          (!t.start_date || t.start_date <= today) &&
+          (!t.end_date || t.end_date >= today),
+      )
+      .map((t) => ({ text: t.text.trim(), link: t.link?.trim() || "" }))
+      .filter((t) => t.text.length > 0);
+  }, [tickerData]);
+
+  const labels =
+    headlines.length > 0
+      ? headlines
+      : ["Nurpur", "Photos", "Videos", "Local Stories", "Events", "Weather", "Business", ...cats].map(
+          (text) => ({ text, link: "" }),
+        );
   const row = [...labels, ...labels];
+
 
   return (
     <div
