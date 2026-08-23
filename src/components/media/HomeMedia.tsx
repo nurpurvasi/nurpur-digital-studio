@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import type { GalleryItem } from "@/lib/gallery.functions";
 import { listPublicClients } from "@/lib/clients.functions";
-import { listPublicPlaces } from "@/lib/portal.functions";
+import { listPublicPlaces, listPublicTicker } from "@/lib/portal.functions";
 import { Section, Eyebrow } from "@/components/site/Layout";
 import { Reveal } from "@/components/site/Reveal";
 import { MediaCard, MediaTrigger } from "./MediaGrid";
