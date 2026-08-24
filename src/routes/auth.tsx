@@ -79,7 +79,11 @@ function AuthPage() {
     setLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: `${window.location.origin}/auth`,
+        // The managed broker binds its OAuth transaction to the canonical
+        // origin. In preview, adding an app route here creates a different
+        // callback target from the origin registered by Lovable Cloud and can
+        // invalidate the broker's state after the native Google auth sheet.
+        redirect_uri: window.location.origin,
       });
       if (result.error) throw result.error;
       if (!result.redirected) navigate({ to: "/admin" });
