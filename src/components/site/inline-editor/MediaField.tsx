@@ -4,6 +4,7 @@ import { Loader2, Upload, X } from "lucide-react";
 import { createMediaUploadUrl } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeMediaUrl } from "@/lib/media-url";
+import { resolveContentType } from "@/lib/upload-media";
 
 export function MediaField({
   value,
@@ -26,12 +27,14 @@ export function MediaField({
     setBusy(true);
     setErr(null);
     try {
+      // iPhone files can arrive with an empty MIME type — infer it from the name.
+      const contentType = resolveContentType(file);
       const { path, token, signedUrl } = await getUploadUrl({
-        data: { filename: file.name, contentType: file.type || "application/octet-stream" },
+        data: { filename: file.name, contentType },
       });
       const { error } = await supabase.storage
         .from("site-media")
-        .uploadToSignedUrl(path, token, file, { contentType: file.type });
+        .uploadToSignedUrl(path, token, file, { contentType });
       if (error) throw error;
       onChange(signedUrl);
     } catch (e) {

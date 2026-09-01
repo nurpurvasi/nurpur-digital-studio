@@ -283,6 +283,7 @@ export const createGalleryItems = createServerFn({ method: "POST" })
               title: z.string().max(300).default(""),
               media_url: z.string().min(1).max(2000),
               media_type: z.enum(["image", "video"]).default("image"),
+              thumbnail: z.string().max(2000).default(""),
             }),
           )
           .min(1)
@@ -298,7 +299,7 @@ export const createGalleryItems = createServerFn({ method: "POST" })
       slug: `${slugify(it.title) || "photo"}-${Date.now().toString(36)}-${idx}`,
       media_url: it.media_url,
       media_type: it.media_type,
-      thumbnail: "",
+      thumbnail: it.thumbnail ?? "",
       caption: "",
       description: "",
       alt_text: it.title,

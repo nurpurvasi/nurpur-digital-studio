@@ -4,6 +4,7 @@ import { GripVertical, Loader2, Star, Upload, X } from "lucide-react";
 import { createMediaUploadUrl } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeMediaUrl } from "@/lib/media-url";
+import { uploadMediaFiles } from "@/lib/upload-media";
 
 /**
  * Multi-media gallery field. Uses the canonical Media Library upload pipeline
@@ -22,6 +23,7 @@ export function MediaGalleryField({
   const getUploadUrl = useServerFn(createMediaUploadUrl);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [status, setStatus] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
   const items = Array.isArray(value) ? value.filter(Boolean) : [];
@@ -29,23 +31,27 @@ export function MediaGalleryField({
   async function handleFiles(files: FileList) {
     setBusy(true);
     setErr(null);
-    const added: string[] = [];
     try {
-      for (const file of Array.from(files)) {
-        const { path, token, signedUrl } = await getUploadUrl({
-          data: { filename: file.name, contentType: file.type || "application/octet-stream" },
-        });
-        const { error } = await supabase.storage
-          .from("site-media")
-          .uploadToSignedUrl(path, token, file, { contentType: file.type });
-        if (error) throw error;
-        added.push(signedUrl);
-      }
+      const results = await uploadMediaFiles({
+        files: Array.from(files),
+        getUploadUrl: (args) => getUploadUrl(args),
+        // Galleries here store one URL per item — keep the untouched original.
+        generateDisplayVariant: false,
+        upload: async ({ path, token }, blob, contentType) => {
+          const { error } = await supabase.storage
+            .from("site-media")
+            .uploadToSignedUrl(path, token, blob, { contentType });
+          if (error) throw error;
+        },
+        onProgress: (_d, _t, label) => setStatus(label),
+      });
+      const added = results.map((r) => r.masterUrl);
       if (added.length) onChange([...items, ...added]);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setBusy(false);
+      setStatus("");
       if (inputRef.current) inputRef.current.value = "";
     }
   }
@@ -138,7 +144,7 @@ export function MediaGalleryField({
           className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition hover:bg-accent disabled:opacity-50"
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          Upload photos or videos
+          {busy ? status || "Uploading…" : "Upload photos or videos"}
         </button>
         <span className="text-xs text-muted-foreground">
           {items.length} item{items.length === 1 ? "" : "s"} · drag to reorder
