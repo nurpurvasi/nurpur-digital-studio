@@ -283,6 +283,7 @@ export const createGalleryItems = createServerFn({ method: "POST" })
               title: z.string().max(300).default(""),
               media_url: z.string().min(1).max(2000),
               media_type: z.enum(["image", "video"]).default("image"),
+              thumbnail: z.string().max(2000).default(""),
             }),
           )
           .min(1)
