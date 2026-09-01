@@ -144,7 +144,7 @@ export function MediaGalleryField({
           className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium transition hover:bg-accent disabled:opacity-50"
         >
           {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-          Upload photos or videos
+          {busy ? status || "Uploading…" : "Upload photos or videos"}
         </button>
         <span className="text-xs text-muted-foreground">
           {items.length} item{items.length === 1 ? "" : "s"} · drag to reorder
