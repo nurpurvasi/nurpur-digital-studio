@@ -29,23 +29,27 @@ export function MediaGalleryField({
   async function handleFiles(files: FileList) {
     setBusy(true);
     setErr(null);
-    const added: string[] = [];
     try {
-      for (const file of Array.from(files)) {
-        const { path, token, signedUrl } = await getUploadUrl({
-          data: { filename: file.name, contentType: file.type || "application/octet-stream" },
-        });
-        const { error } = await supabase.storage
-          .from("site-media")
-          .uploadToSignedUrl(path, token, file, { contentType: file.type });
-        if (error) throw error;
-        added.push(signedUrl);
-      }
+      const results = await uploadMediaFiles({
+        files: Array.from(files),
+        getUploadUrl: (args) => getUploadUrl(args),
+        // Galleries here store one URL per item — keep the untouched original.
+        generateDisplayVariant: false,
+        upload: async ({ path, token }, blob, contentType) => {
+          const { error } = await supabase.storage
+            .from("site-media")
+            .uploadToSignedUrl(path, token, blob, { contentType });
+          if (error) throw error;
+        },
+        onProgress: (_d, _t, label) => setStatus(label),
+      });
+      const added = results.map((r) => r.masterUrl);
       if (added.length) onChange([...items, ...added]);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setBusy(false);
+      setStatus("");
       if (inputRef.current) inputRef.current.value = "";
     }
   }

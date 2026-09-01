@@ -39,23 +39,17 @@ export function BulkPhotoUpload() {
     setError(null);
     setDone(null);
     try {
-      const uploaded: { title: string; media_url: string; media_type: "image" | "video" }[] = [];
-      for (let i = 0; i < files.length; i += 1) {
-        const file = files[i];
-        setProgress(`Uploading ${i + 1} of ${files.length}…`);
-        const { path, token, signedUrl } = await getUploadUrl({
-          data: { filename: file.name, contentType: file.type || "application/octet-stream" },
-        });
-        const { error: upErr } = await supabase.storage
-          .from("site-media")
-          .uploadToSignedUrl(path, token, file, { contentType: file.type });
-        if (upErr) throw upErr;
-        uploaded.push({
-          title: cleanTitleFromFilename(file.name),
-          media_url: signedUrl,
-          media_type: file.type.startsWith("video") ? "video" : "image",
-        });
-      }
+      const results = await uploadMediaFiles({
+        files,
+        getUploadUrl: (args) => getUploadUrl(args),
+        upload: async ({ path, token }, blob, contentType) => {
+          const { error: upErr } = await supabase.storage
+            .from("site-media")
+            .uploadToSignedUrl(path, token, blob, { contentType });
+          if (upErr) throw upErr;
+        },
+        onProgress: (_d, _t, label) => setProgress(label),
+      });
       setProgress("Saving…");
       const res = await createMany({
         data: {
@@ -63,7 +57,12 @@ export function BulkPhotoUpload() {
           category,
           location,
           status: publishNow ? "published" : "draft",
-          items: uploaded,
+          items: results.map((r) => ({
+            title: cleanTitleFromFilename(r.file.name),
+            media_url: r.masterUrl,
+            media_type: r.mediaType,
+            thumbnail: r.displayUrl,
+          })),
         },
       });
       setDone(res.count);

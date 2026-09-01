@@ -299,7 +299,7 @@ export const createGalleryItems = createServerFn({ method: "POST" })
       slug: `${slugify(it.title) || "photo"}-${Date.now().toString(36)}-${idx}`,
       media_url: it.media_url,
       media_type: it.media_type,
-      thumbnail: "",
+      thumbnail: it.thumbnail ?? "",
       caption: "",
       description: "",
       alt_text: it.title,
