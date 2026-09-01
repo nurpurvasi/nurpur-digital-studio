@@ -4,6 +4,7 @@ import { GripVertical, Loader2, Star, Upload, X } from "lucide-react";
 import { createMediaUploadUrl } from "@/lib/cms.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeMediaUrl } from "@/lib/media-url";
+import { uploadMediaFiles } from "@/lib/upload-media";
 
 /**
  * Multi-media gallery field. Uses the canonical Media Library upload pipeline
@@ -22,6 +23,7 @@ export function MediaGalleryField({
   const getUploadUrl = useServerFn(createMediaUploadUrl);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [status, setStatus] = useState("");
   const [dragIndex, setDragIndex] = useState<number | null>(null);
 
   const items = Array.isArray(value) ? value.filter(Boolean) : [];

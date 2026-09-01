@@ -7,6 +7,7 @@ import { createGalleryItems } from "@/lib/gallery.functions";
 import { listAdminGalleries } from "@/lib/portal.functions";
 import { looksLikeGeneratedName } from "@/components/media/useGallery";
 import { supabase } from "@/integrations/supabase/client";
+import { uploadMediaFiles } from "@/lib/upload-media";
 
 /**
  * Multi-file upload for photos/videos. Uses the canonical Media Library
