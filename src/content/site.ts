@@ -160,7 +160,9 @@ export const defaultSiteContent: SiteContent = {
     primaryCta: { label: "Explore photos", href: "/photos" },
     secondaryCta: { label: "Watch videos", href: "/videos" },
     media: { type: "image", src: "", alt: "Studio showcase" },
+    badge: "FEATURED",
   },
+  bottomTicker: { enabled: true, items: [] },
   banners: {
     aboutCover: { type: "image", src: "", alt: "About cover" },
     servicesCover: { type: "image", src: "", alt: "Services cover" },
