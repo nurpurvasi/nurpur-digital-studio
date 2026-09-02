@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, Section } from "@/components/site/Layout";
+import { FeaturedStoryHero, BottomTicker } from "@/components/media/FeaturedHero";
 import {
   MediaTicker,
-  MediaSpotlight,
   PhotoStrips,
   ExploreNurpur,
   LatestPhotosMasonry,
@@ -43,7 +43,8 @@ function Index() {
   return (
     <SiteLayout>
       <MediaTicker />
-      <MediaSpotlight />
+      <FeaturedStoryHero />
+      <BottomTicker />
       <PhotoStrips />
       <ExploreNurpur />
       <LatestPhotosMasonry />

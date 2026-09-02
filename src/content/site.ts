@@ -83,12 +83,16 @@ export type SiteContent = {
   };
   hero: {
     eyebrow: string;
+    /** Optional featured-story badge, e.g. FEATURED / NEW VIDEO / SPONSORED. */
+    badge?: string;
     headline: string;
     subheading: string;
     primaryCta: { label: string; href: string };
     secondaryCta: { label: string; href: string };
     media: MediaAsset;
   };
+  /** Second, independent marquee shown directly below the hero. */
+  bottomTicker: { enabled: boolean; items: { text: string; link?: string }[] };
   banners: {
     aboutCover: MediaAsset;
     servicesCover: MediaAsset;
@@ -156,7 +160,9 @@ export const defaultSiteContent: SiteContent = {
     primaryCta: { label: "Explore photos", href: "/photos" },
     secondaryCta: { label: "Watch videos", href: "/videos" },
     media: { type: "image", src: "", alt: "Studio showcase" },
+    badge: "FEATURED",
   },
+  bottomTicker: { enabled: true, items: [] },
   banners: {
     aboutCover: { type: "image", src: "", alt: "About cover" },
     servicesCover: { type: "image", src: "", alt: "Services cover" },
