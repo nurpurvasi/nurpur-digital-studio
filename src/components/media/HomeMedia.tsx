@@ -997,3 +997,37 @@ export function DiscoverCTA() {
     </Section>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Featured Photos — published photos marked Featured in Gallery CMS   */
+/* ------------------------------------------------------------------ */
+
+export function FeaturedPhotos({ limit = 8 }: { limit?: number }) {
+  const { items } = useGallery();
+  const photos = usePhotos(items);
+  const featured = useMemo(() => photos.filter((p) => p.featured).slice(0, limit), [photos, limit]);
+  const [openAt, setOpenAt] = useState<number | null>(null);
+  if (featured.length === 0) return null;
+
+  return (
+    <Section className="!py-14 sm:!py-20">
+      <SectionHeading
+        label="Featured"
+        title="Featured photos"
+        action={
+          <Link to="/photos" className="btn-ghost">
+            All photos <ArrowRight className="h-4 w-4" />
+          </Link>
+        }
+      />
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {featured.map((item, i) => (
+          <MediaCard key={item.id} item={item} onOpen={() => setOpenAt(i)} aspect="aspect-[4/3]" />
+        ))}
+      </div>
+      {openAt !== null && (
+        <MediaLightbox items={featured} index={openAt} onIndex={setOpenAt} onClose={() => setOpenAt(null)} />
+      )}
+    </Section>
+  );
+}
