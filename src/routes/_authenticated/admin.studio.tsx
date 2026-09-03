@@ -457,14 +457,22 @@ function BrandEditor({ content, patch }: EditorProps) {
 }
 
 function HeroEditor({ content, patch }: EditorProps) {
+  const bottom = content.bottomTicker ?? { enabled: true, items: [] };
+  const setBottom = (next: typeof bottom) => patch((c) => ({ ...c, bottomTicker: next }));
+
   return (
     <div>
-      <SectionHeader title="Hero section" desc="The cinematic first impression on your homepage." />
+      <SectionHeader
+        title="Featured story hero"
+        desc="The single 16:9 featured item at the top of your homepage — story, video, event or business promotion."
+      />
       <div className="grid gap-5 md:grid-cols-2">
         <Field label="Eyebrow">
           <TextInput value={content.hero.eyebrow} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, eyebrow: e.target.value } }))} />
         </Field>
-        <div />
+        <Field label="Badge / label" hint="FEATURED, NEW VIDEO, TOP STORY, SPONSORED, EVENT — leave blank to hide">
+          <TextInput value={content.hero.badge ?? ""} placeholder="FEATURED" onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, badge: e.target.value } }))} />
+        </Field>
         <div className="md:col-span-2">
           <Field label="Headline">
             <TextArea rows={2} value={content.hero.headline} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, headline: e.target.value } }))} />
@@ -475,10 +483,10 @@ function HeroEditor({ content, patch }: EditorProps) {
             <TextArea rows={3} value={content.hero.subheading} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, subheading: e.target.value } }))} />
           </Field>
         </div>
-        <Field label="Primary CTA label">
+        <Field label="Primary CTA label" hint="e.g. Watch Video, Read Story, Explore Business">
           <TextInput value={content.hero.primaryCta.label} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, primaryCta: { ...c.hero.primaryCta, label: e.target.value } } }))} />
         </Field>
-        <Field label="Primary CTA link">
+        <Field label="Primary CTA link" hint="Any internal path (/videos) or full URL">
           <TextInput value={content.hero.primaryCta.href} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, primaryCta: { ...c.hero.primaryCta, href: e.target.value } } }))} />
         </Field>
         <Field label="Secondary CTA label">
@@ -488,13 +496,75 @@ function HeroEditor({ content, patch }: EditorProps) {
           <TextInput value={content.hero.secondaryCta.href} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, secondaryCta: { ...c.hero.secondaryCta, href: e.target.value } } }))} />
         </Field>
         <div className="md:col-span-2">
-          <Field label="Hero image / video URL">
+          <Field label="Featured image / video" hint="Shown as a large 16:9 media panel. Videos autoplay muted.">
             <MediaUploader
               value={content.hero.media.src}
               onChange={(url) => patch((c) => ({ ...c, hero: { ...c.hero, media: { ...c.hero.media, src: url } } }))}
               accept="image/*,video/*"
             />
           </Field>
+        </div>
+        <Field label="Media alt text">
+          <TextInput value={content.hero.media.alt ?? ""} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, media: { ...c.hero.media, alt: e.target.value } } }))} />
+        </Field>
+        <Field label="Media type" hint="image or video">
+          <TextInput value={content.hero.media.type} onChange={(e) => patch((c) => ({ ...c, hero: { ...c.hero, media: { ...c.hero.media, type: (e.target.value === "video" ? "video" : "image") } } }))} />
+        </Field>
+      </div>
+
+      <div className="mt-10 border-t border-border pt-8">
+        <SectionHeader
+          title="Bottom ticker"
+          desc="A second, independent scrolling strip below the hero. Separate from the Breaking Ticker."
+        />
+        <label className="mb-5 flex items-center gap-3 text-sm font-medium">
+          <input
+            type="checkbox"
+            checked={bottom.enabled !== false}
+            onChange={(e) => setBottom({ ...bottom, enabled: e.target.checked })}
+          />
+          Show bottom ticker
+        </label>
+        <div className="grid gap-4">
+          {(bottom.items ?? []).map((item, i) => (
+            <div key={i} className="grid gap-3 rounded-2xl border border-border p-4 md:grid-cols-[1.6fr_1fr_auto]">
+              <Field label={`Message ${i + 1}`}>
+                <TextInput
+                  value={item.text}
+                  placeholder="Diwali Mela discounts at Main Bazaar"
+                  onChange={(e) => {
+                    const items = [...bottom.items];
+                    items[i] = { ...items[i], text: e.target.value };
+                    setBottom({ ...bottom, items });
+                  }}
+                />
+              </Field>
+              <Field label="Optional link">
+                <TextInput
+                  value={item.link ?? ""}
+                  onChange={(e) => {
+                    const items = [...bottom.items];
+                    items[i] = { ...items[i], link: e.target.value };
+                    setBottom({ ...bottom, items });
+                  }}
+                />
+              </Field>
+              <button
+                type="button"
+                className="self-end rounded-full border border-border px-4 py-2 text-sm font-semibold hover:bg-muted"
+                onClick={() => setBottom({ ...bottom, items: bottom.items.filter((_, x) => x !== i) })}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="justify-self-start rounded-full border border-border px-5 py-2.5 text-sm font-semibold hover:bg-muted"
+            onClick={() => setBottom({ ...bottom, items: [...(bottom.items ?? []), { text: "", link: "" }] })}
+          >
+            Add ticker message
+          </button>
         </div>
       </div>
     </div>
