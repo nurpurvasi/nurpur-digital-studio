@@ -9,6 +9,7 @@ import {
   VideoWallPremium,
   LatestReels,
   FeaturedPlaces,
+  FeaturedPhotos,
   LocalBusinessRow,
   DiscoverCTA,
 } from "@/components/media/HomeMedia";
@@ -45,6 +46,7 @@ function Index() {
       <MediaTicker />
       <FeaturedStoryHero />
       <BottomTicker />
+      <FeaturedPhotos />
       <PhotoStrips />
       <ExploreNurpur />
       <LatestPhotosMasonry />
